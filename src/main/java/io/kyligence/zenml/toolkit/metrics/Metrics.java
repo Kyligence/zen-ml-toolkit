@@ -16,16 +16,21 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit;
+package io.kyligence.zenml.toolkit.metrics;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
-@SpringBootApplication
-public class ZenMlToolkitApplication {
+import java.util.List;
 
-    public static void main(String[] args) {
-        SpringApplication.run(ZenMlToolkitApplication.class, args);
-    }
-
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+@Getter
+@Setter
+@Builder
+@ToString
+public class Metrics {
+    @JsonProperty(value = "metrics")
+    private List<MetricSpec> metrics;
 }

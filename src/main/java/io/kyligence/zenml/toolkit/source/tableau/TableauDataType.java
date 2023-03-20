@@ -16,16 +16,23 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit;
+package io.kyligence.zenml.toolkit.source.tableau;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.apache.commons.lang3.StringUtils;
 
-@SpringBootApplication
-public class ZenMlToolkitApplication {
+public class TableauDataType {
+    public static final String REAL = "real";
+    public static final String DOUBLE = "double";
 
-    public static void main(String[] args) {
-        SpringApplication.run(ZenMlToolkitApplication.class, args);
+    public static final String DATE = "date";
+
+    public static final String TIMESTAMP = "timestamp";
+
+    public static String convertDataType(String dataType) {
+        if (StringUtils.equalsIgnoreCase(dataType, REAL)) {
+            return DOUBLE;
+        } else {
+            return dataType.toLowerCase();
+        }
     }
-
 }

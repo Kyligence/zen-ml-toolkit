@@ -16,16 +16,34 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit;
+package io.kyligence.zenml.toolkit.source.tableau;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import lombok.*;
 
-@SpringBootApplication
-public class ZenMlToolkitApplication {
+import java.util.List;
+import java.util.Map;
 
-    public static void main(String[] args) {
-        SpringApplication.run(ZenMlToolkitApplication.class, args);
-    }
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+@Getter
+@Setter
+@Builder
+@ToString
+public class TableauCalculatedFields {
 
+    // tds file name as tag
+    private List<String> tags;
+
+    // use connection name as view name
+    private List<String> views;
+
+    // TODO: support tables join
+    private List<String> tables;
+
+    // column alias 2 column name
+    private Map<String, String> alias2columnMap;
+
+    // tableau columns(include dimensions & measures)
+    private List<TableauColumn> columns;
 }

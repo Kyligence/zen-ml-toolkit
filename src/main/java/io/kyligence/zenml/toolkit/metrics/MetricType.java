@@ -16,16 +16,9 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit;
+package io.kyligence.zenml.toolkit.metrics;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
-public class ZenMlToolkitApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(ZenMlToolkitApplication.class, args);
-    }
+public enum MetricType {
+    BASIC, COMPOSITE, DERIVED, GROUP;
 
 }

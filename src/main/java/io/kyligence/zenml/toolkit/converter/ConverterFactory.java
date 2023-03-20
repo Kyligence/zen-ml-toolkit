@@ -16,16 +16,23 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit;
+package io.kyligence.zenml.toolkit.converter;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 
-@SpringBootApplication
-public class ZenMlToolkitApplication {
+public class ConverterFactory {
+    public MetricsConverter getMetricsConverter(String filePath) {
+        String suffix = FilenameUtils.getExtension(filePath);
+        if (StringUtils.isBlank(filePath))
+            throw new IllegalArgumentException("Source file path is null, please check the file name");
 
-    public static void main(String[] args) {
-        SpringApplication.run(ZenMlToolkitApplication.class, args);
+        if (StringUtils.equalsIgnoreCase(suffix, FileType.TDS_FILE)) {
+            return new TableauConverter();
+        } else if (StringUtils.equalsIgnoreCase(suffix, FileType.TWB_FILE)) {
+            return new TableauConverter();
+        } else {
+            throw new IllegalArgumentException("Current file type is not supported.");
+        }
     }
-
 }

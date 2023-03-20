@@ -16,16 +16,32 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit;
+package io.kyligence.zenml.toolkit.source.tableau;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import lombok.*;
 
-@SpringBootApplication
-public class ZenMlToolkitApplication {
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+@Getter
+@Setter
+@Builder
+@ToString
+public class TableauCalculation {
+    // measure type
+    public static final String CLASS_TABLEAU = "tableau";
+    // non-measure
+    public static final String CLASS_CATEGORICAL_BIN = "categorical-bin";
+    // non-measure
+    public static final String CLASS_BIN = "bin";
 
-    public static void main(String[] args) {
-        SpringApplication.run(ZenMlToolkitApplication.class, args);
-    }
+    private String clazz;
+    private String column;
+    private String decimals;
+    private String formula;
+    private String peg;
+    private String sizeParameter;
+    private String newBin;
 
 }
+

@@ -16,16 +16,21 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit;
+package io.kyligence.zenml.toolkit.converter;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import io.kyligence.zenml.toolkit.metrics.Metrics;
+import org.dom4j.DocumentException;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootApplication
-public class ZenMlToolkitApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(ZenMlToolkitApplication.class, args);
+@SpringBootTest
+public class TableauConverterTest {
+    @Test
+    public void testConvert2ZenML1() throws DocumentException {
+        String tdsPath = "src/test/resources/sources/tableau/SSB.tds";
+        MetricsConverter converter = new TableauConverter();
+        Metrics metrics = converter.convert2Metrics(tdsPath);
+        System.out.println(metrics);
     }
 
 }

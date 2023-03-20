@@ -1,0 +1,184 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<datasource formatted-name="Kylin_SSB" inline="true" source-platform="win" version="10.0">
+  <connection class="federated">
+    <named-connections>
+      <named-connection caption="159.27.120.141" name="genericodbc.11du78x0szfyb51b703es1ocv315">
+        <connection class="genericodbc" dbname="" odbc-connect-string-extras="PROJECT=Lenavideodemo;CUBE=AUTO_MODEL_P_LINEORDER_1" odbc-dbms-name="MySQL" odbc-driver="KyligenceODBCDriver" odbc-dsn="" odbc-suppress-connection-pooling="" odbc-use-connection-pooling="" port="7072" schema="DEFAULT" server="159.27.120.141" username="ADMIN" vendor1="Lenavideodemo" vendor2="AUTO_MODEL_P_LINEORDER_1"/>
+      </named-connection>
+    </named-connections>
+    <relation join="left" type="join">
+      <clause type="join">
+        <expression op="=">
+          <expression op="[P_LINEORDER].[LO_PARTKEY]"/>
+          <expression op="[PART].[P_PARTKEY]"/>
+        </expression>
+      </clause>
+      <relation join="left" type="join">
+        <clause type="join">
+          <expression op="=">
+            <expression op="[P_LINEORDER].[LO_SUPPKEY]"/>
+            <expression op="[SUPPLIER].[S_SUPPKEY]"/>
+          </expression>
+        </clause>
+        <relation join="left" type="join">
+          <clause type="join">
+            <expression op="=">
+              <expression op="[P_LINEORDER].[LO_CUSTKEY]"/>
+              <expression op="[CUSTOMER].[C_CUSTKEY]"/>
+            </expression>
+          </clause>
+          <relation join="left" type="join">
+            <clause type="join">
+              <expression op="=">
+                <expression op="[P_LINEORDER].[LO_ORDERDATE]"/>
+                <expression op="[DATES].[D_DATEKEY]"/>
+              </expression>
+            </clause>
+            <relation type="table" connection="genericodbc.11du78x0szfyb51b703es1ocv315" name="P_LINEORDER" table="[SSB].[P_LINEORDER]"/>
+            <relation type="table" connection="genericodbc.11du78x0szfyb51b703es1ocv315" name="DATES" table="[SSB].[DATES]"/>
+          </relation>
+          <relation type="table" connection="genericodbc.11du78x0szfyb51b703es1ocv315" name="CUSTOMER" table="[SSB].[CUSTOMER]"/>
+        </relation>
+        <relation type="table" connection="genericodbc.11du78x0szfyb51b703es1ocv315" name="SUPPLIER" table="[SSB].[SUPPLIER]"/>
+      </relation>
+      <relation type="table" connection="genericodbc.11du78x0szfyb51b703es1ocv315" name="PART" table="[SSB].[PART]"/>
+    </relation>
+    <cols>
+      <map key="[LO_PARTKEY]" value="[P_LINEORDER].[LO_PARTKEY]"/>
+      <map key="[P_MFGR]" value="[PART].[P_MFGR]"/>
+      <map key="[LO_ORDERKEY]" value="[P_LINEORDER].[LO_ORDERKEY]"/>
+      <map key="[C_NATION]" value="[CUSTOMER].[C_NATION]"/>
+      <map key="[LO_SUPPKEY]" value="[P_LINEORDER].[LO_SUPPKEY]"/>
+      <map key="[LO_TAX]" value="[P_LINEORDER].[LO_TAX]"/>
+      <map key="[C_CUSTKEY]" value="[CUSTOMER].[C_CUSTKEY]"/>
+      <map key="[D_DAYOFWEEK]" value="[DATES].[D_DAYOFWEEK]"/>
+      <map key="[LO_ORDERDATE]" value="[P_LINEORDER].[LO_ORDERDATE]"/>
+      <map key="[LO_SUPPLYCOST]" value="[P_LINEORDER].[LO_SUPPLYCOST]"/>
+      <map key="[S_PHONE]" value="[SUPPLIER].[S_PHONE]"/>
+      <map key="[LO_ORDERPRIOTITY]" value="[P_LINEORDER].[LO_ORDERPRIOTITY]"/>
+      <map key="[D_DAYNUMINWEEK]" value="[DATES].[D_DAYNUMINWEEK]"/>
+      <map key="[P_TYPE]" value="[PART].[P_TYPE]"/>
+      <map key="[V_REVENUE]" value="[P_LINEORDER].[V_REVENUE]"/>
+      <map key="[D_MONTH]" value="[DATES].[D_MONTH]"/>
+      <map key="[D_MONTHNUMINYEAR]" value="[DATES].[D_MONTHNUMINYEAR]"/>
+      <map key="[LO_EXTENDEDPRICE]" value="[P_LINEORDER].[LO_EXTENDEDPRICE]"/>
+      <map key="[D_YEAR]" value="[DATES].[D_YEAR]"/>
+      <map key="[C_ADDRESS]" value="[CUSTOMER].[C_ADDRESS]"/>
+      <map key="[LO_COMMITDATE]" value="[P_LINEORDER].[LO_COMMITDATE]"/>
+      <map key="[D_WEEKDAYFL]" value="[DATES].[D_WEEKDAYFL]"/>
+      <map key="[P_CONTAINER]" value="[PART].[P_CONTAINER]"/>
+      <map key="[D_SELLINGSEASON]" value="[DATES].[D_SELLINGSEASON]"/>
+      <map key="[C_NAME]" value="[CUSTOMER].[C_NAME]"/>
+      <map key="[S_NATION]" value="[SUPPLIER].[S_NATION]"/>
+      <map key="[S_CITY]" value="[SUPPLIER].[S_CITY]"/>
+      <map key="[LO_SHIPPRIOTITY]" value="[P_LINEORDER].[LO_SHIPPRIOTITY]"/>
+      <map key="[S_ADDRESS]" value="[SUPPLIER].[S_ADDRESS]"/>
+      <map key="[P_SIZE]" value="[PART].[P_SIZE]"/>
+      <map key="[D_DAYNUMINYEAR]" value="[DATES].[D_DAYNUMINYEAR]"/>
+      <map key="[D_YEARMONTHNUM]" value="[DATES].[D_YEARMONTHNUM]"/>
+      <map key="[LO_REVENUE]" value="[P_LINEORDER].[LO_REVENUE]"/>
+      <map key="[LO_LINENUMBER]" value="[P_LINEORDER].[LO_LINENUMBER]"/>
+      <map key="[D_LASTDAYINWEEKFL]" value="[DATES].[D_LASTDAYINWEEKFL]"/>
+      <map key="[C_MKTSEGMENT]" value="[CUSTOMER].[C_MKTSEGMENT]"/>
+      <map key="[P_CATEGORY]" value="[PART].[P_CATEGORY]"/>
+      <map key="[D_WEEKNUMINYEAR]" value="[DATES].[D_WEEKNUMINYEAR]"/>
+      <map key="[C_CITY]" value="[CUSTOMER].[C_CITY]"/>
+      <map key="[P_NAME]" value="[PART].[P_NAME]"/>
+      <map key="[C_REGION]" value="[CUSTOMER].[C_REGION]"/>
+      <map key="[S_NAME]" value="[SUPPLIER].[S_NAME]"/>
+      <map key="[D_DAYNUMINMONTH]" value="[DATES].[D_DAYNUMINMONTH]"/>
+      <map key="[C_PHONE]" value="[CUSTOMER].[C_PHONE]"/>
+      <map key="[D_HOLIDAYFL]" value="[DATES].[D_HOLIDAYFL]"/>
+      <map key="[P_BRAND]" value="[PART].[P_BRAND]"/>
+      <map key="[LO_QUANTITY]" value="[P_LINEORDER].[LO_QUANTITY]"/>
+      <map key="[LO_CUSTKEY]" value="[P_LINEORDER].[LO_CUSTKEY]"/>
+      <map key="[D_DATE]" value="[DATES].[D_DATE]"/>
+      <map key="[LO_ORDTOTALPRICE]" value="[P_LINEORDER].[LO_ORDTOTALPRICE]"/>
+      <map key="[D_YEARMONTH]" value="[DATES].[D_YEARMONTH]"/>
+      <map key="[D_DATEKEY]" value="[DATES].[D_DATEKEY]"/>
+      <map key="[LO_SHIPMODE]" value="[P_LINEORDER].[LO_SHIPMODE]"/>
+      <map key="[D_LASTDAYINMONTHFL]" value="[DATES].[D_LASTDAYINMONTHFL]"/>
+      <map key="[S_SUPPKEY]" value="[SUPPLIER].[S_SUPPKEY]"/>
+      <map key="[S_REGION]" value="[SUPPLIER].[S_REGION]"/>
+      <map key="[P_COLOR]" value="[PART].[P_COLOR]"/>
+      <map key="[P_PARTKEY]" value="[PART].[P_PARTKEY]"/>
+      <map key="[LO_DISCOUNT]" value="[P_LINEORDER].[LO_DISCOUNT]"/>
+    </cols>
+  </connection>
+  <aliases enabled="yes"/>
+  <column caption="LO_PARTKEY" datatype="integer" name="[LO_PARTKEY]" role="dimension" type="ordinal"/>
+  <column caption="P_MFGR" datatype="string" name="[P_MFGR]" role="dimension" type="nominal"/>
+  <column caption="LO_ORDERKEY" datatype="integer" name="[LO_ORDERKEY]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="C_NATION" datatype="string" name="[C_NATION]" role="dimension" type="nominal"/>
+  <column caption="LO_SUPPKEY" datatype="integer" name="[LO_SUPPKEY]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="LO_TAX" datatype="integer" name="[LO_TAX]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="C_CUSTKEY" datatype="integer" name="[C_CUSTKEY]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="D_DAYOFWEEK" datatype="string" name="[D_DAYOFWEEK]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="LO_ORDERDATE" datatype="date" name="[LO_ORDERDATE]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="LO_SUPPLYCOST" datatype="integer" name="[LO_SUPPLYCOST]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="S_PHONE" datatype="string" name="[S_PHONE]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="LO_ORDERPRIOTITY" datatype="string" name="[LO_ORDERPRIOTITY]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="D_DAYNUMINWEEK" datatype="integer" name="[D_DAYNUMINWEEK]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="P_TYPE" datatype="string" name="[P_TYPE]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="V_REVENUE" datatype="integer" name="[V_REVENUE]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="D_MONTH" datatype="string" name="[D_MONTH]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="D_MONTHNUMINYEAR" datatype="integer" name="[D_MONTHNUMINYEAR]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="LO_EXTENDEDPRICE" datatype="integer" name="[LO_EXTENDEDPRICE]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="D_YEAR" datatype="integer" name="[D_YEAR]" role="dimension" type="ordinal"/>
+  <column caption="C_ADDRESS" datatype="string" name="[C_ADDRESS]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="LO_COMMITDATE" datatype="date" name="[LO_COMMITDATE]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="D_WEEKDAYFL" datatype="integer" name="[D_WEEKDAYFL]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="P_CONTAINER" datatype="string" name="[P_CONTAINER]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="D_SELLINGSEASON" datatype="string" name="[D_SELLINGSEASON]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="C_NAME" datatype="string" name="[C_NAME]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="S_NATION" datatype="string" name="[S_NATION]" role="dimension" type="nominal"/>
+  <column caption="S_CITY" datatype="string" name="[S_CITY]" role="dimension" type="nominal"/>
+  <column caption="LO_SHIPPRIOTITY" datatype="integer" name="[LO_SHIPPRIOTITY]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="S_ADDRESS" datatype="string" name="[S_ADDRESS]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="P_SIZE" datatype="integer" name="[P_SIZE]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="D_DAYNUMINYEAR" datatype="integer" name="[D_DAYNUMINYEAR]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="D_YEARMONTHNUM" datatype="integer" name="[D_YEARMONTHNUM]" role="dimension" type="ordinal"/>
+  <column caption="LO_REVENUE" datatype="integer" name="[LO_REVENUE]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="LO_LINENUMBER" datatype="integer" name="[LO_LINENUMBER]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="D_LASTDAYINWEEKFL" datatype="integer" name="[D_LASTDAYINWEEKFL]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="C_MKTSEGMENT" datatype="string" name="[C_MKTSEGMENT]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="P_CATEGORY" datatype="string" name="[P_CATEGORY]" role="dimension" type="nominal"/>
+  <column caption="D_WEEKNUMINYEAR" datatype="integer" name="[D_WEEKNUMINYEAR]" role="dimension" type="ordinal"/>
+  <column caption="C_CITY" datatype="string" name="[C_CITY]" role="dimension" type="nominal"/>
+  <column caption="P_NAME" datatype="string" name="[P_NAME]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="C_REGION" datatype="string" name="[C_REGION]" role="dimension" type="nominal"/>
+  <column caption="S_NAME" datatype="string" name="[S_NAME]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="D_DAYNUMINMONTH" datatype="integer" name="[D_DAYNUMINMONTH]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="C_PHONE" datatype="string" name="[C_PHONE]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="D_HOLIDAYFL" datatype="integer" name="[D_HOLIDAYFL]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="P_BRAND" datatype="string" name="[P_BRAND]" role="dimension" type="nominal"/>
+  <column caption="LO_QUANTITY" datatype="integer" name="[LO_QUANTITY]" role="dimension" type="ordinal"/>
+  <column caption="LO_CUSTKEY" datatype="integer" name="[LO_CUSTKEY]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="D_DATE" datatype="string" name="[D_DATE]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="LO_ORDTOTALPRICE" datatype="integer" name="[LO_ORDTOTALPRICE]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="D_YEARMONTH" datatype="string" name="[D_YEARMONTH]" role="dimension" type="nominal"/>
+  <column caption="D_DATEKEY" datatype="date" name="[D_DATEKEY]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="LO_SHIPMODE" datatype="string" name="[LO_SHIPMODE]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="D_LASTDAYINMONTHFL" datatype="integer" name="[D_LASTDAYINMONTHFL]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="S_SUPPKEY" datatype="integer" name="[S_SUPPKEY]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="S_REGION" datatype="string" name="[S_REGION]" role="dimension" type="nominal"/>
+  <column caption="P_COLOR" datatype="string" name="[P_COLOR]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="P_PARTKEY" datatype="integer" name="[P_PARTKEY]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="LO_DISCOUNT" datatype="integer" name="[LO_DISCOUNT]" role="dimension" type="ordinal"/>
+  <column caption="COUNT_ALL" datatype="integer" name="[COUNT_ALL]" role="measure" type="quantitative">
+    <calculation class="tableau" formula="COUNT(1)"/>
+  </column>
+  <column caption="SUM_P_LINEORDER_LO_REVENUE" datatype="integer" name="[SUM_P_LINEORDER_LO_REVENUE]" role="measure" type="quantitative">
+    <calculation class="tableau" formula="SUM([LO_REVENUE])"/>
+  </column>
+  <column caption="SUM_P_LINEORDER_LO_SUPPLYCOST" datatype="integer" name="[SUM_P_LINEORDER_LO_SUPPLYCOST]" role="measure" type="quantitative">
+    <calculation class="tableau" formula="SUM([LO_SUPPLYCOST])"/>
+  </column>
+  <column caption="SUM_P_LINEORDER_V_REVENUE" datatype="integer" name="[SUM_P_LINEORDER_V_REVENUE]" role="measure" type="quantitative">
+    <calculation class="tableau" formula="SUM([V_REVENUE])"/>
+  </column>
+  <drill-paths/>
+  <semantic-values>
+    <semantic-value key="[Country].[Name]" value="&quot;美国&quot;"/>
+  </semantic-values>
+</datasource>

@@ -16,16 +16,10 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit;
+package io.kyligence.zenml.toolkit.converter;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import io.kyligence.zenml.toolkit.metrics.Metrics;
 
-@SpringBootApplication
-public class ZenMlToolkitApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(ZenMlToolkitApplication.class, args);
-    }
-
+public interface MetricsConverter {
+    Metrics convert2Metrics(String filePath);
 }

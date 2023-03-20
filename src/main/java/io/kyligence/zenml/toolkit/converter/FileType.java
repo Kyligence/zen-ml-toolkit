@@ -16,16 +16,14 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit;
+package io.kyligence.zenml.toolkit.converter;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+public class FileType {
+    public static final String ZEN_FILE = "zen.yml";
 
-@SpringBootApplication
-public class ZenMlToolkitApplication {
+    public static final String YAML_FILE = "yml";
 
-    public static void main(String[] args) {
-        SpringApplication.run(ZenMlToolkitApplication.class, args);
-    }
-
+    // tableau file type
+    public static final String TDS_FILE = "tds";
+    public static final String TWB_FILE = "twb";
 }

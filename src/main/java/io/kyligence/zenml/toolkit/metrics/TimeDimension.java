@@ -16,16 +16,26 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit;
+package io.kyligence.zenml.toolkit.metrics;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
-@SpringBootApplication
-public class ZenMlToolkitApplication {
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+@Getter
+@Setter
+@Builder
+@ToString
+public class TimeDimension {
 
-    public static void main(String[] args) {
-        SpringApplication.run(ZenMlToolkitApplication.class, args);
-    }
+    @JsonProperty("name")
+    private String name;
 
+    @JsonProperty("granularity")
+    private String granularity = "DAY";
+
+    @JsonProperty("display_option")
+    private String displayOption = "LATEST";
 }
