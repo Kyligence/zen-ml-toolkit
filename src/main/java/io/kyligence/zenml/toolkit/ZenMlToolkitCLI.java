@@ -64,6 +64,7 @@ public class ZenMlToolkitCLI extends AbstractApplication {
     private void initOptionValues(OptionsHelper optionsHelper) {
         if (optionsHelper.getOptions().length != 2) {
             printUsage(optionsHelper);
+            log.error("Illegal arguments, please check the help usage");
             throw new RuntimeException("Illegal arguments, please check the help usage");
         }
 
@@ -72,10 +73,12 @@ public class ZenMlToolkitCLI extends AbstractApplication {
 
         if (StringUtils.isBlank(srcFilePath)) {
             printUsage(optionsHelper);
+            log.error("Source file path is empty, please check the help usage");
             throw new RuntimeException("Source file path is empty, please check the help usage");
         }
         if (StringUtils.isBlank(destDirPath)) {
             printUsage(optionsHelper);
+            log.error("Output directory path is empty, please check the help usage");
             throw new RuntimeException("Output directory path is empty, please check the help usage");
         }
 
@@ -93,6 +96,7 @@ public class ZenMlToolkitCLI extends AbstractApplication {
             ZenGenerator generator = new ZenGenerator();
             generator.generateZenMetrics(srcFilePath, destDirPath);
         } catch (IOException e) {
+            log.error("Failed to write metrics to file. please check the details: ", e);
             throw new RuntimeException("Failed to write metrics to file. please check the details: ", e);
         }
     }
