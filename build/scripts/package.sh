@@ -81,6 +81,11 @@ cp ${root_dir}/build/sbin/* sbin
 
 ## 6. others
 mkdir logs
+mkidr samples
+cp -r ${root_dir}/samples/*  samples
+mkdir docs
+cp -r ${root_dir}/docs/*  docs
+cp ${root_dir}/README.md ./
 
 ## 7. download jdk
 sh ${root_dir}/build/scripts/download-jdk.sh

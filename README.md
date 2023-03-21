@@ -19,8 +19,6 @@ data services are then provided around ZenML, including
 - Metrics data linage
 - And more...
 
-![arch](docs/images/architecture.png)
-
 ## Kyligence Zen
 
 [Kyligence Zen](https://zen.kyligence.io/) is the **go-to low-code metrics platform** for businesses to get rid of the
@@ -38,12 +36,27 @@ Try out Kyligence Zen today and take control of your metrics like never before!
 Visit [zen.kyligence.io](https://zen.kyligence.io/) to get started
 for free.
 
-## Prerequisite
+## Kyligence ZenML Toolkit
+
+Kyligence ZenML Toolkit is a toolkit which help users to extract metrics metadata from any type of file, includes but
+not only:
+
+- **Tableau (Implemented)**
+    - workbook file (`.twb`)
+    - datasource file(`.tds`)
+- **Excel file(coming soon)**
+    - `.xlsx`
+- **SQL file(coming soon)**
+    - `.sql`
+
+![arch](docs/images/architecture.png)
+
+### Prerequisite
 
 - Supported OS: `Linux` / `MacOS`
 - Supported JDK version: `JDK17`
 
-## Download
+### Download
 
 Please go to [Release Page](https://github.com/Kyligence/zen-ml-toolkit/releases) to download.
 
@@ -63,7 +76,7 @@ After downloaded package, extract the tar file
 $ tar -zxvf Kyligence-ZenML-Toolkit-{version}.tar.gz
 ```
 
-## Usage
+### Usage
 
 in Terminal
 
@@ -76,18 +89,19 @@ $ sh ./bin/zen.sh -i <arg> -o <arg>
                      generated
 ```
 
-## Example
+### Example
 
-### Convert tableau tds file to ZenML file
+#### Convert tableau tds file to ZenML file
 
 ```
-$ cd Kyligence-ZenML-Toolkit-{version}
-$ sh ./bin/zen.sh -i ./samples/tableau/superstore.sh -o ./samples/tableau/
+# please replace ${Kyligence-ZenML-Toolkit-{version}} with absolute path
+$ cd ${Kyligence-ZenML-Toolkit-{version}}
+$ sh ./bin/zen.sh -i ${Kyligence-ZenML-Toolkit-{version}}/samples/superstore.sh -o ${Kyligence-ZenML-Toolkit-{version}}/samples/
 ```
 
 You will get a `superstore.zen.yml` file in folder `Kyligence-ZenML-Toolkit-{version}/samples`
 
-### Import ZenML to Kyligence Zen
+#### Import ZenML to Kyligence Zen
 
 1. Login into [Kyligence Zen](https://zen.kyligence.io/)
 2. Go to **Data**, click **New**, Choose **Table**
@@ -106,6 +120,8 @@ You will get a `superstore.zen.yml` file in folder `Kyligence-ZenML-Toolkit-{ver
 ## Contribution
 
 Welcome to contribute, you can convert any files which contains metrics metadata to a ZenML file.
+
+Please note that this project use **JDK17** 
 
 ## Contributors
 
