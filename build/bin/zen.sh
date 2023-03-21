@@ -17,13 +17,6 @@
 # limitations under the License.
 #
 
-function help() {
-  echo "Usage: zen.sh convert <source_file_path> <destination_folder>"
-  echo
-  echo "Commands:"
-  echo "  convert               convert metrics from source file to destination folder in zen metrics language "
-}
-
 function main() {
   # init
   source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/../sbin/header.sh "$@"

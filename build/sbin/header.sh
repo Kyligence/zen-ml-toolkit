@@ -70,20 +70,7 @@ then
         done<$2
     }
 
-    # setup verbose
-    verbose=${verbose:-""}
-    while getopts ":v" opt; do
-        case $opt in
-            v)
-                echo "Turn on verbose mode." >&2
-                export verbose=true
-                ;;
-            \?)
-                echo "Invalid option: -$OPTARG" >&2
-                ;;
-        esac
-    done
-    
+
     # set ZEN_HOME with consideration for multiple instances that are on the same node
     CURRENT=`cd "${dir}/../"; pwd`
     [[ -z "$ZEN_HOME" ]] || [[ "${CURRENT}" == "${ZEN_HOME}" ]] || quit "ZEN_HOME=${ZEN_HOME}, doesn't set correctly, please make sure it is set as current dir: ${CURRENT}, or leave it NULL, i.e. 'export ZEN_HOME='"

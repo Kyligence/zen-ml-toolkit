@@ -79,7 +79,7 @@ function logRotate() {
 
 ERR_LOG=${ZEN_HOME}/logs/shell.stderr
 OUT_LOG=${ZEN_HOME}/logs/shell.stdout
-ZEN_OUT=${ZEN_HOME}/logs/kylin.out
+ZEN_OUT=${ZEN_HOME}/logs/zen.out
 
 if [ "$1" == "start" ] || [ "$1" == "spawn" ]; then
     # avoid re-entering

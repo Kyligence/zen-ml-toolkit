@@ -18,22 +18,15 @@
 #
 
 source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/header.sh $@
+source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/setenv.sh
 
-"${KYLIN_HOME}"/sbin/rotate-logs.sh "$@"
+"${ZEN_HOME}"/sbin/rotate-logs.sh "$@"
+
+MAIN_JAR="zen-ml-toolkit.jar"
 
 function runCommand() {
-    runCommandInternal "$@"
+    java -Xms${JAVA_VM_XMS} -Xmx${JAVA_VM_XMX} -Dfile.encoding=UTF-8 -jar "${ZEN_HOME}/lib/${MAIN_JAR}" "$@"
     exit $?
 }
 
-function runCommandInternal() {
-    log4j_conf="file:${ZEN_HOME}/conf/zen-log4j.xml"
-    java -Xms${JAVA_VM_XMS} -Xmx${JAVA_VM_XMX} -Dfile.encoding=UTF-8 -Dlog4j.configurationFile=${log4j_conf} -cp "${KYLIN_HOME}/main/${MAIN_JAR}/" "$@"
-}
-
-if [ "$1" == "convert" ]; then
-    echo "Starting Zen Metrics Language Toolkit..."
-    runTool "$@"
-else
-    quit "Usage: zen.sh convert <source_file_path> <destination_folder>'"
-fi
+runCommand "$@"

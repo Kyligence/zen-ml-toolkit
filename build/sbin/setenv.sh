@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/../sbin/header.sh
+source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/header.sh $@
 
-export JAVA_VM_XMS=${JAVA_VM_XMS:-1g}
-export JAVA_VM_XMX=${JAVA_VM_XMX:-8g}
+export JAVA_VM_XMS=200m
+export JAVA_VM_XMX=1g

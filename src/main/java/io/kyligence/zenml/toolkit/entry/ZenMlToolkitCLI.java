@@ -20,17 +20,17 @@ package io.kyligence.zenml.toolkit.entry;
 
 import io.kyligence.zenml.toolkit.tool.OptionsHelper;
 import io.kyligence.zenml.toolkit.tool.cli.AbstractApplication;
-import io.kyligence.zenml.toolkit.tool.cli.CLILogger;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
 
 @Slf4j
+@SpringBootApplication
 public class ZenMlToolkitCLI extends AbstractApplication {
-    private final CLILogger cliLog = new CLILogger(log);
 
     private String srcFilePath;
     private String destDirPath;
@@ -56,31 +56,34 @@ public class ZenMlToolkitCLI extends AbstractApplication {
         return options;
     }
 
-    private boolean printUsage(OptionsHelper optionsHelper) {
-        boolean help = optionsHelper.hasOption(OPTION_HELP);
-        if (help) {
-            optionsHelper.printUsage(this.getClass().getName(), getOptions());
-        }
-        return help;
+    private void printUsage(OptionsHelper optionsHelper) {
+        optionsHelper.printUsage(this.getClass().getName(), getOptions());
     }
 
     private void initOptionValues(OptionsHelper optionsHelper) {
+        if (optionsHelper.getArgList().size() != 4) {
+            printUsage(optionsHelper);
+            throw new RuntimeException("Illegal arguments, please check the help usage");
+        }
+
         this.srcFilePath = parseStringArgFromOption(optionsHelper, OPTION_SRC_FILE_PATH, "");
         this.destDirPath = parseStringArgFromOption(optionsHelper, OPTION_DEST_FILE_PATH, "");
+
         if (StringUtils.isBlank(srcFilePath)) {
             printUsage(optionsHelper);
-            cliLog.quit("Source file path is empty, please check the help usage");
+            throw new RuntimeException("Source file path is empty, please check the help usage");
         }
         if (StringUtils.isBlank(destDirPath)) {
             printUsage(optionsHelper);
-            cliLog.quit("Output directory path is empty, please check the help usage");
+            throw new RuntimeException("Output directory path is empty, please check the help usage");
         }
 
     }
 
     @Override
     protected void execute(OptionsHelper optionsHelper) throws Exception {
-        if (printUsage(optionsHelper)) {
+        if (optionsHelper.hasOption(OPTION_HELP)) {
+            printUsage(optionsHelper);
             return;
         }
         initOptionValues(optionsHelper);
@@ -89,7 +92,7 @@ public class ZenMlToolkitCLI extends AbstractApplication {
             ZenGenerator generator = new ZenGenerator();
             generator.generateZenMetrics(srcFilePath, destDirPath);
         } catch (IOException e) {
-            cliLog.quit("Failed to write metrics to file. please check the details: ", e);
+            throw new RuntimeException("Failed to write metrics to file. please check the details: ", e);
         }
     }
 
