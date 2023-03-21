@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.sql;
+package io.kyligence.zenml.toolkit.tool.sql;
 
 import org.apache.commons.lang3.StringUtils;
 

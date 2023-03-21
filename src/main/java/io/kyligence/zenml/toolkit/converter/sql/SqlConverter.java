@@ -16,16 +16,15 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit;
+package io.kyligence.zenml.toolkit.converter.sql;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import io.kyligence.zenml.toolkit.converter.MetricsConverter;
+import io.kyligence.zenml.toolkit.metrics.Metrics;
 
-@SpringBootApplication
-public class ZenMlToolkitApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(ZenMlToolkitApplication.class, args);
+public class SqlConverter implements MetricsConverter {
+    @Override
+    public Metrics convert2Metrics(String filePath) {
+        //TODO: convert sql to metrics
+        return null;
     }
-
 }

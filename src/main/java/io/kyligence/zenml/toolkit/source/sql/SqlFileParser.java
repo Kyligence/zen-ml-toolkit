@@ -16,20 +16,8 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.converter;
+package io.kyligence.zenml.toolkit.source.sql;
 
-public class FileType {
-    public static final String ZEN_FILE = "zen.yml";
-
-    public static final String YAML_FILE = "yml";
-
-    // tableau file type
-    public static final String TDS_FILE = "tds";
-    public static final String TWB_FILE = "twb";
-
-    // Excel file type
-    public static final String EXCEL_FILE = "xlsx";
-
-    // SQL file type
-    public static final String SQL_FILE = "sql";
+public class SqlFileParser {
+    //TODO: parse sql file
 }

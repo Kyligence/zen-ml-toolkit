@@ -16,13 +16,15 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.tool;
+package io.kyligence.zenml.toolkit.entry;
 
 import io.kyligence.zenml.toolkit.converter.ConverterFactory;
 import io.kyligence.zenml.toolkit.converter.FileType;
 import io.kyligence.zenml.toolkit.converter.MetricsConverter;
 import io.kyligence.zenml.toolkit.metrics.Metrics;
+import io.kyligence.zenml.toolkit.tool.cli.CLILogger;
 import io.kyligence.zenml.toolkit.utils.YamlUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -30,14 +32,22 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+@Slf4j
 public class ZenGenerator {
     private final ConverterFactory converterFactory = new ConverterFactory();
+    private final CLILogger cliLog = new CLILogger(log);
 
     public void generateZenMetrics(String srcPath, String destDir) throws IOException {
         MetricsConverter converter = converterFactory.getMetricsConverter(srcPath);
+
+        cliLog.info("Begin to convert metrics from {}", srcPath);
         Metrics metrics = converter.convert2Metrics(srcPath);
         String destPath = getFullOutputPath(srcPath, destDir);
+
+        cliLog.info("Begin to write metrics to path: {}", destPath);
         YamlUtils.writeValue(new File(destPath), metrics);
+        cliLog.info("Metrics file generated successfully.");
+        cliLog.successInfo("Output file path: {}", destPath);
     }
 
     private String getFullOutputPath(String srcPath, String destDir) {

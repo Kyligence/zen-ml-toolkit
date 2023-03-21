@@ -16,20 +16,15 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.converter;
+package io.kyligence.zenml.toolkit.converter.excel;
 
-public class FileType {
-    public static final String ZEN_FILE = "zen.yml";
+import io.kyligence.zenml.toolkit.converter.MetricsConverter;
+import io.kyligence.zenml.toolkit.metrics.Metrics;
 
-    public static final String YAML_FILE = "yml";
-
-    // tableau file type
-    public static final String TDS_FILE = "tds";
-    public static final String TWB_FILE = "twb";
-
-    // Excel file type
-    public static final String EXCEL_FILE = "xlsx";
-
-    // SQL file type
-    public static final String SQL_FILE = "sql";
+public class ExcelConverter implements MetricsConverter {
+    @Override
+    public Metrics convert2Metrics(String filePath) {
+        // TODO, convert excel to metrics
+        return null;
+    }
 }

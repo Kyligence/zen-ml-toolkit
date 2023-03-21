@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.tool;
+package io.kyligence.zenml.toolkit.entry;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterAll;
@@ -38,9 +38,8 @@ public class ZenGeneratorTest {
     @BeforeAll
     public static void setup() {
         File destDir = new File(destDirPath);
-        if (!destDir.exists()) {
-            destDir.mkdirs();
-        }
+        FileUtils.deleteQuietly(destDir);
+        destDir.mkdirs();
     }
 
     @AfterAll

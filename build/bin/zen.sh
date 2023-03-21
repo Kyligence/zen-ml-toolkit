@@ -16,3 +16,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+function help() {
+  echo "Usage: zen.sh convert <source_file_path> <destination_folder>"
+  echo
+  echo "Commands:"
+  echo "  convert               convert metrics from source file to destination folder in zen metrics language "
+}
+
+function main() {
+  # init
+  source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/../sbin/header.sh "$@"
+  mkdir -p "${ZEN_HOME}"/logs
+  ERR_LOG=${ZEN_HOME}/logs/shell.stderr
+  OUT_LOG=${ZEN_HOME}/logs/shell.stdout
+
+  echo "-----------------------  log start  -----------------------" >>${ERR_LOG}
+  echo "-----------------------  log start  -----------------------" >>${OUT_LOG}
+  bash -x "${ZEN_HOME}"/sbin/bootstrap.sh "$@" 2>>"${ERR_LOG}" | tee -a ${OUT_LOG}
+  ret=${PIPESTATUS[0]}
+  echo "-----------------------  log end  -------------------------" >>${ERR_LOG}
+  echo "-----------------------  log end  -------------------------" >>${OUT_LOG}
+  exit ${ret}
+}
+
+main "$@"

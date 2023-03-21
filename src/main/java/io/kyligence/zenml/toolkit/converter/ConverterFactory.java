@@ -18,6 +18,9 @@
 
 package io.kyligence.zenml.toolkit.converter;
 
+import io.kyligence.zenml.toolkit.converter.excel.ExcelConverter;
+import io.kyligence.zenml.toolkit.converter.sql.SqlConverter;
+import io.kyligence.zenml.toolkit.converter.tableau.TableauConverter;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -31,6 +34,10 @@ public class ConverterFactory {
             return new TableauConverter();
         } else if (StringUtils.equalsIgnoreCase(suffix, FileType.TWB_FILE)) {
             return new TableauConverter();
+        } else if (StringUtils.equalsIgnoreCase(suffix, FileType.EXCEL_FILE)) {
+            return new ExcelConverter();
+        } else if (StringUtils.equalsIgnoreCase(suffix, FileType.SQL_FILE)) {
+            return new SqlConverter();
         } else {
             throw new IllegalArgumentException("Current file type is not supported.");
         }

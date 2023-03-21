@@ -16,20 +16,23 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.converter;
+package io.kyligence.zenml.toolkit.converter.tableau;
 
-public class FileType {
-    public static final String ZEN_FILE = "zen.yml";
+import io.kyligence.zenml.toolkit.converter.MetricsConverter;
+import io.kyligence.zenml.toolkit.converter.tableau.TableauConverter;
+import io.kyligence.zenml.toolkit.metrics.Metrics;
+import org.dom4j.DocumentException;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
-    public static final String YAML_FILE = "yml";
+@SpringBootTest
+public class TableauConverterTest {
+    @Test
+    public void testConvert2ZenML1() throws DocumentException {
+        String tdsPath = "src/test/resources/sources/tableau/SSB.tds";
+        MetricsConverter converter = new TableauConverter();
+        Metrics metrics = converter.convert2Metrics(tdsPath);
+        System.out.println(metrics);
+    }
 
-    // tableau file type
-    public static final String TDS_FILE = "tds";
-    public static final String TWB_FILE = "twb";
-
-    // Excel file type
-    public static final String EXCEL_FILE = "xlsx";
-
-    // SQL file type
-    public static final String SQL_FILE = "sql";
 }

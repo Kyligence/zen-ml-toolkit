@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.sql;
+package io.kyligence.zenml.toolkit.tool.sql;
 
 import io.kyligence.zenml.toolkit.utils.SqlUtils;
 import org.apache.calcite.plan.RelOptCluster;
