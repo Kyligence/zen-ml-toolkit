@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/header.sh $@
+source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/header.sh
 
 function checkFileOccupied() {
     target_file=$1
@@ -79,13 +79,7 @@ function logRotate() {
 
 ERR_LOG=${ZEN_HOME}/logs/shell.stderr
 OUT_LOG=${ZEN_HOME}/logs/shell.stdout
-ZEN_OUT=${ZEN_HOME}/logs/zen.out
 
-if [ "$1" == "start" ] || [ "$1" == "spawn" ]; then
-    # avoid re-entering
-    if [[ -z ${KYLIN_SKIP_ROTATE_LOG} ]]; then
-        logRotate "$ERR_LOG"
-        logRotate "$OUT_LOG"
-        logRotate "$ZEN_OUT"
-    fi
-fi
+logRotate "$ERR_LOG"
+logRotate "$OUT_LOG"
+logRotate "$ZEN_OUT"

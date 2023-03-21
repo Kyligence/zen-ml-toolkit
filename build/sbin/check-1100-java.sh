@@ -1,4 +1,5 @@
-#!/bin/bash
+
+#!/usr/bin/env bash
 
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
@@ -17,16 +18,14 @@
 # limitations under the License.
 #
 
-source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/header.sh $@
-source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/setenv.sh
-source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/check-env.sh
-source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/rotate-logs.sh
+#title=Checking Java Version
 
-MAIN_JAR="zen-ml-toolkit.jar"
+source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/header.sh
 
-function runCommand() {
-    ${JAVA} -Xms${JAVA_VM_XMS} -Xmx${JAVA_VM_XMX} -Dfile.encoding=UTF-8 -jar "${ZEN_HOME}/lib/${MAIN_JAR}" "$@"
-    exit $?
-}
+echo "Checking Java version..."
 
-runCommand "$@"
+$JAVA -version 2>&1 || quit "ERROR: Detect java version failed. Please set JAVA_HOME."
+
+if [[ $(isValidJavaVersion) == "false" ]]; then
+    quit "ERROR: Java 17 or above is required, current java is ${JAVA}"
+fi
