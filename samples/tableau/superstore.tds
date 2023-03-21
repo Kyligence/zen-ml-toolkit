@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<datasource formatted-name="SuperStore" inline="true" source-platform="win" version="10.0">
+  <connection class="federated">
+    <named-connections>
+      <named-connection caption="10.1.2.168" name="genericodbc.11du78x0szfyb51b703es1ocv315">
+        <connection class="genericodbc" dbname="" odbc-connect-string-extras="PROJECT=TDS_TEST;CUBE=sample_superstore" odbc-dbms-name="MySQL" odbc-driver="KyligenceODBCDriver" odbc-dsn="" odbc-suppress-connection-pooling="" odbc-use-connection-pooling="" port="11177" schema="DEFAULT" server="10.1.2.168" username="ADMIN" vendor1="TDS_TEST" vendor2="sample_superstore"/>
+      </named-connection>
+    </named-connections>
+    <relation type="table" connection="genericodbc.11du78x0szfyb51b703es1ocv315" name="ORDERS" table="[ORDERS]"/>
+    <cols>
+      <map key="[STATE_PROVINCE]" value="[ORDERS].[STATE_PROVINCE]"/>
+      <map key="[CUSTOMER_ID]" value="[ORDERS].[CUSTOMER_ID]"/>
+      <map key="[SHIP_DATE]" value="[ORDERS].[SHIP_DATE]"/>
+      <map key="[QUANTITY]" value="[ORDERS].[QUANTITY]"/>
+      <map key="[SHIP_MODE]" value="[ORDERS].[SHIP_MODE]"/>
+      <map key="[POSTAL_CODE]" value="[ORDERS].[POSTAL_CODE]"/>
+      <map key="[ORDER_DATE]" value="[ORDERS].[ORDER_DATE]"/>
+      <map key="[PRODUCT_ID]" value="[ORDERS].[PRODUCT_ID]"/>
+      <map key="[DISCOUNT]" value="[ORDERS].[DISCOUNT]"/>
+      <map key="[ORDER_ID]" value="[ORDERS].[ORDER_ID]"/>
+      <map key="[CATEGORY]" value="[ORDERS].[CATEGORY]"/>
+      <map key="[SEGMENT]" value="[ORDERS].[SEGMENT]"/>
+      <map key="[CITY]" value="[ORDERS].[CITY]"/>
+      <map key="[PROFIT]" value="[ORDERS].[PROFIT]"/>
+      <map key="[PRODUCT_NAME]" value="[ORDERS].[PRODUCT_NAME]"/>
+      <map key="[ROW_ID]" value="[ORDERS].[ROW_ID]"/>
+      <map key="[SUB_CATEGORY]" value="[ORDERS].[SUB_CATEGORY]"/>
+      <map key="[COUNTRY_REGION]" value="[ORDERS].[COUNTRY_REGION]"/>
+      <map key="[REGION]" value="[ORDERS].[REGION]"/>
+      <map key="[CUSTOMER_NAME]" value="[ORDERS].[CUSTOMER_NAME]"/>
+      <map key="[SALES]" value="[ORDERS].[SALES]"/>
+    </cols>
+  </connection>
+  <aliases enabled="yes"/>
+  <column caption="STATE_PROVINCE" datatype="string" name="[STATE_PROVINCE]" role="dimension" type="nominal"/>
+  <column caption="CUSTOMER_ID" datatype="string" name="[CUSTOMER_ID]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="SHIP_DATE" datatype="date" name="[SHIP_DATE]" role="dimension" type="ordinal"/>
+  <column caption="QUANTITY" datatype="integer" name="[QUANTITY]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="SHIP_MODE" datatype="string" name="[SHIP_MODE]" role="dimension" type="nominal"/>
+  <column caption="POSTAL_CODE" datatype="string" name="[POSTAL_CODE]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="ORDER_DATE" datatype="date" name="[ORDER_DATE]" role="dimension" type="ordinal"/>
+  <column caption="PRODUCT_ID" datatype="string" name="[PRODUCT_ID]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="DISCOUNT" datatype="real" name="[DISCOUNT]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="ORDER_ID" datatype="string" name="[ORDER_ID]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="CATEGORY" datatype="string" name="[CATEGORY]" role="dimension" type="nominal"/>
+  <column caption="SEGMENT" datatype="string" name="[SEGMENT]" role="dimension" type="nominal" hidden="true"/>
+  <column caption="CITY" datatype="string" name="[CITY]" role="dimension" type="nominal"/>
+  <column caption="PROFIT" datatype="real" name="[PROFIT]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="PRODUCT_NAME" datatype="string" name="[PRODUCT_NAME]" role="dimension" type="nominal"/>
+  <column caption="ROW_ID" datatype="integer" name="[ROW_ID]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="SUB_CATEGORY" datatype="string" name="[SUB_CATEGORY]" role="dimension" type="nominal"/>
+  <column caption="COUNTRY_REGION" datatype="string" name="[COUNTRY_REGION]" role="dimension" type="nominal"/>
+  <column caption="REGION" datatype="string" name="[REGION]" role="dimension" type="nominal"/>
+  <column caption="CUSTOMER_NAME" datatype="string" name="[CUSTOMER_NAME]" role="dimension" type="nominal"/>
+  <column caption="SALES" datatype="real" name="[SALES]" role="dimension" type="ordinal" hidden="true"/>
+  <column caption="COUNT_ALL" datatype="integer" name="[COUNT_ALL]" role="measure" type="quantitative">
+    <calculation class="tableau" formula="COUNT(1)"/>
+  </column>
+  <column caption="" datatype="real" name="[TOTAL_PROFIT]" role="measure" type="quantitative">
+    <calculation class="tableau" formula="SUM([PROFIT])"/>
+  </column>
+  <column caption="" datatype="integer" name="[TOTAL_QUANTITY]" role="measure" type="quantitative">
+    <calculation class="tableau" formula="SUM([QUANTITY])"/>
+  </column>
+  <column caption="" datatype="real" name="[TOTAL_SALES_AMOUNT]" role="measure" type="quantitative">
+    <calculation class="tableau" formula="SUM([SALES])"/>
+  </column>
+  <column caption="" datatype="real" name="[TOTAL_DISCOUNT]" role="measure" type="quantitative">
+    <calculation class="tableau" formula="SUM([DISCOUNT])"/>
+  </column>
+  <column caption="" datatype="real" name="[MAX_PROFIT]" role="measure" type="quantitative">
+    <calculation class="tableau" formula="MAX([PROFIT])"/>
+  </column>
+  <column caption="" datatype="real" name="[MAX_SALES]" role="measure" type="quantitative">
+    <calculation class="tableau" formula="MAX([SALES])"/>
+  </column>
+  <drill-paths/>
+  <semantic-values>
+    <semantic-value key="[Country].[Name]" value="&quot;美国&quot;"/>
+  </semantic-values>
+</datasource>
