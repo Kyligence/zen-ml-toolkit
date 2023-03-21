@@ -3,23 +3,26 @@
 ## ZenML
 
 **ZenML** stands for **Zen Metrics Language**. It is a **YAML-based descriptive language** that is used
-by [Kyligence Zen](https://zen.kyligence.io/)
-to define metrics, dimensions, and the underlying relational datasets. Think of ZenML as a semantic layer that promotes
-technical data into business data, like a bridge that enables non-technical users to understand, explore, and get
-insight out of traditional data warehouses. ZenML encourages the separation of data modeling and data visualization, and
-facilitates a central definition of business data language for all downstream data consumers.
+by [Kyligence Zen](https://zen.kyligence.io/) to define `metrics`, `dimensions`, and the `underlying relational datasets`. Think of ZenML as a semantic layer that promotes technical
+data into business data, like a bridge that enables non-technical users to understand, explore, and get insight out of
+traditional data warehouses. ZenML encourages the separation of data modeling and data visualization, and facilitates a
+central definition of business data language for all downstream data consumers.
 
-Kyligence Zen uses ZenML to store all the metric definitions and related data models that user creates. And a variety of
-data services are then provided around ZenML, including
+Kyligence Zen uses ZenML to store all metric definitions and their relations and mappings to relational data models.
+With this metadata, Kyligence Zen is able to automatically translate all kinds of business requests and tasks into SQL
+executions. A variety of data services are then provided around ZenML, including
 
-- SQL based data queries and BI integrations, via open APIS like JDBC / ODBC / RestAPI
-- Metrics templating of business domain know-how
-- Goal management, progress tracking, and alerting
+- SQL based metric queries and BI integrations, via open APIs like JDBC / ODBC / RestAPI
+- Metric templates of business domain know-hows
 - Causal analysis, anomaly detection
+- Goal management, progress tracking, and alerting
 - Metrics data linage
 - And more...
 
-![arch](docs/images/architecture.png)
+- You can also maintain ZenML/YAML files in git for version control, and publish (or rollback to) a certain version of
+  metric definitions to Kyligence Zen service for business operation.
+
+More details please refer to [ZenML Introduction](https://zen-docs.kyligence.io/en/appendix/zenml-reference)
 
 ## Kyligence Zen
 
@@ -38,12 +41,27 @@ Try out Kyligence Zen today and take control of your metrics like never before!
 Visit [zen.kyligence.io](https://zen.kyligence.io/) to get started
 for free.
 
-## Prerequisite
+## Kyligence ZenML Toolkit
+
+Kyligence ZenML Toolkit is a toolkit which help users to extract metrics metadata from any type of file, includes but
+not only:
+
+- **Tableau (Implemented)**
+    - workbook file (`.twb`)
+    - datasource file(`.tds`)
+- **Excel file(coming soon)**
+    - `.xlsx`
+- **SQL file(coming soon)**
+    - `.sql`
+
+![arch](docs/images/architecture.png)
+
+### Prerequisite
 
 - Supported OS: `Linux` / `MacOS`
 - Supported JDK version: `JDK17`
 
-## Download
+### Download
 
 Please go to [Release Page](https://github.com/Kyligence/zen-ml-toolkit/releases) to download.
 
@@ -63,7 +81,7 @@ After downloaded package, extract the tar file
 $ tar -zxvf Kyligence-ZenML-Toolkit-{version}.tar.gz
 ```
 
-## Usage
+### Usage
 
 in Terminal
 
@@ -76,18 +94,19 @@ $ sh ./bin/zen.sh -i <arg> -o <arg>
                      generated
 ```
 
-## Example
+### Example
 
-### Convert tableau tds file to ZenML file
+#### Convert tableau tds file to ZenML file
 
 ```
-$ cd Kyligence-ZenML-Toolkit-{version}
-$ sh ./bin/zen.sh -i ./samples/tableau/superstore.sh -o ./samples/tableau/
+# please replace ${Kyligence-ZenML-Toolkit-{version}} with absolute path
+$ cd ${Kyligence-ZenML-Toolkit-{version}}
+$ sh ./bin/zen.sh -i ${Kyligence-ZenML-Toolkit-{version}}/samples/superstore.sh -o ${Kyligence-ZenML-Toolkit-{version}}/samples/
 ```
 
 You will get a `superstore.zen.yml` file in folder `Kyligence-ZenML-Toolkit-{version}/samples`
 
-### Import ZenML to Kyligence Zen
+#### Import ZenML to Kyligence Zen
 
 1. Login into [Kyligence Zen](https://zen.kyligence.io/)
 2. Go to **Data**, click **New**, Choose **Table**
@@ -106,6 +125,9 @@ You will get a `superstore.zen.yml` file in folder `Kyligence-ZenML-Toolkit-{ver
 ## Contribution
 
 Welcome to contribute, you can convert any files which contains metrics metadata to a ZenML file.
+
+- Please note that this project use **JDK17**
+- For ZenML spec, please refer to  [ZenML Introduction](https://zen-docs.kyligence.io/en/appendix/zenml-reference)
 
 ## Contributors
 

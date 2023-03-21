@@ -21,6 +21,7 @@ package io.kyligence.zenml.toolkit.entry;
 import io.kyligence.zenml.toolkit.converter.ConverterFactory;
 import io.kyligence.zenml.toolkit.converter.FileType;
 import io.kyligence.zenml.toolkit.converter.MetricsConverter;
+import io.kyligence.zenml.toolkit.metrics.MetricSpec;
 import io.kyligence.zenml.toolkit.metrics.Metrics;
 import io.kyligence.zenml.toolkit.utils.YamlUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Slf4j
 public class ZenGenerator {
@@ -40,6 +42,14 @@ public class ZenGenerator {
 
         log.info("Begin to convert metrics from {}", srcPath);
         Metrics metrics = converter.convert2Metrics(srcPath);
+
+        List<MetricSpec> metricSpecs = metrics.getMetrics();
+        log.info("{} metrics extracted",metricSpecs.size() );
+        for(MetricSpec ms : metricSpecs){
+            log.info("    - Metrics Name: {}, Expression:{}", ms.getName(), ms.getExpression());
+        }
+
+
         String destPath = getFullOutputPath(srcPath, destDir);
 
         log.info("Begin to write metrics to path: {}", destPath);

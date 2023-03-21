@@ -1,5 +1,4 @@
 #!/bin/bash
-
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -16,6 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 
 echo "Begin to package..."
 # project root dir absolute path
@@ -81,6 +81,11 @@ cp ${root_dir}/build/sbin/* sbin
 
 ## 6. others
 mkdir logs
+mkidr samples
+cp -r ${root_dir}/samples/*  samples
+mkdir docs
+cp -r ${root_dir}/docs/*  docs
+cp ${root_dir}/README.md ./
 
 ## 7. download jdk
 sh ${root_dir}/build/scripts/download-jdk.sh
