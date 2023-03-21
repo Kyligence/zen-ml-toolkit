@@ -16,8 +16,9 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.entry;
+package io.kyligence.zenml.toolkit;
 
+import io.kyligence.zenml.toolkit.ZenMlToolkitCLI;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;

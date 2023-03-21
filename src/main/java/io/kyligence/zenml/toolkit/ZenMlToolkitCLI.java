@@ -16,8 +16,9 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.entry;
+package io.kyligence.zenml.toolkit;
 
+import io.kyligence.zenml.toolkit.entry.ZenGenerator;
 import io.kyligence.zenml.toolkit.tool.OptionsHelper;
 import io.kyligence.zenml.toolkit.tool.cli.AbstractApplication;
 import lombok.extern.slf4j.Slf4j;
@@ -61,7 +62,7 @@ public class ZenMlToolkitCLI extends AbstractApplication {
     }
 
     private void initOptionValues(OptionsHelper optionsHelper) {
-        if (optionsHelper.getArgList().size() != 4) {
+        if (optionsHelper.getOptions().length != 2) {
             printUsage(optionsHelper);
             throw new RuntimeException("Illegal arguments, please check the help usage");
         }
