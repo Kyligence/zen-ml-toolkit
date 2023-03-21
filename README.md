@@ -37,6 +37,8 @@ entire organization, streamlining your decision-making process and aligning your
 business goals. Plus, thanks to our intuitive drag-and-drop interface and ZenML(our Zen Metrics Language), Kyligence Zen
 is accessible to both technical and non-technical users alike.
 
+![zen](docs/images/zen.png)
+
 Try out Kyligence Zen today and take control of your metrics like never before!
 Visit [zen.kyligence.io](https://zen.kyligence.io/) to get started
 for free.
