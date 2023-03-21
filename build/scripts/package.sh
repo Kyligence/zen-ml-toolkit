@@ -46,7 +46,8 @@ mvn clean install -DskipTests
 cd ${root_dir}
 export package_name=Kyligence-ZenML-Toolkit-${version}
 
-[[ ! -d "dist" ]] && mkdir -p "dist" || rm -rf dist/*
+[[ ! -d "dist" ]] && mkdir -p "dist" || rm -rf dist/Kyligence*
+
 mkdir -p dist/${package_name}
 
 cd dist/${package_name}
@@ -71,20 +72,80 @@ echo "${version}" > VERSION
 mkdir lib
 cp ${root_dir}/target/zen-ml-toolkit-${version}.jar lib/zen-ml-toolkit.jar
 
-## 6. copy scripts
+## 5. copy scripts
 mkdir bin
 cp ${root_dir}/build/bin/* bin
 mkdir sbin
 cp ${root_dir}/build/sbin/* sbin
 
 
-## 7. others
+## 6. others
 mkdir logs
 
+## 7. download jdk
+sh ${root_dir}/build/scripts/download-jdk.sh
+
 ## 8. package
+### linux package
 cd ${root_dir}/dist
 
-tar -zcvf ${package_name}.tar.gz ${package_name}
 echo "====================================="
-echo "Build Finished!"
-echo "Location: ${root_dir}/dist/${package_name}.tar.gz"
+echo "Build Linux package..."
+LINUX_JDK17="linux_openjdk_17.tar.gz"
+if [ -d ${package_name}/jdk ]; then
+  rm -rf ${package_name}/jdk
+fi
+tar -zxvf download/${LINUX_JDK17} -C ${package_name}/
+mv ${package_name}/jdk-17.0.2 ${package_name}/jdk
+
+tar_name=Kyligence-ZenML-Toolkit-Linux-x64-${version}
+cp -r ${package_name} ${tar_name}
+tar -zcvf ${tar_name}.tar.gz ${tar_name}
+
+rm -rf ${package_name}/jdk
+rm -rf ${tar_name}
+echo "    Location: ${root_dir}/dist/${tar_name}.tar.gz"
+
+### mac intel chip package
+echo "====================================="
+echo "Build Mac intel chip package..."
+MAC_JDK17="mac_intel_openjdk_17.tar.gz"
+if [ -d ${package_name}/jdk ]; then
+  rm -rf ${package_name}/jdk
+fi
+tar -zxvf download/${MAC_JDK17} -C ${package_name}/
+mv ${package_name}/jdk-17.0.2.jdk ${package_name}/jdk
+
+tar_name=Kyligence-ZenML-Toolkit-Darwin-x64-${version}
+cp -r ${package_name} ${tar_name}
+tar -zcvf ${tar_name}.tar.gz ${tar_name}
+
+rm -rf ${package_name}/jdk
+rm -rf ${tar_name}
+echo "    Location: ${root_dir}/dist/${tar_name}.tar.gz"
+
+### mac m chip package
+echo "====================================="
+echo "Build Mac m series chip package..."
+MAC_M_CHIP_JDK17="mac_m_openjdk_17.tar.gz"
+if [ -d ${package_name}/jdk ]; then
+  rm -rf ${package_name}/jdk
+fi
+tar -zxvf download/${MAC_M_CHIP_JDK17} -C ${package_name}/
+mv ${package_name}/jdk-17.0.2.jdk ${package_name}/jdk
+
+tar_name=Kyligence-ZenML-Toolkit-Darwin-AArch64-${version}
+cp -r ${package_name} ${tar_name}
+tar -zcvf ${tar_name}.tar.gz ${tar_name}
+
+rm -rf ${package_name}/jdk
+rm -rf ${tar_name}
+echo "    Location: ${root_dir}/dist/${tar_name}.tar.gz"
+
+echo "====================================="
+echo "Build package without jdk!"
+if [ -d ${package_name}/jdk ]; then
+  rm -rf ${package_name}/jdk
+fi
+tar -zcvf ${package_name}.tar.gz ${package_name}
+echo "    Location: ${root_dir}/dist/${package_name}.tar.gz"

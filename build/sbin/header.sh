@@ -20,7 +20,7 @@
 # source me
 
 function isValidJavaVersion() {
-    version=`java -version 2>&1 | awk -F\" '/version/ {print $2}'`
+    version=$(${JAVA} -version 2>&1 | awk -F\" '/version/ {print $2}')
     version_first_part="$(echo ${version} | cut -d '.' -f1)"
     version_second_part="$(echo ${version} | cut -d '.' -f2)"
 
@@ -81,19 +81,51 @@ then
         verbose "ZEN_HOME is ${ZEN_HOME}"
     fi
 
-    # set JAVA
-    if [[ "${JAVA}" == "" ]]; then
-        if [[ -z "$JAVA_HOME" ]]; then
-            if [[ `isValidJavaVersion` == "true" ]]; then
-                JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
-            else
-                quit "Java 17 or above is required."
-            fi
-            [[ -z "$JAVA_HOME" ]] && quit "Please set JAVA_HOME"
-            export JAVA_HOME
-        fi
-        export JAVA=$JAVA_HOME/bin/java
-        [[ -e "${JAVA}" ]] || quit "${JAVA} does not exist. Please set JAVA_HOME correctly."
-        verbose "java is ${JAVA}" 
-    fi
+    unameOut="$(uname -s)"
+    case "${unameOut}" in
+        Linux*)     os=Linux;;
+        Darwin*)    os=Mac;;
+        CYGWIN*)    os=Cygwin;;
+        MINGW*)     os=MinGw;;
+        *)          os="UNKNOWN:${unameOut}"
+    esac
+    export MACHINE_OS=$os
+    
+     # set JAVA
+     if [[ "${JAVA}" == "" ]]; then
+         if [[ -z "$JAVA_HOME" ]]; then
+             # if $JAVA_HOME is not found
+             if [[ $MACHINE_OS == "Mac" ]]; then
+                 if [[ -d "${ZEN_HOME}/jdk/Contents/Home/" ]]; then
+                     # try to use embedded open jdk first
+                     JAVA_HOME=${ZEN_HOME}/jdk/Contents/Home
+                 elif  command -v java &> /dev/null ; then
+                      # embedded jdk not found, try to use jdk in system
+                     JAVA_HOME=$(dirname $(dirname $(readlink $(which java))))
+                 else
+                     quit "Java environment not found, Java 17 or above is required."
+                 fi
+             elif [[ $MACHINE_OS == "Linux" ]]; then
+                 if [[ -d "${ZEN_HOME}/jdk/" ]]; then
+                     # No Java found, try to use embedded open jdk
+                     JAVA_HOME="${ZEN_HOME}"/jdk
+                 elif command -v java &> /dev/null ; then
+                 # try to use jdk in system
+                     JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
+                 else
+                     quit "Java environment not found, Java 17 or above is required."
+                 fi
+             else
+                 quit "Not suppported operating system:  $MACHINE_OS"
+             fi
+  
+             [[ -z "$JAVA_HOME" ]] && quit "JAVA_HOME is not found, please set JAVA_HOME"
+             export JAVA_HOME
+         fi
+  
+         # check java command is found
+         export JAVA=$JAVA_HOME/bin/java
+         [[ -e "${JAVA}" ]] || quit "${JAVA} does not exist. Please set JAVA_HOME correctly."
+         verbose "java is ${JAVA}"
+     fi
 fi

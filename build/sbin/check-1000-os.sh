@@ -1,4 +1,6 @@
-#!/bin/bash
+
+
+#!/usr/bin/env bash
 
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
@@ -17,16 +19,16 @@
 # limitations under the License.
 #
 
-source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/header.sh $@
-source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/setenv.sh
-source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/check-env.sh
-source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/rotate-logs.sh
+#title=Checking OS
 
-MAIN_JAR="zen-ml-toolkit.jar"
+source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/header.sh
 
-function runCommand() {
-    ${JAVA} -Xms${JAVA_VM_XMS} -Xmx${JAVA_VM_XMX} -Dfile.encoding=UTF-8 -jar "${ZEN_HOME}/lib/${MAIN_JAR}" "$@"
-    exit $?
-}
+echo "Checking OS..."
 
-runCommand "$@"
+if [[ $MACHINE_OS == "Linux" ]]; then
+    echo "The current operating system is Linux based distribution."
+elif [[ $MACHINE_OS == "Mac" ]]; then
+    echo "The current operating system is MacOS."
+else
+    quit "Not suppported operating system:  $MACHINE_OS"
+fi
