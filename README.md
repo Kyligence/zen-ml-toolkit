@@ -3,21 +3,26 @@
 ## ZenML
 
 **ZenML** stands for **Zen Metrics Language**. It is a **YAML-based descriptive language** that is used
-by [Kyligence Zen](https://zen.kyligence.io/)
-to define metrics, dimensions, and the underlying relational datasets. Think of ZenML as a semantic layer that promotes
-technical data into business data, like a bridge that enables non-technical users to understand, explore, and get
-insight out of traditional data warehouses. ZenML encourages the separation of data modeling and data visualization, and
-facilitates a central definition of business data language for all downstream data consumers.
+by [Kyligence Zen](https://zen.kyligence.io/) to define `metrics`, `dimensions`, and the `underlying relational datasets`. Think of ZenML as a semantic layer that promotes technical
+data into business data, like a bridge that enables non-technical users to understand, explore, and get insight out of
+traditional data warehouses. ZenML encourages the separation of data modeling and data visualization, and facilitates a
+central definition of business data language for all downstream data consumers.
 
-Kyligence Zen uses ZenML to store all the metric definitions and related data models that user creates. And a variety of
-data services are then provided around ZenML, including
+Kyligence Zen uses ZenML to store all metric definitions and their relations and mappings to relational data models.
+With this metadata, Kyligence Zen is able to automatically translate all kinds of business requests and tasks into SQL
+executions. A variety of data services are then provided around ZenML, including
 
-- SQL based data queries and BI integrations, via open APIS like JDBC / ODBC / RestAPI
-- Metrics templating of business domain know-how
-- Goal management, progress tracking, and alerting
+- SQL based metric queries and BI integrations, via open APIs like JDBC / ODBC / RestAPI
+- Metric templates of business domain know-hows
 - Causal analysis, anomaly detection
+- Goal management, progress tracking, and alerting
 - Metrics data linage
 - And more...
+
+- You can also maintain ZenML/YAML files in git for version control, and publish (or rollback to) a certain version of
+  metric definitions to Kyligence Zen service for business operation.
+
+More details please refer to [ZenML Introduction](https://zen-docs.kyligence.io/en/appendix/zenml-reference)
 
 ## Kyligence Zen
 
@@ -121,7 +126,8 @@ You will get a `superstore.zen.yml` file in folder `Kyligence-ZenML-Toolkit-{ver
 
 Welcome to contribute, you can convert any files which contains metrics metadata to a ZenML file.
 
-Please note that this project use **JDK17** 
+- Please note that this project use **JDK17**
+- For ZenML spec, please refer to  [ZenML Introduction](https://zen-docs.kyligence.io/en/appendix/zenml-reference)
 
 ## Contributors
 
