@@ -55,6 +55,7 @@ not only:
     - `.xlsx`
 - **SQL file(coming soon)**
     - `.sql`
+- More...
 
 ![arch](docs/images/architecture.png)
 
@@ -103,7 +104,7 @@ $ sh ./bin/zen.sh -i <arg> -o <arg>
 ```
 # please replace ${Kyligence-ZenML-Toolkit-{version}} with absolute path
 $ cd ${Kyligence-ZenML-Toolkit-{version}}
-$ sh ./bin/zen.sh -i ${Kyligence-ZenML-Toolkit-{version}}/samples/superstore.sh -o ${Kyligence-ZenML-Toolkit-{version}}/samples/
+$ sh ./bin/zen.sh -i ${Kyligence-ZenML-Toolkit-{version}}/samples/superstore.tds -o ${Kyligence-ZenML-Toolkit-{version}}/samples/
 ```
 
 You will get a `superstore.zen.yml` file in folder `Kyligence-ZenML-Toolkit-{version}/samples`
