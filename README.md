@@ -3,7 +3,8 @@
 ## ZenML
 
 **ZenML** stands for **Zen Metrics Language**. It is a **YAML-based descriptive language** that is used
-by [Kyligence Zen](https://zen.kyligence.io/) to define `metrics`, `dimensions`, and the `underlying relational datasets`. Think of ZenML as a semantic layer that promotes technical
+by [Kyligence Zen](https://zen.kyligence.io/) to define `metrics`, `dimensions`, and
+the `underlying relational datasets`. Think of ZenML as a semantic layer that promotes technical
 data into business data, like a bridge that enables non-technical users to understand, explore, and get insight out of
 traditional data warehouses. ZenML encourages the separation of data modeling and data visualization, and facilitates a
 central definition of business data language for all downstream data consumers.
@@ -61,7 +62,9 @@ not only:
 
 ### Prerequisite
 
-- Supported OS: `Linux` / `MacOS`
+- Supported OS:
+  - Fully supports `Linux` / `MacOS`
+  - `Windows`
 - Supported JDK version: `JDK17`
 
 ### Download
@@ -86,16 +89,22 @@ $ tar -zxvf Kyligence-ZenML-Toolkit-{version}.tar.gz
 
 ### Usage
 
-in Terminal
+For Mac users & Linux users, in Terminal, enter into the folder `${Kyligence-ZenML-Toolkit-{version}}`
 
 ```
-usage:
 $ sh ./bin/zen.sh -i <arg> -o <arg>
  -h,--help           print help message.
  -i,--in <arg>       specify the location of source file
  -o,--output <arg>   specify the output directory for metrics file
                      generated
 ```
+
+**For Windows users**
+> 1. Download `Kyligence-ZenML-Toolkit-{version}.tar.gz` and extract the tar package
+> 2. Install JDK17 on your windows
+> 3. Enter into folder `${Kyligence-ZenML-Toolkit-{version}}/lib` in command line or terminal
+> 4. Use `java -jar zen-ml-toolkit.jar -i <source_file_path> -o <output_folder>` to execute toolkit
+
 
 ### Example
 
@@ -139,3 +148,12 @@ Welcome to contribute, you can convert any files which contains metrics metadata
 </a>
 
 Made with [contrib.rocks](https://contrib.rocks).
+
+## Contact Kyligence
+
+If you have requirements about
+- Defining their metrics once in the metrics store
+- Forming that single source of truth
+- Consistently reuse the metrics across BI, automation tools, business workflows, or even advanced analytics
+
+You can visit [kyligence.io/](https://kyligence.io/) to contact us to get more information.
