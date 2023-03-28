@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.tool;
+package io.kyligence.zenml.toolkit.tool.cli;
 
 import org.apache.commons.cli.*;
 

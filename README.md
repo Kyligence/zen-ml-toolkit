@@ -138,7 +138,9 @@ You will get a `superstore.zen.yml` file in folder `Kyligence-ZenML-Toolkit-{ver
 
 Welcome to contribute, you can convert any files which contains metrics metadata to a ZenML file.
 
-- Please note that this project use **JDK17**
+### Dev Dependencies
+- This project use **JDK17**
+- For macOS, you need install `coreutils` & `wget` via `brew install`
 - For ZenML spec, please refer to  [ZenML Introduction](https://zen-docs.kyligence.io/en/appendix/zenml-reference)
 
 ## Contributors

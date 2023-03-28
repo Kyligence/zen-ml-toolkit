@@ -32,4 +32,7 @@ public class FileType {
 
     // SQL file type
     public static final String SQL_FILE = "sql";
+
+    // Zip file type
+    public static final String ZIP_FILE = "zip";
 }

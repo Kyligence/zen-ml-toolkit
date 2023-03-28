@@ -16,8 +16,10 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.entry;
+package io.kyligence.zenml.toolkit.service;
 
+import io.kyligence.zenml.toolkit.ZenMlToolkitServer;
+import io.kyligence.zenml.toolkit.config.ToolkitConfig;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -29,7 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
-@SpringBootTest
+@SpringBootTest(classes = ZenMlToolkitServer.class)
 public class ZenGeneratorTest {
 
     private static final String destDirPath = Path.of(FileUtils.getTempDirectoryPath(),
@@ -40,11 +42,17 @@ public class ZenGeneratorTest {
         File destDir = new File(destDirPath);
         FileUtils.deleteQuietly(destDir);
         destDir.mkdirs();
+        System.setProperty("ZEN_HOME", ZenGeneratorTest.class.getResource("/").getPath());
+        System.setProperty("PROPERTIES_PATH",ZenGeneratorTest.class.getResource("/").getPath());
+
     }
 
     @AfterAll
     public static void clean() {
+        ToolkitConfig config = ToolkitConfig.getInstance();
         FileUtils.deleteQuietly(new File(destDirPath));
+        FileUtils.deleteQuietly(new File(config.getLocalTmpFolder()));
+        System.clearProperty("ZEN_HOME");
     }
 
     @Test
@@ -53,7 +61,15 @@ public class ZenGeneratorTest {
         Path destPath = Path.of(destDirPath, "superstore.zen.yml");
         File destFile = destPath.toFile();
         ZenGenerator generator = new ZenGenerator();
-        generator.generateZenMetrics(tdsPath, destDirPath);
+        generator.convertMetrics2ZenMlFile(tdsPath, destDirPath);
         Assertions.assertTrue(destFile.exists());
+    }
+
+    @Test
+    public void testGenerateZenMetricsZip() throws IOException {
+        String tdsPath = "src/test/resources/sources/tableau/superstore.tds";
+        ZenGenerator generator = new ZenGenerator();
+        String zipPath = generator.generateZenMetricsZip(tdsPath);
+        Assertions.assertTrue(new File(zipPath).exists());
     }
 }

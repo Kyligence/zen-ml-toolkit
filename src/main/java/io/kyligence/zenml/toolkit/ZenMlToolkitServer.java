@@ -16,16 +16,16 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.entry;
+package io.kyligence.zenml.toolkit;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootTest
-class ZenMlToolkitApplicationTests {
-
-    @Test
-    void contextLoads() {
+@Slf4j
+@SpringBootApplication
+public class ZenMlToolkitServer {
+    public static void main(String[] args) {
+        SpringApplication.run(ZenMlToolkitServer.class, args);
     }
-
 }

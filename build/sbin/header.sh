@@ -81,6 +81,20 @@ then
         verbose "ZEN_HOME is ${ZEN_HOME}"
     fi
 
+    # set ZenML toolkit server IP
+    if [ -z $TOOLKIT_SERVER_IP ];then
+      export TOOLKIT_SERVER_IP=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | head -n 1)
+    fi
+
+
+
+    # set ZenML toolkit server port
+    export TOOLKIT_SERVER_PORT=$($ZEN_HOME/sbin/get-properties.sh zen.ml.toolkit.server.port)
+
+    if [[ -z ${TOOLKIT_SERVER_PORT} ]]; then
+        export TOOLKIT_SERVER_PORT=9000
+    fi
+
     unameOut="$(uname -s)"
     case "${unameOut}" in
         Linux*)     os=Linux;;

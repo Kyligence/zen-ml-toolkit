@@ -18,19 +18,17 @@
 
 package io.kyligence.zenml.toolkit;
 
-import io.kyligence.zenml.toolkit.entry.ZenGenerator;
-import io.kyligence.zenml.toolkit.tool.OptionsHelper;
+import io.kyligence.zenml.toolkit.service.ZenGenerator;
 import io.kyligence.zenml.toolkit.tool.cli.AbstractApplication;
+import io.kyligence.zenml.toolkit.tool.cli.OptionsHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
 
 @Slf4j
-@SpringBootApplication
 public class ZenMlToolkitCLI extends AbstractApplication {
 
     private String srcFilePath;
@@ -94,7 +92,7 @@ public class ZenMlToolkitCLI extends AbstractApplication {
 
         try {
             ZenGenerator generator = new ZenGenerator();
-            generator.generateZenMetrics(srcFilePath, destDirPath);
+            generator.convertMetrics2ZenMlFile(srcFilePath, destDirPath);
         } catch (IOException e) {
             log.error("Failed to write metrics to file. please check the details: ", e);
             throw new RuntimeException("Failed to write metrics to file. please check the details: ", e);

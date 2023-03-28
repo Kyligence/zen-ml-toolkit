@@ -29,7 +29,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.File;
 import java.nio.file.Path;
 
-@SpringBootTest
+@SpringBootTest(classes = ZenMlToolkitServer.class)
 public class ZenMlToolkitCLITest {
     private static final String destDirPath = Path.of(FileUtils.getTempDirectoryPath(),
             "zen-ml-toolkit").toString();

@@ -18,13 +18,14 @@
 
 package io.kyligence.zenml.toolkit.source.tableau;
 
+import io.kyligence.zenml.toolkit.ZenMlToolkitServer;
 import org.dom4j.DocumentException;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-@SpringBootTest
+@SpringBootTest(classes = ZenMlToolkitServer.class)
 public class TableauParserTest {
 
     @Test

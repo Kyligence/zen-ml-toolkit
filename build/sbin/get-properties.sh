@@ -1,4 +1,5 @@
 #!/bin/bash
+
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -16,15 +17,21 @@
 # limitations under the License.
 #
 
-
-#title=Checking Java Version
-
-source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/header.sh
-
-echo "Checking Java version..."
-
-$JAVA -version 2>&1 || quit "ERROR: Detect java version failed. Please set JAVA_HOME."
-
-if [[ $(isValidJavaVersion) == "false" ]]; then
-    quit "ERROR: Java 17 or above is required, current java is ${JAVA}"
+if [ $# != 1 ]
+then
+    if [[ $# < 2 || $2 != 'DEC' ]]
+        then
+            echo 'invalid input'
+            exit 1
+    fi
 fi
+
+if [ -z $ZEN_HOME ];then
+    export ZEN_HOME=$(cd -P -- "$(dirname -- "$0")"/../ && pwd -P)
+fi
+
+
+mkdir -p ${ZEN_HOME}/logs
+result=`${JAVA} -DZEN_HOME=${ZEN_HOME} -cp "${ZEN_HOME}/lib/zen-ml-toolkit.jar" -Dloader.main=io.kyligence.zenml.toolkit.config.ToolkitConfigCLI -Dloader.args="$@" org.springframework.boot.loader.PropertiesLauncher 2>>${ZEN_HOME}/logs/shell.stderr`
+
+echo "$result"

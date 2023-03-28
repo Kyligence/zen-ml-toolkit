@@ -29,7 +29,7 @@ echo "ZEN_HOME: ${root_dir}"
 cd ${root_dir}
 
 ## build console fat jar
-mvn_version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+mvn_version=$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version|grep -Ev '(^\[|Download\w+:)')
 if [[ -z "${version}" ]]; then
     export version=${mvn_version}
 fi
@@ -80,6 +80,9 @@ cp ${root_dir}/build/sbin/* sbin
 
 
 ## 6. others
+mkdir conf
+cp ${root_dir}/build/conf/* conf
+
 mkdir logs
 mkidr samples
 cp -r ${root_dir}/samples/*  samples

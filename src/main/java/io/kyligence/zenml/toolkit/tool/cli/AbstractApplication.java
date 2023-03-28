@@ -18,7 +18,6 @@
 
 package io.kyligence.zenml.toolkit.tool.cli;
 
-import io.kyligence.zenml.toolkit.tool.OptionsHelper;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;

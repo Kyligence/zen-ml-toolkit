@@ -1,4 +1,5 @@
 #!/bin/bash
+
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -16,15 +17,40 @@
 # limitations under the License.
 #
 
+function help_func {
+    echo "Usage: kill-process-tree.sh <PID>(process id)"
+    echo "       kill-process-tree.sh 12345"
+    exit 1
+}
 
-#title=Checking Java Version
+function isRunning() {
+    [[ -n "$(ps -p $1 -o pid=)" ]]
+}
 
-source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/header.sh
+function killTree() {
+    local parent=$1 child
+    for child in $(ps ax -o ppid= -o pid= | awk "\$1==$parent {print \$2}"); do
+        killTree ${child}
+    done
+    kill ${parent}
+    if isRunning ${parent}; then
+        sleep 5
+        if isRunning ${parent}; then
+            kill -9 ${parent}
+        fi
+    fi
+}
 
-echo "Checking Java version..."
-
-$JAVA -version 2>&1 || quit "ERROR: Detect java version failed. Please set JAVA_HOME."
-
-if [[ $(isValidJavaVersion) == "false" ]]; then
-    quit "ERROR: Java 17 or above is required, current java is ${JAVA}"
+# Check parameters count.
+if [[ $# -ne 1 ]]; then
+    help_func
 fi
+
+# Check whether it contains non-digit characters.
+# Remove all digit characters and check for length.
+# If there's length it's not a number.
+if [[ -n ${1//[0-9]/} ]]; then
+    help_func
+fi
+
+killTree $@
