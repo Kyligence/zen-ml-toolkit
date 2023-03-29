@@ -34,7 +34,6 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -50,12 +49,14 @@ public class ZenGenerator {
     public String generateZenMetricsZip(String srcPath) throws IOException {
         // create folder
         var outputDirPath = WorkDirUtils.getOutputFolder2Compress(srcPath);
+        log.info("Create folder which to be compressed, path: {}", outputDirPath);
         // generate zen ml file & excel file
         convertMetrics2ZenMLFileAndExcelFile(srcPath, outputDirPath);
         // compress folder to zip
         var zipFilePath = outputDirPath + "." + FileType.ZIP_FILE;
         ZipUtils.compressZipFile(outputDirPath, zipFilePath);
         FileUtils.deleteQuietly(new File(outputDirPath));
+        log.info("Folder has been compressed, the folder will be removed, zip path: {}", zipFilePath);
         return zipFilePath;
     }
 
@@ -83,7 +84,7 @@ public class ZenGenerator {
         log.info("Begin to convert metrics from {}", srcPath);
         var metrics = converter.convert2Metrics(srcPath);
 
-        List<MetricSpec> metricSpecs = metrics.getMetrics();
+        var metricSpecs = metrics.getMetrics();
         log.info("{} metrics extracted", metricSpecs.size());
         for (MetricSpec ms : metricSpecs) {
             log.info("    - Metrics Name: {}, Expression: {}", ms.getName(), ms.getExpression());
@@ -100,6 +101,7 @@ public class ZenGenerator {
     }
 
     private void writeExcelFile(String srcPath, String destDir, Metrics metrics) throws IOException {
+        log.info("Begin to write metrics to Excel file");
         var writer = new ExcelWriter();
         var fileName = FilenameUtils.getBaseName(srcPath);
         var sheet = writer.createSheet(fileName);

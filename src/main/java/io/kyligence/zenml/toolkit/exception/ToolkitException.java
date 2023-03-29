@@ -18,7 +18,6 @@
 
 package io.kyligence.zenml.toolkit.exception;
 
-import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
 public class ToolkitException extends RuntimeException {
@@ -52,7 +51,7 @@ public class ToolkitException extends RuntimeException {
     }
 
     private static String formatMsg(String format, Object... args) {
-        FormattingTuple ft = MessageFormatter.arrayFormat(format, args);
+        var ft = MessageFormatter.arrayFormat(format, args);
         return ft.getMessage();
     }
 

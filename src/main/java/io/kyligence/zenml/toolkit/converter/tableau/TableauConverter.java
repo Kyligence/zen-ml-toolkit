@@ -19,6 +19,8 @@
 package io.kyligence.zenml.toolkit.converter.tableau;
 
 import io.kyligence.zenml.toolkit.converter.MetricsConverter;
+import io.kyligence.zenml.toolkit.exception.ErrorCode;
+import io.kyligence.zenml.toolkit.exception.ToolkitException;
 import io.kyligence.zenml.toolkit.metrics.*;
 import io.kyligence.zenml.toolkit.source.tableau.TableauCalculatedFields;
 import io.kyligence.zenml.toolkit.source.tableau.TableauColumn;
@@ -34,31 +36,31 @@ import java.util.Map;
 public class TableauConverter implements MetricsConverter {
     @Override
     public Metrics convert2Metrics(String filePath) {
-        String fileSuffix = FilenameUtils.getExtension(filePath);
-        TableauParser parser = new TableauParser();
+        var fileSuffix = FilenameUtils.getExtension(filePath);
+        var parser = new TableauParser();
         try {
-            List<TableauCalculatedFields> cfs = parser.parseTableauFile(filePath, fileSuffix);
+            var cfs = parser.parseTableauFile(filePath, fileSuffix);
             return convertTableauCalculatedField2Metrics(cfs);
         } catch (DocumentException e) {
-            throw new RuntimeException(e);
+            throw new ToolkitException(ErrorCode.TABLEAU_FILE_PARSE_ERROR, e);
         }
     }
 
     private Metrics convertTableauCalculatedField2Metrics(List<TableauCalculatedFields> cfs) {
         List<MetricSpec> metricSpecs = new ArrayList<>();
-        for(TableauCalculatedFields cf : cfs) {
+        for (TableauCalculatedFields cf : cfs) {
             List<TableauColumn> tableauColumns = cf.getColumns();
             List<String> tags = cf.getTags();
 
             // a tds should just have one connection tag, one connection should have one view
-            String view = cf.getViews().get(0);
+            var view = cf.getViews().get(0);
             List<String> tables = cf.getTables();
 
             if (!tableauColumns.isEmpty()) {
                 metricSpecs.addAll(convertTableauColumnsToMetrics(tableauColumns, tags, view, tables));
             }
         }
-        Metrics metrics = new Metrics();
+        var metrics = new Metrics();
         metrics.setMetrics(metricSpecs);
         return metrics;
     }
@@ -72,14 +74,14 @@ public class TableauConverter implements MetricsConverter {
 
         for (TableauColumn column : tableauColumns) {
             if (column.isMeasure()) {
-                MetricSpec metricSpec = new MetricSpec();
-                String displayName = column.getMeasureDisplayName();
-                String measureName = column.getMeasureName();
+                var metricSpec = new MetricSpec();
+                var displayName = column.getMeasureDisplayName();
+                var measureName = column.getMeasureName();
                 if (displayName == null || displayName.isEmpty()) {
                     displayName = measureName;
                 }
-                String expr = column.getMeasureExpression();
-                String dataModel = getDataModelName(view, tables, expr);
+                var expr = column.getMeasureExpression();
+                var dataModel = getDataModelName(view, tables, expr);
 
                 List<String> dimensions = new ArrayList<>();
                 List<TimeDimension> timeDimensions = new ArrayList<>();
@@ -123,8 +125,8 @@ public class TableauConverter implements MetricsConverter {
         Map<String, List<String>> table2Dims = new HashMap<>();
         for (TableauColumn column : tableauColumns) {
             if (column.isDimension() && !column.isHidden()) {
-                String tabName = column.getDimensionTable();
-                String dim = column.getDimension();
+                var tabName = column.getDimensionTable();
+                var dim = column.getDimension();
                 addDimensionName2TabDimsMap(table2Dims, tabName, dim);
             }
         }
@@ -136,10 +138,10 @@ public class TableauConverter implements MetricsConverter {
         Map<String, List<TimeDimension>> table2TimeDims = new HashMap<>();
         for (TableauColumn column : tableauColumns) {
             if (column.isTimeDimension()) {
-                String tabName = column.getDimensionTable();
-                String dimName = column.getTimeDimensionName();
+                var tabName = column.getDimensionTable();
+                var dimName = column.getTimeDimensionName();
 
-                TimeDimension dim = new TimeDimension();
+                var dim = new TimeDimension();
                 dim.setName(dimName);
                 addTimeDimension2TabDimsMap(table2TimeDims, tabName, dim);
             }
@@ -176,8 +178,8 @@ public class TableauConverter implements MetricsConverter {
             return tables.get(0).toLowerCase();
         }
 
-        int tableHit = 0;
-        String tableNameHit = "";
+        var tableHit = 0;
+        var tableNameHit = "";
         for (String table : tables) {
             if (expr.toLowerCase().contains(table.toLowerCase())) {
                 tableHit += 1;

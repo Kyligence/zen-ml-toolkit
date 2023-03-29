@@ -27,7 +27,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Enumeration;
 import java.util.Map;
 import java.util.zip.*;
 
@@ -43,26 +42,26 @@ public class ZipUtils {
 
     public static Map<String, String> uncompressZipFile(File zipFile, String targetDir) throws IOException {
         log.debug("Unzip {} to {}", zipFile.getAbsoluteFile(), targetDir);
-        ZipFile zip = new ZipFile(zipFile);
-        Enumeration zipEntries = zip.entries();
+        var zip = new ZipFile(zipFile);
+        var zipEntries = zip.entries();
         Map<String, String> files = Maps.newHashMap();
         while (zipEntries.hasMoreElements()) {
-            ZipEntry entry = (ZipEntry) zipEntries.nextElement();
-            String entryName = entry.getName();
-            File file = (targetDir != null) ? new File(targetDir, entryName) : new File(entryName);
+            var entry = (ZipEntry) zipEntries.nextElement();
+            var entryName = entry.getName();
+            var file = (targetDir != null) ? new File(targetDir, entryName) : new File(entryName);
             if (entry.isDirectory()) {
                 if (!file.mkdirs() && !file.isDirectory()) {
                     throw new IOException("Failed to create directory: " + file);
                 }
             } else {
-                File parent = file.getParentFile();
+                var parent = file.getParentFile();
                 if (parent != null && !parent.exists()) {
                     if (!parent.mkdirs() && !file.isDirectory()) {
                         throw new IOException("Failed to create directory: " + parent);
                     }
                 }
 
-                InputStream in = zip.getInputStream(entry);
+                var in = zip.getInputStream(entry);
                 OutputStream out = null;
                 try {
                     out = new FileOutputStream(file);
@@ -89,13 +88,13 @@ public class ZipUtils {
             if (sourceFile.isDirectory()) {
                 compressDirectoryToZipfile(rootDir, sourceDir + normDir(sourceFile.getName()), out);
             } else {
-                ZipEntry entry =
+                var entry =
                         new ZipEntry(normDir(StringUtils.isEmpty(rootDir) ? sourceDir : sourceDir.replace(rootDir, ""))
                                 + sourceFile.getName());
                 entry.setTime(sourceFile.lastModified());
                 out.putNextEntry(entry);
 
-                FileInputStream in = new FileInputStream(sourceDir + sourceFile.getName());
+                var in = new FileInputStream(sourceDir + sourceFile.getName());
                 IOUtils.copy(in, out);
                 IOUtils.closeQuietly(in);
             }
@@ -111,8 +110,8 @@ public class ZipUtils {
 
     public static byte[] gzip(String origin) {
         try {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            try (GZIPOutputStream out = new GZIPOutputStream(bos)) {
+            var bos = new ByteArrayOutputStream();
+            try (var out = new GZIPOutputStream(bos)) {
                 out.write(origin.getBytes(StandardCharsets.UTF_8));
             }
             return bos.toByteArray();
@@ -122,7 +121,7 @@ public class ZipUtils {
     }
 
     public static String decompressGzip(byte[] contentBytes) {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        var out = new ByteArrayOutputStream();
         try {
             IOUtils.copy(new GZIPInputStream(new ByteArrayInputStream(contentBytes)), out);
         } catch (IOException e) {

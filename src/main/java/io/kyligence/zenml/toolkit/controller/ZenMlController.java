@@ -33,8 +33,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -59,6 +59,7 @@ public class ZenMlController {
         var srcFilePath = uploadFileService.uploadFile(file);
         var outputFilePath = generator.generateZenMetricsZip(srcFilePath);
 
+        log.info("Prepare downloading from file {}", outputFilePath);
         var outputFile = new File(outputFilePath);
         var resource = new ByteArrayResource(Files.readAllBytes(Paths.get(outputFilePath)));
         var headers = new HttpHeaders();

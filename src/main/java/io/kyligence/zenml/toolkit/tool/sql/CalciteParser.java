@@ -18,6 +18,7 @@
 
 package io.kyligence.zenml.toolkit.tool.sql;
 
+import io.kyligence.zenml.toolkit.exception.SQLErrorBuilder;
 import io.kyligence.zenml.toolkit.utils.SqlUtils;
 import org.apache.calcite.plan.RelOptCluster;
 import org.apache.calcite.plan.RelOptTable;
@@ -75,7 +76,7 @@ public class CalciteParser implements RelOptTable.ViewExpander {
      * @throws SqlParseException on parse error.
      */
     static SqlNodeList parse(Reader reader, SqlParser.Config parserCfg) throws SqlParseException {
-        SqlParser parser = SqlParser.create(reader, parserCfg);
+        var parser = SqlParser.create(reader, parserCfg);
         return parser.parseStmtList();
     }
 
@@ -91,7 +92,7 @@ public class CalciteParser implements RelOptTable.ViewExpander {
      */
     public static SqlNode parseExpression(String sqlExpression, SqlParser.Config config) {
         try {
-            final SqlParser parser = SqlParser.create(SqlUtils.quoteKeyword(sqlExpression), config);
+            final var parser = SqlParser.create(SqlUtils.quoteKeyword(sqlExpression), config);
             return parser.parseExpression();
         } catch (SqlParseException e) {
             throw SQLErrorBuilder.parseError().of("SQL parse failed: " + e.getMessage(), e);
@@ -127,12 +128,12 @@ public class CalciteParser implements RelOptTable.ViewExpander {
     }
 
     public SqlNode parse(String sql) {
-        SqlNodeList statements = parse(sql, CalciteConfig.DEFAULT_PARSER_CONFIG);
+        var statements = parse(sql, CalciteConfig.DEFAULT_PARSER_CONFIG);
         if (statements.size() != 1) {
             throw SQLErrorBuilder.parseError().of("The command must contain a single statement");
         }
-        SqlNode topNode = statements.get(0);
-        SqlNode node = validator.validate(topNode);
+        var topNode = statements.get(0);
+        var node = validator.validate(topNode);
         SqlVisitor<Void> visitor = new UnsupportedOperationVisitor();
         node.accept(visitor);
         return node;
@@ -155,8 +156,8 @@ public class CalciteParser implements RelOptTable.ViewExpander {
 
 
     public RexNode rex(SqlNode node, RelDataType inputRowType) {
-        SqlNode validatedSqlNode = validateExpression(node, validator, inputRowType);
-        SqlToRelConverter converter = createSqlToRelConverter();
+        var validatedSqlNode = validateExpression(node, validator, inputRowType);
+        var converter = createSqlToRelConverter();
         Map<String, RexNode> nameToNodeMap = inputRowType.getFieldList().stream()
                 .map(relDataTypeField ->
                         Pair.of(relDataTypeField.getName(), RexInputRef.of(relDataTypeField.getIndex(), inputRowType)))

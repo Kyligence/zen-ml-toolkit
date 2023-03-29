@@ -52,7 +52,7 @@ public class EncryptUtils {
 
     static {
         try {
-            String secretKeyHexStr = config.getSecretKey();
+            var secretKeyHexStr = config.getSecretKey();
             key = toKey(Hex.decodeHex(secretKeyHexStr));
         } catch (DecoderException e) {
             log.error("Load AES key error", e);
@@ -93,7 +93,7 @@ public class EncryptUtils {
 
     private static byte[] encrypt(byte[] data, Key key, String cipherAlgorithm) {
         try {
-            Cipher cipher = Cipher.getInstance(cipherAlgorithm);
+            var cipher = Cipher.getInstance(cipherAlgorithm);
             cipher.init(Cipher.ENCRYPT_MODE, key);
             return cipher.doFinal(data);
         } catch (Exception ex) {
@@ -116,7 +116,7 @@ public class EncryptUtils {
 
     public static byte[] decrypt(byte[] data, Key key, String cipherAlgorithm) {
         try {
-            Cipher cipher = Cipher.getInstance(cipherAlgorithm);
+            var cipher = Cipher.getInstance(cipherAlgorithm);
             cipher.init(Cipher.DECRYPT_MODE, key);
             return cipher.doFinal(data);
         } catch (Exception ex) {

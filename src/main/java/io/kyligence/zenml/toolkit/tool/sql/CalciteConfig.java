@@ -92,7 +92,7 @@ public class CalciteConfig {
     }
 
     public SqlValidator.Config toValidatorConfig(SqlValidator.Config config){
-        CalciteConnectionConfig connectionConfig = toConnectionConfig();
+        var connectionConfig = toConnectionConfig();
         return config
                 .withLenientOperatorLookup(connectionConfig.lenientOperatorLookup())
                 .withDefaultNullCollation(connectionConfig.defaultNullCollation())
@@ -109,7 +109,7 @@ public class CalciteConfig {
     }
 
     public CalciteConnectionConfig toConnectionConfig() {
-        Properties connectionProperties = new Properties();
+        var connectionProperties = new Properties();
         connectionProperties.put(CalciteConnectionProperty.CASE_SENSITIVE.camelName(), Boolean.toString(caseSensitive));
         connectionProperties.put(CalciteConnectionProperty.UNQUOTED_CASING.camelName(), unquotedCasing.toString());
         connectionProperties.put(CalciteConnectionProperty.QUOTED_CASING.camelName(), quotedCasing.toString());

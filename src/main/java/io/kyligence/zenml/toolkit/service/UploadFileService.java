@@ -36,6 +36,7 @@ public class UploadFileService {
 
     public String uploadFile(MultipartFile file) {
         if (file.isEmpty()) {
+            log.error("File to upload is empty");
             throw new ToolkitException(ErrorCode.EMPTY_FILE);
         }
 
@@ -45,12 +46,14 @@ public class UploadFileService {
         checkFileLimit(fileName, file.getSize());
 
         if (StringUtils.isBlank(fileName)) {
+            log.error("Upload file name is empty");
             throw new ToolkitException(ErrorCode.EMPTY_FILE);
         }
 
         var dest = new File(todayDir, fileName);
         try {
             file.transferTo(dest);
+            log.info("Uploaded file {} to directory {}", file, todayDir.getAbsolutePath());
         } catch (IOException e) {
             log.error("Failed to save file: {} to dest: {}", fileName, dest.getAbsolutePath());
             throw new ToolkitException(ErrorCode.SAVE_FILE_ERROR, e);

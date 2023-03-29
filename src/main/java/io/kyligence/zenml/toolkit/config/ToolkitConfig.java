@@ -81,11 +81,11 @@ public class ToolkitConfig {
     }
 
     private File getPropertiesFile() {
-        String path = System.getProperty("PROPERTIES_PATH");
+        var path = System.getProperty("PROPERTIES_PATH");
         if (StringUtils.isBlank(path)) {
             path = getPropertiesDirPath();
         }
-        File overrideFile = new File(path, OVERRIDE_PROPERTIES_FILE);
+        var overrideFile = new File(path, OVERRIDE_PROPERTIES_FILE);
         if (overrideFile.exists()) {
             return overrideFile;
         } else {
@@ -94,7 +94,7 @@ public class ToolkitConfig {
     }
 
     public String getToolkitHome() {
-        String home = System.getProperty("ZEN_HOME");
+        var home = System.getProperty("ZEN_HOME");
         if (StringUtils.isBlank(home)) {
             home = System.getenv("ZEN_HOME");
             if (StringUtils.isBlank(home)) {
@@ -105,7 +105,7 @@ public class ToolkitConfig {
     }
 
     public String getOptional(String propertyKey, String defaultValue) {
-        String property = System.getProperty(propertyKey);
+        var property = System.getProperty(propertyKey);
         if (!StringUtils.isBlank(property)) {
             return property.trim();
         }

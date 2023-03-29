@@ -71,7 +71,7 @@ public class Unsafe {
      * For {@link MessageFormat#format(String, Object...)} cannot set locale
      */
     public static String format(Locale locale, String pattern, Object... arguments) {
-        MessageFormat temp = new MessageFormat(pattern, locale);
+        var temp = new MessageFormat(pattern, locale);
         return temp.format(arguments);
     }
 

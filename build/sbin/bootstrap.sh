@@ -110,7 +110,7 @@ function start() {
       prepareEnv
   
 
-      ${ZEN_HOME}/sbin/check-1200-ports.sh >> ${ZEN_HOME}/logs/check-env.out 2>&1
+      ${ZEN_HOME}/sbin/port-check.sh >> ${ZEN_HOME}/logs/check-env.out 2>&1
       [[ $? == 0 ]] || quit "ERROR: Port ${NOTEBOOK_PORT} is in use, another Kyligence ZenML Toolkit server is running?"
 
       

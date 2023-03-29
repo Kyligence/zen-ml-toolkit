@@ -44,11 +44,11 @@ public class ToolkitConfigCLI {
             }
         }
 
-        Properties config = ToolkitConfig.getInstance().getProperties();
+        var config = ToolkitConfig.getInstance().getProperties();
 
-        String key = args[0].trim();
+        var key = args[0].trim();
         if (!key.endsWith(".")) {
-            String value = config.getProperty(key);
+            var value = config.getProperty(key);
             if (value == null) {
                 value = "";
             }
@@ -68,7 +68,7 @@ public class ToolkitConfigCLI {
     private static Map<String, String> getPropertiesByPrefix(Properties props, String prefix) {
         Map<String, String> result = Maps.newLinkedHashMap();
         for (Map.Entry<Object, Object> entry : props.entrySet()) {
-            String entryKey = (String) entry.getKey();
+            var entryKey = (String) entry.getKey();
             if (entryKey.startsWith(prefix)) {
                 result.put(entryKey.substring(prefix.length()), (String) entry.getValue());
             }
