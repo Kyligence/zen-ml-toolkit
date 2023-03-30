@@ -30,15 +30,15 @@ public class TableauParserTest {
 
     @Test
     public void testParseTdsFile() throws DocumentException {
-        String tdsPath = "src/test/resources/sources/tableau/SSB.tds";
-        TableauParser parser = new TableauParser();
+        var tdsPath = "src/test/resources/sources/tableau/SSB.tds";
+        var parser = new TableauParser();
         List<TableauCalculatedFields> calculatedFields = parser.parseTableauFile(tdsPath, "tds");
         System.out.println(calculatedFields);
     }
 
     @Test
     public void testParseTdsFile2() throws DocumentException {
-        String tdsPath = "src/test/resources/sources/tableau/superstore.tds";
+        var tdsPath = "src/test/resources/sources/tableau/superstore.tds";
         TableauParser parser = new TableauParser();
         List<TableauCalculatedFields> calculatedFields = parser.parseTableauFile(tdsPath, "tds");
         System.out.println(calculatedFields);
@@ -46,16 +46,16 @@ public class TableauParserTest {
 
     @Test
     public void testParseTdsFile3() throws DocumentException {
-        String tdsPath = "src/test/resources/sources/tableau/Sample-Superstore.tds";
-        TableauParser parser = new TableauParser();
+        var tdsPath = "src/test/resources/sources/tableau/Sample-Superstore.tds";
+        var parser = new TableauParser();
         List<TableauCalculatedFields> calculatedFields = parser.parseTableauFile(tdsPath, "tds");
         System.out.println(calculatedFields);
     }
 
     @Test
     public void testParseTwbFile() throws DocumentException {
-        String tdsPath = "src/test/resources/sources/tableau/SuperStoreSample.twb";
-        TableauParser parser = new TableauParser();
+        var tdsPath = "src/test/resources/sources/tableau/SuperStoreSample.twb";
+        var parser = new TableauParser();
         List<TableauCalculatedFields> calculatedFields = parser.parseTwbFile(tdsPath);
         System.out.println(calculatedFields);
     }

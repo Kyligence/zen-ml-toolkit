@@ -30,6 +30,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.UUID;
 
 @SpringBootTest(classes = ZenMlToolkitServer.class)
 public class ZenGeneratorTest {
@@ -39,7 +40,7 @@ public class ZenGeneratorTest {
 
     @BeforeAll
     public static void setup() {
-        File destDir = new File(destDirPath);
+        var destDir = new File(destDirPath);
         FileUtils.deleteQuietly(destDir);
         destDir.mkdirs();
         System.setProperty("ZEN_HOME", ZenGeneratorTest.class.getResource("/").getPath());
@@ -57,19 +58,20 @@ public class ZenGeneratorTest {
 
     @Test
     public void testGenerateZenMetrics() throws IOException {
-        String tdsPath = "src/test/resources/sources/tableau/superstore.tds";
-        Path destPath = Path.of(destDirPath, "superstore.zen.yml");
-        File destFile = destPath.toFile();
-        ZenGenerator generator = new ZenGenerator();
+        var tdsPath = "src/test/resources/sources/tableau/superstore.tds";
+        var destPath = Path.of(destDirPath, "superstore.zen.yml");
+        var destFile = destPath.toFile();
+        var generator = new ZenGenerator();
         generator.convertMetrics2ZenMlFile(tdsPath, destDirPath);
         Assertions.assertTrue(destFile.exists());
     }
 
     @Test
     public void testGenerateZenMetricsZip() throws IOException {
-        String tdsPath = "src/test/resources/sources/tableau/superstore.tds";
-        ZenGenerator generator = new ZenGenerator();
-        String zipPath = generator.generateZenMetricsZip(tdsPath);
+        var tdsPath = "src/test/resources/sources/tableau/superstore.tds";
+        var generator = new ZenGenerator();
+        var uuid = UUID.randomUUID().toString();
+        var zipPath = generator.generateZenMetricsZip(tdsPath, uuid);
         Assertions.assertTrue(new File(zipPath).exists());
     }
 }

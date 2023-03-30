@@ -32,15 +32,15 @@ import java.io.IOException;
 
 @Slf4j
 @Service
-public class UploadFileService {
+public class UploadService {
 
-    public String uploadFile(MultipartFile file) {
+    public String uploadFile(MultipartFile file, String uuid) {
         if (file.isEmpty()) {
             log.error("File to upload is empty");
             throw new ToolkitException(ErrorCode.EMPTY_FILE);
         }
 
-        var todayDir = WorkDirUtils.getTmpFolderOfToday();
+        var todayDir = WorkDirUtils.getTmpFolderOfToday(uuid);
         var fileName = file.getOriginalFilename();
 
         checkFileLimit(fileName, file.getSize());

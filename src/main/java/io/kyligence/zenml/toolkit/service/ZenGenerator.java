@@ -46,9 +46,9 @@ public class ZenGenerator {
      * @param srcPath
      * @return path of zipped file
      */
-    public String generateZenMetricsZip(String srcPath) throws IOException {
+    public String generateZenMetricsZip(String srcPath, String uuid) throws IOException {
         // create folder
-        var outputDirPath = WorkDirUtils.getOutputFolder2Compress(srcPath);
+        var outputDirPath = WorkDirUtils.getOutputFolder2Compress(srcPath, uuid);
         log.info("Create folder which to be compressed, path: {}", outputDirPath);
         // generate zen ml file & excel file
         convertMetrics2ZenMLFileAndExcelFile(srcPath, outputDirPath);

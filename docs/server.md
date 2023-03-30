@@ -45,17 +45,17 @@ If the server process is alive, it will return a "hello world"
 ```shell
 $ curl --output /local/path/to/download_file --request POST '127.0.0.1:9000/convert_metrics' \
 --header 'Content-Type: multipart/form-data' \
---form 'files=@"/local/path/to/file"'
+--form 'file=@"/local/path/to/file"'
 ```
 
-Upload a file (i.e. tableau tds file) and save the zip file to `/local/path/to/download_file`
+Upload a file (i.e. tableau tds file) and save the zip file to `/local/path/to/download_file.zip`
 
 Example:
 
 ```shell
 $ curl --output ~/Downloads/test/superstore.zip --request POST '127.0.0.1:9000/convert_metrics' \
 --header 'Content-Type: multipart/form-data' \
---form 'files=@"/Users/zhengshuai.peng/Downloads/test/Kyligence-ZenML-Toolkit-Darwin-x64-0.1.1-SNAPSHOT/samples/superstore.tds"'
+--form 'file=@"/Users/zhengshuai.peng/Downloads/test/Kyligence-ZenML-Toolkit-Darwin-x64-0.1.1-SNAPSHOT/samples/superstore.tds"'
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100  9648  100  3716  100  5932  69173   107k --:--:-- --:--:-- --:--:--  214k

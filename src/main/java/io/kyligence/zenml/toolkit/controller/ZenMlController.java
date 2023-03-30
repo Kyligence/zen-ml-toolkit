@@ -18,32 +18,32 @@
 
 package io.kyligence.zenml.toolkit.controller;
 
-import io.kyligence.zenml.toolkit.service.UploadFileService;
+import io.kyligence.zenml.toolkit.service.DownloadService;
+import io.kyligence.zenml.toolkit.service.UploadService;
 import io.kyligence.zenml.toolkit.service.ZenGenerator;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.ContentDisposition;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 @RestController
 public class ZenMlController {
 
     @Autowired
-    private UploadFileService uploadFileService;
+    private UploadService uploadFileService;
+
+    @Autowired
+    private DownloadService downloadService;
 
     @Autowired
     private ZenGenerator generator;
@@ -54,23 +54,30 @@ public class ZenMlController {
     }
 
     @PostMapping(value = "/convert_metrics")
-    public ResponseEntity uploadAndConvertMetrics(@RequestParam("files") MultipartFile file) throws IOException {
+    public void uploadAndConvertMetrics(@RequestParam("file") MultipartFile file, final HttpServletResponse response) throws IOException {
+        var uuid = UUID.randomUUID().toString();
+        var srcFilePath = uploadFileService.uploadFile(file, uuid);
+        var outputFilePath = generator.generateZenMetricsZip(srcFilePath, uuid);
+        downloadService.download(outputFilePath, response);
+    }
 
-        var srcFilePath = uploadFileService.uploadFile(file);
-        var outputFilePath = generator.generateZenMetricsZip(srcFilePath);
+    @PostMapping(value = "/upload")
+    public Map<String, String> upload(@RequestParam("files") MultipartFile file) throws IOException {
+        var uuid = UUID.randomUUID().toString();
+        var srcFilePath = uploadFileService.uploadFile(file, uuid);
+        var outputFilePath = generator.generateZenMetricsZip(srcFilePath, uuid);
 
-        log.info("Prepare downloading from file {}", outputFilePath);
-        var outputFile = new File(outputFilePath);
-        var resource = new ByteArrayResource(Files.readAllBytes(Paths.get(outputFilePath)));
-        var headers = new HttpHeaders();
+        Map<String, String> resp = new HashMap<>();
+        resp.put("code", "000");
+        resp.put("uuid", uuid);
+        resp.put("file", outputFilePath);
+        return resp;
+    }
 
-        headers.setContentDisposition(ContentDisposition.attachment().build());
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentLength(outputFile.length())
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body(resource);
+    @GetMapping(value = "/download")
+    public void download(String uuid, HttpServletResponse response) throws IOException {
+        String outputFilePath = downloadService.findZipFileToDownloadByUuid(uuid);
+        downloadService.download(outputFilePath, response);
     }
 }
 
