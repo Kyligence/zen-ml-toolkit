@@ -30,9 +30,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class TableauConverterTest {
     @Test
     public void testConvert2ZenML1() throws DocumentException {
-        String tdsPath = "src/test/resources/sources/tableau/SSB.tds";
-        MetricsConverter converter = new TableauConverter();
-        Metrics metrics = converter.convert2Metrics(tdsPath);
+        var tdsPath = "src/test/resources/sources/tableau/SSB.tds";
+        var converter = new TableauConverter();
+        var metrics = converter.convert2Metrics(tdsPath);
         System.out.println(metrics);
     }
 

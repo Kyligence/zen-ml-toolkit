@@ -37,9 +37,13 @@ public enum ErrorCode {
 
     // Zen-2xxxx: file exception
     EMPTY_FILE("ZEN-20001", "File content is empty, please check the file"),
-    SAVE_FILE_ERROR("ZEN-20002", "Failed to save file"),
-    UPLOAD_FILE_TOO_LARGE("ZEN-20003", "Upload file too large to exceed the file size limit"),
-    DOWNLOAD_FILE_ERROR("ZEN-20004", "Download file failed"),
+    FILE_NOT_EXISTS("ZEN-20002", "File not exists"),
+    FOLDER_NOT_EXISTS("ZEN-20003", "Directory not exists"),
+
+    SAVE_FILE_ERROR("ZEN-20004", "Failed to save file"),
+    UPLOAD_FILE_TOO_LARGE("ZEN-20005", "Upload file too large to exceed the file size limit"),
+    DOWNLOAD_FILE_ERROR("ZEN-20006", "Download file failed"),
+
 
     //Zen-3xxxx: security exception
     PWD_DECODE_ERROR("ZEN-30001", "Password decode hex error"),

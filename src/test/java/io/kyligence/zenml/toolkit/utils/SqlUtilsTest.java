@@ -31,8 +31,8 @@ public class SqlUtilsTest {
 
     @Test
     public void testQuoteKeyword() {
-        String expr = "sum(order.sales)";
-        String quotedExpr = SqlUtils.quoteKeyword(expr);
+        var expr = "sum(order.sales)";
+        var quotedExpr = SqlUtils.quoteKeyword(expr);
         Assertions.assertEquals("sum(\"order\".\"sales\")", quotedExpr);
 
         expr = "sum(order.profits)/sum(order.sales)";
@@ -54,7 +54,7 @@ public class SqlUtilsTest {
 
     @Test
     public void testGetSingleNameIdentifiers() {
-        String expr = "sum(order.sales)";
+        var expr = "sum(order.sales)";
         List<String> identifiers = SqlUtils.getSingleNameIdentifiers(expr);
         Assertions.assertEquals(0, identifiers.size());
 
@@ -80,7 +80,7 @@ public class SqlUtilsTest {
 
     @Test
     public void testGetExpCallAndArgs() {
-        String expr = "sum(order.sales)";
+        var expr = "sum(order.sales)";
         Pair<String, List<String>> pairs = SqlUtils.getExpCallAndArgs(expr);
         Assertions.assertEquals("sum", pairs.getKey());
         Assertions.assertTrue(pairs.getValue().contains("order.sales"));
@@ -110,7 +110,7 @@ public class SqlUtilsTest {
 
     @Test
     public void testGetFUllNameIdentifiers() {
-        String expr = "sum(order.sales)";
+        var expr = "sum(order.sales)";
         List<String> rets = SqlUtils.getFullNameIdentifiers(expr);
         Assertions.assertEquals("order.sales", rets.get(0));
 

@@ -30,17 +30,24 @@ import java.util.Date;
 @UtilityClass
 public class WorkDirUtils {
 
-    public static File getTmpFolder() {
-        var  config = ToolkitConfig.getInstance();
+    public static File getTmpFolder(String uuid) {
+        var config = ToolkitConfig.getInstance();
         var tmpDir = new File(config.getLocalTmpFolder());
         if (!tmpDir.exists()) {
             tmpDir.mkdirs();
         }
-        return tmpDir;
+
+        var uuidDir = new File(tmpDir, uuid);
+        if (!uuidDir.exists()) {
+            uuidDir.mkdirs();
+        }
+
+        return uuidDir;
     }
 
-    public static File getTmpFolderOfToday() {
-        var tmpDir = getTmpFolder();
+
+    public static File getTmpFolderOfToday(String uuid) {
+        var tmpDir = getTmpFolder(uuid);
         var today = getTodayStr();
         var todayDir = new File(tmpDir, today);
         if (!todayDir.exists()) {
@@ -58,9 +65,9 @@ public class WorkDirUtils {
     }
 
 
-    public static String getOutputFolder2Compress(String filePath) {
+    public static String getOutputFolder2Compress(String filePath, String uuid) {
         var fileName = FilenameUtils.getBaseName(filePath);
-        var tmpDir = getTmpFolderOfToday();
+        var tmpDir = getTmpFolderOfToday(uuid);
         var dateStr = getDateStr("yyyyMMddHHmmss");
         var destDirName = fileName + "_metrics_" + dateStr + "/";
         var destDir = new File(tmpDir, destDirName);

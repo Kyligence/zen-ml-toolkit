@@ -18,7 +18,6 @@
 
 package io.kyligence.zenml.toolkit;
 
-import io.kyligence.zenml.toolkit.ZenMlToolkitCLI;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -48,12 +47,12 @@ public class ZenMlToolkitCLITest {
 
     @Test
     public void testExecute() {
-        String tdsPath = "src/test/resources/sources/tableau/superstore.tds";
+        var tdsPath = "src/test/resources/sources/tableau/superstore.tds";
         String[] args = new String[]{"-i", tdsPath, "-o", destDirPath};
-        ZenMlToolkitCLI cli = new ZenMlToolkitCLI();
+        var cli = new ZenMlToolkitCLI();
         cli.execute(args);
-        Path destPath = Path.of(destDirPath, "superstore.zen.yml");
-        File destFile = destPath.toFile();
+        var destPath = Path.of(destDirPath, "superstore.zen.yml");
+        var destFile = destPath.toFile();
         Assertions.assertTrue(destFile.exists());
     }
 }
