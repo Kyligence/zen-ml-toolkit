@@ -18,6 +18,7 @@
 
 package io.kyligence.zenml.toolkit.utils;
 
+import io.kyligence.zenml.toolkit.ZenMlToolkitServer;
 import org.apache.calcite.util.Pair;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-@SpringBootTest
+@SpringBootTest(classes = ZenMlToolkitServer.class)
 public class SqlUtilsTest {
 
     @Test

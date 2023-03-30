@@ -26,7 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class ConverterFactory {
     public MetricsConverter getMetricsConverter(String filePath) {
-        String suffix = FilenameUtils.getExtension(filePath);
+        var suffix = FilenameUtils.getExtension(filePath);
         if (StringUtils.isBlank(filePath))
             throw new IllegalArgumentException("Source file path is null, please check the file name");
 

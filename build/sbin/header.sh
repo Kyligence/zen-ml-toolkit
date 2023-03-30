@@ -81,6 +81,20 @@ then
         verbose "ZEN_HOME is ${ZEN_HOME}"
     fi
 
+    # set ZenML toolkit server IP
+    if [ -z $TOOLKIT_SERVER_IP ];then
+      export TOOLKIT_SERVER_IP=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | head -n 1)
+    fi
+
+
+
+    # set ZenML toolkit server port
+    export TOOLKIT_SERVER_PORT=$($ZEN_HOME/sbin/get-properties.sh zen.ml.toolkit.server.port)
+
+    if [[ -z ${TOOLKIT_SERVER_PORT} ]]; then
+        export TOOLKIT_SERVER_PORT=9000
+    fi
+
     unameOut="$(uname -s)"
     case "${unameOut}" in
         Linux*)     os=Linux;;
@@ -93,35 +107,32 @@ then
     
      # set JAVA
      if [[ "${JAVA}" == "" ]]; then
-         if [[ -z "$JAVA_HOME" ]]; then
-             # if $JAVA_HOME is not found
-             if [[ $MACHINE_OS == "Mac" ]]; then
-                 if [[ -d "${ZEN_HOME}/jdk/Contents/Home/" ]]; then
-                     # try to use embedded open jdk first
-                     JAVA_HOME=${ZEN_HOME}/jdk/Contents/Home
-                 elif  command -v java &> /dev/null ; then
-                      # embedded jdk not found, try to use jdk in system
-                     JAVA_HOME=$(dirname $(dirname $(readlink $(which java))))
-                 else
-                     quit "Java environment not found, Java 17 or above is required."
-                 fi
-             elif [[ $MACHINE_OS == "Linux" ]]; then
-                 if [[ -d "${ZEN_HOME}/jdk/" ]]; then
-                     # No Java found, try to use embedded open jdk
-                     JAVA_HOME="${ZEN_HOME}"/jdk
-                 elif command -v java &> /dev/null ; then
-                 # try to use jdk in system
-                     JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
-                 else
-                     quit "Java environment not found, Java 17 or above is required."
-                 fi
+         if [[ $MACHINE_OS == "Mac" ]]; then
+             if [[ -d "${ZEN_HOME}/jdk/Contents/Home/" ]]; then
+                 # try to use embedded open jdk first
+                 JAVA_HOME=${ZEN_HOME}/jdk/Contents/Home
+             elif  command -v java &> /dev/null ; then
+                  # embedded jdk not found, try to use jdk in system
+                 JAVA_HOME=$(dirname $(dirname $(readlink $(which java))))
              else
-                 quit "Not suppported operating system:  $MACHINE_OS"
+                 quit "Java environment not found, Java 17 or above is required."
              fi
-  
-             [[ -z "$JAVA_HOME" ]] && quit "JAVA_HOME is not found, please set JAVA_HOME"
-             export JAVA_HOME
+         elif [[ $MACHINE_OS == "Linux" ]]; then
+             if [[ -d "${ZEN_HOME}/jdk/" ]]; then
+                 # No Java found, try to use embedded open jdk
+                 JAVA_HOME="${ZEN_HOME}"/jdk
+             elif command -v java &> /dev/null ; then
+             # try to use jdk in system
+                 JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
+             else
+                 quit "Java environment not found, Java 17 or above is required."
+             fi
+         else
+             quit "Not suppported operating system:  $MACHINE_OS"
          fi
+
+         [[ -z "$JAVA_HOME" ]] && quit "JAVA_HOME is not found, please set JAVA_HOME"
+         export JAVA_HOME
   
          # check java command is found
          export JAVA=$JAVA_HOME/bin/java

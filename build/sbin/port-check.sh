@@ -1,4 +1,5 @@
 #!/bin/bash
+
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -16,15 +17,25 @@
 # limitations under the License.
 #
 
-
-#title=Checking Java Version
+#title=Checking Ports Availability
 
 source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/header.sh
 
-echo "Checking Java version..."
+function checkRestPort() {
+    echo "Checking rest port on ${MACHINE_OS}"
+    if [[ $MACHINE_OS == "Linux" ]]; then
+        used=$(netstat -tpln | grep "$ZEN_PORT" | awk '{print $7}' | sed "s/\// /g")
+    elif [[ $MACHINE_OS == "Mac" ]]; then
+        used=$(lsof -nP -iTCP:$ZEN_PORT -sTCP:LISTEN | grep $ZEN_PORT | awk '{print $2}')
+    fi
+    if [ ! -z "$used" ]; then
+        quit "ERROR: Port ${ZEN_PORT} is in use, another Kyligence ZenML Toolkit server is running?"
+    fi
+    echo "${ZEN_PORT} is available"
+}
 
-$JAVA -version 2>&1 || quit "ERROR: Detect java version failed. Please set JAVA_HOME."
 
-if [[ $(isValidJavaVersion) == "false" ]]; then
-    quit "ERROR: Java 17 or above is required, current java is ${JAVA}"
-fi
+
+echo "Kyligence ZenML toolkit server port has been set as ${ZEN_PORT}"
+
+checkRestPort ${ZEN_PORT}

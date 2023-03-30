@@ -19,6 +19,9 @@
 package io.kyligence.zenml.toolkit.source.tableau;
 
 import io.kyligence.zenml.toolkit.converter.FileType;
+import io.kyligence.zenml.toolkit.exception.ErrorCode;
+import io.kyligence.zenml.toolkit.exception.ToolkitException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
@@ -33,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class TableauParser {
 
     public static final String TABLEAU_TAG = "Tableau";
@@ -52,24 +56,25 @@ public class TableauParser {
 
 
     public List<TableauCalculatedFields> parseTableauFile(String filePath, String fileType) throws DocumentException {
-        if(StringUtils.equalsIgnoreCase(fileType, FileType.TWB_FILE)){
+        if (StringUtils.equalsIgnoreCase(fileType, FileType.TWB_FILE)) {
             return parseTwbFile(filePath);
-        }else if (StringUtils.equalsIgnoreCase(fileType, FileType.TDS_FILE)) {
+        } else if (StringUtils.equalsIgnoreCase(fileType, FileType.TDS_FILE)) {
             return parseTdsFile(filePath);
         }
 
-        throw new IllegalArgumentException("Not available tableau file type supported, please check the source file");
+        log.error(ErrorCode.ILLEGAL_TABLEAU_FILE_TYPE.getReportMessage());
+        throw new ToolkitException(ErrorCode.ILLEGAL_TABLEAU_FILE_TYPE);
     }
 
     public List<TableauCalculatedFields> parseTwbFile(String twbPath) throws DocumentException {
-        Document twbDoc = reader.read(new File(twbPath));
+        var twbDoc = reader.read(new File(twbPath));
         return parseTwbContent(twbDoc);
     }
 
     public List<TableauCalculatedFields> parseTdsFile(String tdsPath) throws DocumentException {
         List<TableauCalculatedFields> metrics = new ArrayList<>();
-        Document tdsDoc = reader.read(new File(tdsPath));
-        Element datasourceRoot = tdsDoc.getRootElement();
+        var tdsDoc = reader.read(new File(tdsPath));
+        var datasourceRoot = tdsDoc.getRootElement();
         metrics.add(parseTdsContent(datasourceRoot));
         return metrics;
     }
@@ -78,14 +83,15 @@ public class TableauParser {
             throws DocumentException {
         List<TableauCalculatedFields> metrics = new ArrayList<>();
         if (fileType.equalsIgnoreCase(FileType.TDS_FILE)) {
-            Document tdsDoc = reader.read(inputStream);
-            Element datasourceRoot = tdsDoc.getRootElement();
+            var tdsDoc = reader.read(inputStream);
+            var datasourceRoot = tdsDoc.getRootElement();
             metrics.add(parseTdsContent(datasourceRoot));
         } else if (fileType.equalsIgnoreCase(FileType.TWB_FILE)) {
-            Document twbDoc = reader.read(inputStream);
+            var twbDoc = reader.read(inputStream);
             metrics.addAll(parseTwbContent(twbDoc));
         } else {
-            throw new IllegalArgumentException("Only twb file or tds file supported");
+            log.error(ErrorCode.ILLEGAL_TABLEAU_FILE_TYPE.getReportMessage());
+            throw new ToolkitException(ErrorCode.ILLEGAL_TABLEAU_FILE_TYPE);
         }
 
         return metrics;
@@ -93,8 +99,8 @@ public class TableauParser {
 
     private List<TableauCalculatedFields> parseTwbContent(Document twbDoc) {
         List<TableauCalculatedFields> calculatedFields = new ArrayList<>();
-        Element workbook = twbDoc.getRootElement();
-        Element dsElements = workbook.element(TableauFileTag.DATA_SOURCES);
+        var workbook = twbDoc.getRootElement();
+        var dsElements = workbook.element(TableauFileTag.DATA_SOURCES);
         List<Element> datasources = dsElements.elements(TableauFileTag.DATA_SOURCE);
         for (Element datasource : datasources) {
             // each datasource is a tds root
@@ -121,17 +127,17 @@ public class TableauParser {
         List<String> tags = new ArrayList<>();
         tags.add(TABLEAU_TAG);
 
-        Attribute nameAttr = datasourceRoot.attribute(TableauFileTag.NAME);
+        var nameAttr = datasourceRoot.attribute(TableauFileTag.NAME);
         if (nameAttr != null) {
             tags.add(getAttributeOrDefault(nameAttr));
         } else {
-            Attribute formattedNameAttr = datasourceRoot.attribute(TableauFileTag.FORMATTED_NAME);
+            var formattedNameAttr = datasourceRoot.attribute(TableauFileTag.FORMATTED_NAME);
             if (formattedNameAttr != null) {
                 tags.add(getAttributeOrDefault(formattedNameAttr));
             } else {
-                Element connectionElement = datasourceRoot.element(TableauFileTag.CONNECTION);
+                var connectionElement = datasourceRoot.element(TableauFileTag.CONNECTION);
                 if (connectionElement != null) {
-                    Element connectionsElement = connectionElement.element(TableauFileTag.NAMED_CONNECTIONS);
+                    var connectionsElement = connectionElement.element(TableauFileTag.NAMED_CONNECTIONS);
                     if (connectionsElement != null) {
                         List<Element> connections = connectionsElement.elements(TableauFileTag.NAMED_CONNECTION);
                         for (Element conn : connections) {
@@ -151,11 +157,11 @@ public class TableauParser {
     private List<String> getViews(Element datasourceRoot) {
         List<String> views = new ArrayList<>();
 
-        Attribute nameAttr = datasourceRoot.attribute(TableauFileTag.NAME);
+        var nameAttr = datasourceRoot.attribute(TableauFileTag.NAME);
         if (nameAttr != null) {
             views.add(getAttributeOrDefault(nameAttr));
         } else {
-            Attribute formattedNameAttr = datasourceRoot.attribute(TableauFileTag.FORMATTED_NAME);
+            var formattedNameAttr = datasourceRoot.attribute(TableauFileTag.FORMATTED_NAME);
             if (formattedNameAttr != null) {
                 views.add(getAttributeOrDefault(formattedNameAttr));
             }
@@ -167,7 +173,7 @@ public class TableauParser {
     private List<String> getTables(Element datasourceRoot) {
         List<String> tables = new ArrayList<>();
 
-        Element connectionElement = datasourceRoot.element(TableauFileTag.CONNECTION);
+        var connectionElement = datasourceRoot.element(TableauFileTag.CONNECTION);
         if (connectionElement == null) {
             return tables;
         }
@@ -176,11 +182,11 @@ public class TableauParser {
         for (Element element : elements) {
             if (element.getName().contains(TableauFileTag.RELATION)) {
                 // to get tables from relations tag
-                Attribute typeAttr = element.attribute(TableauFileTag.TYPE);
-                String typeVal = getAttributeOrDefault(typeAttr);
+                var typeAttr = element.attribute(TableauFileTag.TYPE);
+                var typeVal = getAttributeOrDefault(typeAttr);
                 if (typeVal != null && typeVal.equals(TABLE)) {
-                    Attribute nameAttr = element.attribute(TableauFileTag.NAME);
-                    String nameVal = getAttributeOrDefault(nameAttr);
+                    var nameAttr = element.attribute(TableauFileTag.NAME);
+                    var nameVal = getAttributeOrDefault(nameAttr);
                     if (nameVal != null) {
                         tables.add(nameVal);
                     }
@@ -191,9 +197,9 @@ public class TableauParser {
     }
 
     private void checkIfUseColumnAlias(Element datasourceRoot) {
-        Element aliases = datasourceRoot.element(TableauFileTag.ALIASES);
+        var aliases = datasourceRoot.element(TableauFileTag.ALIASES);
         if (aliases != null) {
-            Attribute enabled = aliases.attribute(TableauFileTag.ENABLED);
+            var enabled = aliases.attribute(TableauFileTag.ENABLED);
             if (enabled != null && enabled.getValue().equalsIgnoreCase(TableauFileTag.YES)) {
                 this.useColumnAlias = true;
             }
@@ -203,15 +209,15 @@ public class TableauParser {
     private Map<String, String> parseColumnAlias(Element datasourceRoot) {
         Map<String, String> columnAlias = new HashMap<>();
 
-        Element connectionElement = datasourceRoot.element(TableauFileTag.CONNECTION);
+        var connectionElement = datasourceRoot.element(TableauFileTag.CONNECTION);
         if (connectionElement != null) {
-            Element colsElement = connectionElement.element(TableauFileTag.COLS);
+            var colsElement = connectionElement.element(TableauFileTag.COLS);
             if (colsElement != null) {
                 List<Element> mapElements = colsElement.elements(TableauFileTag.MAP);
                 if (mapElements != null) {
                     for (Element map : mapElements) {
-                        String key = map.attributeValue(TableauFileTag.KEY);
-                        String val = formatIdentifier(map.attributeValue(TableauFileTag.VALUE));
+                        var key = map.attributeValue(TableauFileTag.KEY);
+                        var val = formatIdentifier(map.attributeValue(TableauFileTag.VALUE));
                         columnAlias.put(key, val);
                     }
                 }
@@ -239,50 +245,50 @@ public class TableauParser {
     private TableauColumn retrieveTableauColumnAttributes(Element column, Map<String, String> columnAlias) {
         TableauColumn tableauColumn = new TableauColumn();
         // caption
-        Attribute captionAttr = column.attribute(TableauFileTag.CAPTION);
-        String caption = getAttributeOrDefault(captionAttr);
+        var captionAttr = column.attribute(TableauFileTag.CAPTION);
+        var caption = getAttributeOrDefault(captionAttr);
         tableauColumn.setCaption(caption);
 
         // datatype
-        Attribute datatypeAttr = column.attribute(TableauFileTag.DATATYPE);
-        String datatype = getAttributeOrDefault(datatypeAttr);
+        var datatypeAttr = column.attribute(TableauFileTag.DATATYPE);
+        var datatype = getAttributeOrDefault(datatypeAttr);
         tableauColumn.setDatatype(TableauDataType.convertDataType(datatype));
 
         // role
-        Attribute roleAttr = column.attribute(TableauFileTag.ROLE);
-        String role = getAttributeOrDefault(roleAttr);
+        var roleAttr = column.attribute(TableauFileTag.ROLE);
+        var role = getAttributeOrDefault(roleAttr);
         tableauColumn.setRole(role);
 
         // name
         // dimension role --> name is column name or alias
         // aggregation role --> name is agg name
-        Attribute nameAttr = column.attribute(TableauFileTag.NAME);
-        String name = getAttributeOrDefault(nameAttr);
-        if (role.equalsIgnoreCase(TableauColumn.DIMENSION)) {
+        var nameAttr = column.attribute(TableauFileTag.NAME);
+        var name = getAttributeOrDefault(nameAttr);
+        if (StringUtils.isNotEmpty(role) && StringUtils.equalsIgnoreCase(role, TableauColumn.DIMENSION)) {
             tableauColumn.setName(getColumnNameFromAlias(columnAlias, name));
         } else {
             tableauColumn.setName(formatName(name));
         }
 
         // type
-        Attribute typeAttr = column.attribute(TableauFileTag.TYPE);
+        var typeAttr = column.attribute(TableauFileTag.TYPE);
         tableauColumn.setType(getAttributeOrDefault(typeAttr));
 
         // hidden
-        Attribute hiddenAttr = column.attribute(TableauFileTag.HIDDEN);
+        var hiddenAttr = column.attribute(TableauFileTag.HIDDEN);
         tableauColumn.setHidden(getAttributeOrDefault(hiddenAttr));
 
         // semantic-role
-        Attribute semanticRoleAttr = column.attribute(TableauFileTag.SEMANTIC_ROLE);
-        String semanticRole = getAttributeOrDefault(semanticRoleAttr);
+        var semanticRoleAttr = column.attribute(TableauFileTag.SEMANTIC_ROLE);
+        var semanticRole = getAttributeOrDefault(semanticRoleAttr);
         tableauColumn.setSemanticRole(formatName(semanticRole));
 
         // aggregation
-        Attribute aggAttr = column.attribute(TableauFileTag.AGGREGATION);
+        var aggAttr = column.attribute(TableauFileTag.AGGREGATION);
         tableauColumn.setAggregation(getAttributeOrDefault(aggAttr));
 
         // child node: calculation
-        Element calculationEle = column.element(TableauFileTag.CALCULATION);
+        var calculationEle = column.element(TableauFileTag.CALCULATION);
         if (calculationEle != null) {
             tableauColumn.setCalculation(parserCalculation(calculationEle, columnAlias));
         }
@@ -291,35 +297,35 @@ public class TableauParser {
     }
 
     private TableauCalculation parserCalculation(Element calculationEle, Map<String, String> columnAlias) {
-        TableauCalculation calc = new TableauCalculation();
+        var calc = new TableauCalculation();
 
-        Attribute classAttr = calculationEle.attribute(TableauFileTag.CLASS);
-        String calcClass = classAttr.getValue();
+        var classAttr = calculationEle.attribute(TableauFileTag.CLASS);
+        var calcClass = classAttr.getValue();
         calc.setClazz(calcClass);
 
         if (calcClass.equalsIgnoreCase(TableauCalculation.CLASS_TABLEAU)) {
             // tableau class means measure, the formula is measure expression
-            Attribute formulaAttr = calculationEle.attribute(TableauFileTag.FORMULA);
+            var formulaAttr = calculationEle.attribute(TableauFileTag.FORMULA);
             calc.setFormula(formatFormula(getAttributeOrDefault(formulaAttr), columnAlias));
         } else if (calcClass.equalsIgnoreCase(TableauCalculation.CLASS_BIN)) {
-            Attribute decimalAttr = calculationEle.attribute(TableauFileTag.DECIMALS);
+            var decimalAttr = calculationEle.attribute(TableauFileTag.DECIMALS);
             calc.setDecimals(getAttributeOrDefault(decimalAttr));
 
-            Attribute formulaAttr = calculationEle.attribute(TableauFileTag.FORMULA);
+            var formulaAttr = calculationEle.attribute(TableauFileTag.FORMULA);
             calc.setFormula(formatFormula(getAttributeOrDefault(formulaAttr), columnAlias));
 
-            Attribute pegAttr = calculationEle.attribute(TableauFileTag.PEG);
+            var pegAttr = calculationEle.attribute(TableauFileTag.PEG);
             calc.setPeg(getAttributeOrDefault(pegAttr));
 
-            Attribute sizeParamAttr = calculationEle.attribute(TableauFileTag.SIZE_PARAMETER);
+            var sizeParamAttr = calculationEle.attribute(TableauFileTag.SIZE_PARAMETER);
             calc.setSizeParameter(getAttributeOrDefault(sizeParamAttr));
 
         } else if (calcClass.equalsIgnoreCase(TableauCalculation.CLASS_CATEGORICAL_BIN)) {
             // skip the child node parse, which named tag is <bin>
-            Attribute colAttr = calculationEle.attribute(TableauFileTag.COLUMN);
+            var colAttr = calculationEle.attribute(TableauFileTag.COLUMN);
             calc.setColumn(getColumnNameFromAlias(columnAlias, getAttributeOrDefault(colAttr)));
 
-            Attribute newBinAttr = calculationEle.attribute(TableauFileTag.NEW_BIN);
+            var newBinAttr = calculationEle.attribute(TableauFileTag.NEW_BIN);
             calc.setNewBin(getAttributeOrDefault(newBinAttr));
         }
         return calc;
@@ -349,15 +355,15 @@ public class TableauParser {
         }
 
         if (useColumnAlias) {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             if (formula.contains("+") || formula.contains("-") || formula.contains("*") || formula.contains("/")) {
                 String[] parts = formula.split(MATH_OPERATOR_REGEX);
                 for (int i = 0; i < parts.length; i++) {
-                    String part = parts[i];
+                    var part = parts[i];
                     if (part.contains("(") || part.contains(")")) {
                         String[] subParts = part.split(PARENTHESIS_REGEX);
                         for (String subpart : subParts) {
-                            String identifier = getColumnNameFromAlias(columnAlias, subpart);
+                            var identifier = getColumnNameFromAlias(columnAlias, subpart);
                             sb.append(removeTableIdentifier(identifier));
                         }
                     } else {
@@ -371,11 +377,11 @@ public class TableauParser {
             } else if (formula.contains("(") || formula.contains(")")) {
                 String[] subParts = formula.split(PARENTHESIS_REGEX);
                 for (String subpart : subParts) {
-                    String identifier = getColumnNameFromAlias(columnAlias, subpart);
+                    var identifier = getColumnNameFromAlias(columnAlias, subpart);
                     sb.append(removeTableIdentifier(identifier));
                 }
             } else {
-                String identifier = getColumnNameFromAlias(columnAlias, formula);
+                var identifier = getColumnNameFromAlias(columnAlias, formula);
                 sb.append(removeTableIdentifier(identifier));
             }
 

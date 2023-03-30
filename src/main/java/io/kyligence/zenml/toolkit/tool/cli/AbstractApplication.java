@@ -18,7 +18,6 @@
 
 package io.kyligence.zenml.toolkit.tool.cli;
 
-import io.kyligence.zenml.toolkit.tool.OptionsHelper;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
@@ -34,7 +33,7 @@ public abstract class AbstractApplication {
     protected abstract void execute(OptionsHelper optionsHelper) throws Exception;
 
     public final void execute(String[] args) {
-        OptionsHelper optionsHelper = new OptionsHelper();
+        var optionsHelper = new OptionsHelper();
         System.out.println(
                 ANSI_BLUE + "Running " + this.getClass().getName() + " " + StringUtils.join(args, " ") + ANSI_RESET);
         try {
@@ -51,8 +50,8 @@ public abstract class AbstractApplication {
     }
 
     protected String parseStringArgFromOption(OptionsHelper optionsHelper, Option option, String defaultval) {
-        boolean hasOpt = optionsHelper.hasOption(option);
-        String value = defaultval;
+        var hasOpt = optionsHelper.hasOption(option);
+        var value = defaultval;
         if (hasOpt) {
             value = optionsHelper.getOptionValue(option);
         }
@@ -69,8 +68,8 @@ public abstract class AbstractApplication {
      * @return int argument
      */
     protected int parseIntArgFromOption(OptionsHelper optionsHelper, Option option, int defaultVal, int minVal) {
-        boolean hasOpt = optionsHelper.hasOption(option);
-        int value = defaultVal;
+        var hasOpt = optionsHelper.hasOption(option);
+        var value = defaultVal;
         if (hasOpt) {
             try {
                 value = Integer.valueOf(optionsHelper.getOptionValue(option));

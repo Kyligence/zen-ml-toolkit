@@ -40,7 +40,7 @@ public class DwSqlDialect extends SparkSqlDialect {
         if (val.isEmpty())
             return true;
 
-        char begin = val.charAt(0);
+        var begin = val.charAt(0);
         if (!Character.isJavaIdentifierStart(begin))
             return true;
 

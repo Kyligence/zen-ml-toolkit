@@ -3,7 +3,7 @@
 ## ZenML
 
 **ZenML** stands for **Zen Metrics Language**. It is a **YAML-based descriptive language** that is used
-by [Kyligence Zen](https://zen.kyligence.io/) to define `metrics`, `dimensions`, and
+by [Kyligence Zen](https://kyligence.io/zen) to define `metrics`, `dimensions`, and
 the `underlying relational datasets`. Think of ZenML as a semantic layer that promotes technical
 data into business data, like a bridge that enables non-technical users to understand, explore, and get insight out of
 traditional data warehouses. ZenML encourages the separation of data modeling and data visualization, and facilitates a
@@ -27,7 +27,7 @@ More details please refer to [ZenML Introduction](https://zen-docs.kyligence.io/
 
 ## Kyligence Zen
 
-[Kyligence Zen](https://zen.kyligence.io/) is the **go-to low-code metrics platform** for businesses to get rid of the
+[Kyligence Zen](https://kyligence.io/zen) is the **go-to low-code metrics platform** for businesses to get rid of the
 limitations of BI reports and
 achieve metrics-driven decision-making. Kyligence Zen centralizes scattered metrics in BI to a unified metrics platform,
 saving you time and ensuring that all your metrics are managed and analyzed in one place.
@@ -41,7 +41,7 @@ is accessible to both technical and non-technical users alike.
 ![zen](docs/images/zen.png)
 
 Try out Kyligence Zen today and take control of your metrics like never before!
-Visit [zen.kyligence.io](https://zen.kyligence.io/) to get started
+Visit [zen.kyligence.io](https://kyligence.io/zen) to get started
 for free.
 
 ## Kyligence ZenML Toolkit
@@ -63,8 +63,7 @@ not only:
 ### Prerequisite
 
 - Supported OS:
-  - Fully supports `Linux` / `MacOS`
-  - `Windows`
+    - Fully supports `Linux` / `MacOS`
 - Supported JDK version: `JDK17`
 
 ### Download
@@ -89,24 +88,10 @@ $ tar -zxvf Kyligence-ZenML-Toolkit-{version}.tar.gz
 
 ### Usage
 
-For Mac users & Linux users, in Terminal, enter into the folder `${Kyligence-ZenML-Toolkit-{version}}`
+- For **Command Line Interface**: please refer to [Usage of Command Line Interface](docs/cli.md)
+- For **Server mode and REST API**: please refer to [Usage of Server Mode](docs/server.md)
 
-```
-$ sh ./bin/zen.sh -i <arg> -o <arg>
- -h,--help           print help message.
- -i,--in <arg>       specify the location of source file
- -o,--output <arg>   specify the output directory for metrics file
-                     generated
-```
-
-**For Windows users**
-> 1. Download `Kyligence-ZenML-Toolkit-{version}.tar.gz` and extract the tar package
-> 2. Install JDK17 on your windows
-> 3. Enter into folder `${Kyligence-ZenML-Toolkit-{version}}/lib` in command line or terminal
-> 4. Use `java -jar zen-ml-toolkit.jar -i <source_file_path> -o <output_folder>` to execute toolkit
-
-
-### Example
+### CLI Example
 
 #### Convert tableau tds file to ZenML file
 
@@ -120,7 +105,7 @@ You will get a `superstore.zen.yml` file in folder `Kyligence-ZenML-Toolkit-{ver
 
 #### Import ZenML to Kyligence Zen
 
-1. Login into [Kyligence Zen](https://zen.kyligence.io/)
+1. Login into [Kyligence Zen](https://kyligence.io/zen)
 2. Go to **Data**, click **New**, Choose **Table**
    ![New Table](docs/images/examples/import_table.png)
 3. Choose upload csv, upload `orders.csv` file in folder `Kyligence-ZenML-Toolkit-{version}/samples`
@@ -135,11 +120,8 @@ You will get a `superstore.zen.yml` file in folder `Kyligence-ZenML-Toolkit-{ver
    ![Metrics in Zen](docs/images/examples/metrics_in_zen.png)
 
 ## Contribution
-
 Welcome to contribute, you can convert any files which contains metrics metadata to a ZenML file.
-
-- Please note that this project use **JDK17**
-- For ZenML spec, please refer to  [ZenML Introduction](https://zen-docs.kyligence.io/en/appendix/zenml-reference)
+Please refer to the [Dev Guide](docs/dev.md) to get the instruction for development.
 
 ## Contributors
 
@@ -152,7 +134,8 @@ Made with [contrib.rocks](https://contrib.rocks).
 ## Contact Kyligence
 
 If you have requirements about
-- Defining their metrics once in the metrics store
+
+- Defining your metrics once in the metrics store
 - Forming that single source of truth
 - Consistently reuse the metrics across BI, automation tools, business workflows, or even advanced analytics
 

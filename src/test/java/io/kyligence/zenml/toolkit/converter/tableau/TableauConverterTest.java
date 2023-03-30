@@ -18,6 +18,7 @@
 
 package io.kyligence.zenml.toolkit.converter.tableau;
 
+import io.kyligence.zenml.toolkit.ZenMlToolkitServer;
 import io.kyligence.zenml.toolkit.converter.MetricsConverter;
 import io.kyligence.zenml.toolkit.converter.tableau.TableauConverter;
 import io.kyligence.zenml.toolkit.metrics.Metrics;
@@ -25,7 +26,7 @@ import org.dom4j.DocumentException;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@SpringBootTest(classes = ZenMlToolkitServer.class)
 public class TableauConverterTest {
     @Test
     public void testConvert2ZenML1() throws DocumentException {

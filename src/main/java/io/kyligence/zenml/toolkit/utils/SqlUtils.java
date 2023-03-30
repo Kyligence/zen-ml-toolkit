@@ -26,13 +26,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.calcite.sql.SqlBasicCall;
 import org.apache.calcite.sql.SqlCharStringLiteral;
 import org.apache.calcite.sql.SqlIdentifier;
-import org.apache.calcite.sql.SqlNode;
 import org.apache.calcite.sql.util.SqlBasicVisitor;
 import org.apache.calcite.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -68,7 +66,7 @@ public class SqlUtils {
     }
 
     public static String like(String identifier, boolean left, boolean right) {
-        String likeIdentifier = identifier;
+        var likeIdentifier = identifier;
         if (left) {
             likeIdentifier = LIKE_FLAG_CHART + likeIdentifier;
         }
@@ -98,7 +96,7 @@ public class SqlUtils {
         List<String> ret = new ArrayList<>();
         try {
             expr = DwSqlDialect.startWithSqlKeyword(expr) ? "_" + expr : expr;
-            SqlNode sqlNode = CalciteParser.parseExpression(expr);
+            var sqlNode = CalciteParser.parseExpression(expr);
             sqlNode.accept(new SqlBasicVisitor<>() {
                 @Override
                 public Object visit(SqlIdentifier identifier) {
@@ -131,18 +129,18 @@ public class SqlUtils {
         if (DwSqlDialect.isSqlKeyword(expr))
             return '"' + expr + '"';
 
-        int lastIndex = 0;
-        StringBuilder buf = new StringBuilder();
-        Matcher matcher = NAIVE_IDENTIFIER_PTN.matcher(expr);
+        var lastIndex = 0;
+        var buf = new StringBuilder();
+        var matcher = NAIVE_IDENTIFIER_PTN.matcher(expr);
         while (matcher.find()) {
-            int start = matcher.start();
+            var start = matcher.start();
             buf.append(expr, lastIndex, start);
-            String g1 = matcher.group(1);
-            String g2 = matcher.group(2);
-            boolean containsKeyWord = DwSqlDialect.isSqlKeyword(g1) || DwSqlDialect.isSqlKeyword(g2);
-            boolean alreadyQuote = start >= 1
+            var g1 = matcher.group(1);
+            var g2 = matcher.group(2);
+            var containsKeyWord = DwSqlDialect.isSqlKeyword(g1) || DwSqlDialect.isSqlKeyword(g2);
+            var alreadyQuote = start >= 1
                     && (expr.charAt(start - 1) == '\'' || expr.charAt(start - 1) == '"');
-            boolean withQuote = containsKeyWord && !alreadyQuote;
+            var withQuote = containsKeyWord && !alreadyQuote;
             buf.append(withQuote ? '"' + g1 + '"' : g1);
             buf.append(".");
             buf.append(withQuote ? '"' + g2 + '"' : g2);
@@ -156,12 +154,12 @@ public class SqlUtils {
 
     public static Pair<String, List<String>> getExpCallAndArgs(String expr) {
         expr = DwSqlDialect.startWithSqlKeyword(expr) ? "_" + expr : expr;
-        List<String> ret = new ArrayList<>();
+
         try {
-            SqlNode sqlNode = CalciteParser.parseExpression(expr);
+            var sqlNode = CalciteParser.parseExpression(expr);
             if (sqlNode instanceof SqlBasicCall) {
-                SqlBasicCall call = (SqlBasicCall) sqlNode;
-                String callName = call.getOperator().getName();
+                var call = (SqlBasicCall) sqlNode;
+                var callName = call.getOperator().getName();
                 callName = callName.startsWith("_") ? callName.substring(1) : callName;
                 return Pair.of(callName, call.getOperandList().stream().map(child -> {
                     if (child instanceof SqlIdentifier) {
@@ -182,7 +180,7 @@ public class SqlUtils {
     public static List<String> getFullNameIdentifiers(String expr) {
         List<String> ret = new ArrayList<>();
         try {
-            SqlNode sqlNode = CalciteParser.parseExpression(expr);
+            var sqlNode = CalciteParser.parseExpression(expr);
             sqlNode.accept(new SqlBasicVisitor<>() {
                 @Override
                 public Object visit(SqlIdentifier identifier) {

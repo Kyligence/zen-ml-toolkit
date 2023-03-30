@@ -18,19 +18,19 @@
 
 package io.kyligence.zenml.toolkit;
 
-import io.kyligence.zenml.toolkit.entry.ZenGenerator;
-import io.kyligence.zenml.toolkit.tool.OptionsHelper;
+import io.kyligence.zenml.toolkit.exception.ErrorCode;
+import io.kyligence.zenml.toolkit.exception.ToolkitException;
+import io.kyligence.zenml.toolkit.service.ZenGenerator;
 import io.kyligence.zenml.toolkit.tool.cli.AbstractApplication;
+import io.kyligence.zenml.toolkit.tool.cli.OptionsHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
 
 @Slf4j
-@SpringBootApplication
 public class ZenMlToolkitCLI extends AbstractApplication {
 
     private String srcFilePath;
@@ -50,7 +50,7 @@ public class ZenMlToolkitCLI extends AbstractApplication {
 
     @Override
     protected Options getOptions() {
-        final Options options = new Options();
+        final var options = new Options();
         options.addOption(OPTION_SRC_FILE_PATH);
         options.addOption(OPTION_DEST_FILE_PATH);
         options.addOption(OPTION_HELP);
@@ -64,8 +64,8 @@ public class ZenMlToolkitCLI extends AbstractApplication {
     private void initOptionValues(OptionsHelper optionsHelper) {
         if (optionsHelper.getOptions().length != 2) {
             printUsage(optionsHelper);
-            log.error("Illegal arguments, please check the help usage");
-            throw new RuntimeException("Illegal arguments, please check the help usage");
+            log.error(ErrorCode.CLI_ILLEGAL_ARGUMENTS.getReportMessage());
+            throw new ToolkitException(ErrorCode.CLI_ILLEGAL_ARGUMENTS);
         }
 
         this.srcFilePath = parseStringArgFromOption(optionsHelper, OPTION_SRC_FILE_PATH, "");
@@ -73,13 +73,13 @@ public class ZenMlToolkitCLI extends AbstractApplication {
 
         if (StringUtils.isBlank(srcFilePath)) {
             printUsage(optionsHelper);
-            log.error("Source file path is empty, please check the help usage");
-            throw new RuntimeException("Source file path is empty, please check the help usage");
+            log.error(ErrorCode.CLI_SOURCE_FILE_PATH_EMPTY.getReportMessage());
+            throw new ToolkitException(ErrorCode.CLI_SOURCE_FILE_PATH_EMPTY);
         }
         if (StringUtils.isBlank(destDirPath)) {
             printUsage(optionsHelper);
-            log.error("Output directory path is empty, please check the help usage");
-            throw new RuntimeException("Output directory path is empty, please check the help usage");
+            log.error(ErrorCode.CLI_OUTPUT_DIR_PATH_EMPTY.getReportMessage());
+            throw new ToolkitException(ErrorCode.CLI_OUTPUT_DIR_PATH_EMPTY);
         }
 
     }
@@ -93,16 +93,16 @@ public class ZenMlToolkitCLI extends AbstractApplication {
         initOptionValues(optionsHelper);
 
         try {
-            ZenGenerator generator = new ZenGenerator();
-            generator.generateZenMetrics(srcFilePath, destDirPath);
+            var generator = new ZenGenerator();
+            generator.convertMetrics2ZenMlFile(srcFilePath, destDirPath);
         } catch (IOException e) {
-            log.error("Failed to write metrics to file. please check the details: ", e);
-            throw new RuntimeException("Failed to write metrics to file. please check the details: ", e);
+            log.error(ErrorCode.FAILED_GENERATE_ZENML.getReportMessage(), e);
+            throw new ToolkitException(ErrorCode.FAILED_GENERATE_ZENML, e);
         }
     }
 
     public static void main(String[] args) {
-        ZenMlToolkitCLI cli = new ZenMlToolkitCLI();
+        var cli = new ZenMlToolkitCLI();
         cli.execute(args);
     }
 }

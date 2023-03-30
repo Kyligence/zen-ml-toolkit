@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.tool;
+package io.kyligence.zenml.toolkit.tool.cli;
 
 import org.apache.commons.cli.*;
 
@@ -36,7 +36,7 @@ public class OptionsHelper {
     }
 
     public String getOptionsAsString() {
-        StringBuilder buf = new StringBuilder();
+        var buf = new StringBuilder();
         for (Option option : commandLine.getOptions()) {
             buf.append(" ");
             buf.append(option.getOpt());
@@ -57,7 +57,7 @@ public class OptionsHelper {
     }
 
     public void printUsage(String programName, Options options) {
-        HelpFormatter formatter = new HelpFormatter();
+        var formatter = new HelpFormatter();
         formatter.printHelp(programName, options);
     }
 
@@ -69,7 +69,7 @@ public class OptionsHelper {
         return path;
     }
 
-    public List<String> getArgList(){
+    public List<String> getArgList() {
         return commandLine.getArgList();
     }
 }

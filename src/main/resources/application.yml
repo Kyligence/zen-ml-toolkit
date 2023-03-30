@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: Kyligence ZenML Toolkit
+
+server:
+  port: ${zen.ml.toolkit.server.port:9000}
+  address: 0.0.0.0
+  tomcat:
+    accept-count: 500
+    uri-encoding: UTF-8
+    max-connections: 10000
+    keep-alive-timeout: 6000000
+    accesslog:
+      enabled: true
+      directory: ${ZEN_HOME}/logs
+      pattern: '%h %l %u %t "%r" %s %b %D'
+      prefix: toolkit_access
+    basedir: ${ZEN_HOME}
+  error:
+    include-stacktrace: always
