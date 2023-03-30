@@ -1,0 +1,71 @@
+{
+  "name": "kyligence-zen-ml-toolkit",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "axios": "0.20.0",
+    "core-js": "3.6.5",
+    "element-ui": "2.15.13",
+    "resize-observer-polyfill": "1.5.1",
+    "url-polyfill": "1.1.10",
+    "vue": "2.6.12",
+    "weakmap-polyfill": "2.0.2"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "4.5.0",
+    "@vue/cli-plugin-eslint": "4.5.0",
+    "@vue/cli-plugin-router": "4.5.0",
+    "@vue/cli-plugin-vuex": "4.5.0",
+    "@vue/cli-service": "4.5.0",
+    "@vue/eslint-config-standard": "5.1.2",
+    "babel-eslint": "10.1.0",
+    "babel-plugin-component": "^1.1.1",
+    "eslint": "6.7.2",
+    "eslint-plugin-import": "2.20.2",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-promise": "4.2.1",
+    "eslint-plugin-standard": "4.0.0",
+    "eslint-plugin-vue": "6.2.2",
+    "vue-template-compiler": "2.6.12"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "@vue/standard"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint",
+      "ecmaFeatures": {
+        "legacyDecorators": true
+      }
+    },
+    "rules": {
+      "no-unused-vars": "warn",
+      "no-debugger": "warn",
+      "no-octal-escape": "warn",
+      "no-console": "warn",
+      "no-constant-condition": 2,
+      "standard/no-callback-literal": "off",
+      "camelcase": [
+        0,
+        {
+          "properties": "always"
+        }
+      ]
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
