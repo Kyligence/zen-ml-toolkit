@@ -86,7 +86,7 @@ function checkIfStopUserSameAsStartUser() {
 }
 
 function runCommand() {
-    ${JAVA} -Xms${JAVA_VM_XMS} -Xmx${JAVA_VM_XMX}  -DZEN_HOME=${ZEN_HOME}  -cp  "${ZEN_HOME}/lib/${MAIN_JAR}"  -Dloader.main=io.kyligence.zenml.toolkit.ZenMlToolkitCLI  -Dloader.args="$@" org.springframework.boot.loader.PropertiesLauncher
+    ${JAVA} -Xms${JAVA_VM_XMS} -Xmx${JAVA_VM_XMX}  -DZEN_HOME=${ZEN_HOME}  -cp  "${ZEN_HOME}/lib/${MAIN_JAR}"  -Dloader.main=io.kyligence.zenml.toolkit.ZenMlToolkitCLI org.springframework.boot.loader.PropertiesLauncher  "$@"
     exit $?
 }
 
