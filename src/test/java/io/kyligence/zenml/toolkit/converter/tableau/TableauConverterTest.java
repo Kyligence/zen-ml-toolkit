@@ -31,8 +31,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class TableauConverterTest {
 
     private static final String TDS_BASE_DIR = "src/test/resources/sources/tableau/tds/";
+
+    private static final String TWB_BASE_DIR = "src/test/resources/sources/tableau/twb/";
+
     @Test
-    public void testConvert2ZenML1() throws DocumentException {
+    public void testConvert2ZenMLCase1() throws DocumentException {
         var tdsName = "SSB.tds";
         var tdsPath = TDS_BASE_DIR + tdsName;
         var converter = new TableauConverter();
@@ -40,4 +43,130 @@ public class TableauConverterTest {
         Assertions.assertEquals(4, metrics.getMetrics().size());
     }
 
+
+    @Test
+    public void testTwb2ZenMLCase1() throws DocumentException {
+        var twbName = "twb1.twb";
+        var twbPath = TWB_BASE_DIR + twbName;
+        var converter = new TableauConverter();
+        var metrics = converter.convert2Metrics(twbPath);
+        Assertions.assertEquals(16, metrics.getMetrics().size());
+    }
+
+    @Test
+    public void testTwb2ZenMLCase2() throws DocumentException {
+        var twbName = "twb2.twb";
+        var twbPath = TWB_BASE_DIR + twbName;
+        var converter = new TableauConverter();
+        var metrics = converter.convert2Metrics(twbPath);
+        Assertions.assertEquals(7, metrics.getMetrics().size());
+    }
+
+    @Test
+    public void testTwb2ZenMLCase3() throws DocumentException {
+        var twbName = "twb3.twb";
+        var twbPath = TWB_BASE_DIR + twbName;
+        var converter = new TableauConverter();
+        var metrics = converter.convert2Metrics(twbPath);
+        Assertions.assertEquals(10, metrics.getMetrics().size());
+    }
+
+    @Test
+    public void testTwb2ZenMLCase4() throws DocumentException {
+        var twbName = "twb4.twb";
+        var twbPath = TWB_BASE_DIR + twbName;
+        var converter = new TableauConverter();
+        var metrics = converter.convert2Metrics(twbPath);
+        Assertions.assertEquals(3, metrics.getMetrics().size());
+    }
+
+    @Test
+    public void testTwb2ZenMLCase5() throws DocumentException {
+        var twbName = "twb5.twb";
+        var twbPath = TWB_BASE_DIR + twbName;
+        var converter = new TableauConverter();
+        var metrics = converter.convert2Metrics(twbPath);
+        Assertions.assertEquals(28, metrics.getMetrics().size());
+    }
+
+    @Test
+    public void testTwb2ZenMLCase6() throws DocumentException {
+        var twbName = "twb6.twb";
+        var twbPath = TWB_BASE_DIR + twbName;
+        var converter = new TableauConverter();
+        var metrics = converter.convert2Metrics(twbPath);
+        Assertions.assertEquals(6, metrics.getMetrics().size());
+    }
+
+    @Test
+    public void testTwb2ZenMLCase7() throws DocumentException {
+        var twbName = "twb7.twb";
+        var twbPath = TWB_BASE_DIR + twbName;
+        var converter = new TableauConverter();
+        var metrics = converter.convert2Metrics(twbPath);
+        Assertions.assertEquals(19, metrics.getMetrics().size());
+    }
+
+    @Test
+    public void testTwb2ZenMLCase8() throws DocumentException {
+        var twbName = "twb8.twb";
+        var twbPath = TWB_BASE_DIR + twbName;
+        var converter = new TableauConverter();
+        var metrics = converter.convert2Metrics(twbPath);
+        Assertions.assertEquals(3, metrics.getMetrics().size());
+    }
+
+    @Test
+    public void testTwb2ZenMLCase9() throws DocumentException {
+        var twbName = "twb9.twb";
+        var twbPath = TWB_BASE_DIR + twbName;
+        var converter = new TableauConverter();
+        var metrics = converter.convert2Metrics(twbPath);
+        Assertions.assertEquals(6, metrics.getMetrics().size());
+    }
+
+    @Test
+    public void testTwb2ZenMLCase10() throws DocumentException {
+        var twbName = "twb10.twb";
+        var twbPath = TWB_BASE_DIR + twbName;
+        var converter = new TableauConverter();
+        var metrics = converter.convert2Metrics(twbPath);
+        Assertions.assertEquals(8, metrics.getMetrics().size());
+    }
+
+    @Test
+    public void testTwb2ZenMLCase11() throws DocumentException {
+        var twbName = "twb11.twb";
+        var twbPath = TWB_BASE_DIR + twbName;
+        var converter = new TableauConverter();
+        var metrics = converter.convert2Metrics(twbPath);
+        Assertions.assertEquals(15, metrics.getMetrics().size());
+    }
+
+    @Test
+    public void testTwb2ZenMLCase12() throws DocumentException {
+        var twbName = "twb12.twb";
+        var twbPath = TWB_BASE_DIR + twbName;
+        var converter = new TableauConverter();
+        var metrics = converter.convert2Metrics(twbPath);
+        Assertions.assertEquals(2, metrics.getMetrics().size());
+    }
+
+    @Test
+    public void testTwb2ZenMLCase13() throws DocumentException {
+        var twbName = "small is beautiful - TP.twb";
+        var twbPath = TWB_BASE_DIR + twbName;
+        var converter = new TableauConverter();
+        var metrics = converter.convert2Metrics(twbPath);
+        Assertions.assertEquals(9, metrics.getMetrics().size());
+    }
+
+    @Test
+    public void testTwb2ZenMLCase14() throws DocumentException {
+        var twbName = "US Fruit Consumption.twb";
+        var twbPath = TWB_BASE_DIR + twbName;
+        var converter = new TableauConverter();
+        var metrics = converter.convert2Metrics(twbPath);
+        Assertions.assertEquals(3, metrics.getMetrics().size());
+    }
 }
