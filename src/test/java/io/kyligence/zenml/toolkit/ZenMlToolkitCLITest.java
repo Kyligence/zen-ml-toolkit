@@ -52,7 +52,7 @@ public class ZenMlToolkitCLITest {
 
     @Test
     public void testExecute() {
-        var tdsPath = "src/test/resources/sources/tableau/superstore.tds";
+        var tdsPath = "src/test/resources/sources/tableau/tds/superstore.tds";
         String[] args = new String[]{"-i", tdsPath, "-o", destDirPath};
         var cli = new ZenMlToolkitCLI();
         cli.execute(args);

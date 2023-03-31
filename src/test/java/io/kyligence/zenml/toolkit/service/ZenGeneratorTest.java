@@ -59,7 +59,7 @@ public class ZenGeneratorTest {
 
     @Test
     public void testGenerateZenMetrics() throws IOException {
-        var tdsPath = "src/test/resources/sources/tableau/superstore.tds";
+        var tdsPath = "src/test/resources/sources/tableau/tds/superstore.tds";
         var destPath = Path.of(destDirPath, "superstore.zen.yml");
         var destFile = destPath.toFile();
         var generator = new ZenGenerator();
@@ -69,7 +69,7 @@ public class ZenGeneratorTest {
 
     @Test
     public void testGenerateZenMetricsZip() throws IOException {
-        var tdsPath = "src/test/resources/sources/tableau/superstore.tds";
+        var tdsPath = "src/test/resources/sources/tableau/tds/superstore.tds";
         var generator = new ZenGenerator();
         var uuid = UUID.randomUUID().toString();
         var zipPath = generator.generateZenMetricsZip(tdsPath, uuid);
