@@ -19,13 +19,20 @@
 package io.kyligence.zenml.toolkit.converter.tableau;
 
 import io.kyligence.zenml.toolkit.ZenMlToolkitServer;
+import io.kyligence.zenml.toolkit.config.ToolkitConfig;
 import io.kyligence.zenml.toolkit.converter.MetricsConverter;
 import io.kyligence.zenml.toolkit.converter.tableau.TableauConverter;
 import io.kyligence.zenml.toolkit.metrics.Metrics;
+import io.kyligence.zenml.toolkit.service.ZenGeneratorTest;
+import org.apache.commons.io.FileUtils;
 import org.dom4j.DocumentException;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.io.File;
 
 @SpringBootTest(classes = ZenMlToolkitServer.class)
 public class TableauConverterTest {
@@ -33,6 +40,19 @@ public class TableauConverterTest {
     private static final String TDS_BASE_DIR = "src/test/resources/sources/tableau/tds/";
 
     private static final String TWB_BASE_DIR = "src/test/resources/sources/tableau/twb/";
+
+    @BeforeAll
+    public static void setup() {
+        System.setProperty("ZEN_HOME", TableauConverterTest.class.getResource("/").getPath());
+        System.setProperty("PROPERTIES_PATH",TableauConverterTest.class.getResource("/").getPath());
+
+    }
+
+    @AfterAll
+    public static void clean() {
+        System.clearProperty("ZEN_HOME");
+        System.clearProperty("PROPERTIES_PATH");
+    }
 
     @Test
     public void testConvert2ZenMLCase1() throws DocumentException {

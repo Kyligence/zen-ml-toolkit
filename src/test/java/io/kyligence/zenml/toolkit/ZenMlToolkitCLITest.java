@@ -18,6 +18,7 @@
 
 package io.kyligence.zenml.toolkit;
 
+import io.kyligence.zenml.toolkit.converter.tableau.TableauConverterTest;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -35,6 +36,8 @@ public class ZenMlToolkitCLITest {
 
     @BeforeAll
     public static void setup() {
+        System.setProperty("ZEN_HOME", TableauConverterTest.class.getResource("/").getPath());
+        System.setProperty("PROPERTIES_PATH",TableauConverterTest.class.getResource("/").getPath());
         File destDir = new File(destDirPath);
         FileUtils.deleteQuietly(destDir);
         destDir.mkdirs();
@@ -42,6 +45,8 @@ public class ZenMlToolkitCLITest {
 
     @AfterAll
     public static void clean() {
+        System.clearProperty("ZEN_HOME");
+        System.clearProperty("PROPERTIES_PATH");
         FileUtils.deleteQuietly(new File(destDirPath));
     }
 

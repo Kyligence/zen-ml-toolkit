@@ -19,8 +19,11 @@
 package io.kyligence.zenml.toolkit.source.tableau;
 
 import io.kyligence.zenml.toolkit.ZenMlToolkitServer;
+import io.kyligence.zenml.toolkit.converter.tableau.TableauConverterTest;
 import org.dom4j.DocumentException;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -31,6 +34,19 @@ public class TableauParserTest {
     private static final String TDS_BASE_DIR = "src/test/resources/sources/tableau/tds/";
     private static final String TWB_BASE_DIR = "src/test/resources/sources/tableau/twb/";
     private static final String TWBX_BASE_DIR = "src/test/resources/sources/tableau/twbx/";
+
+    @BeforeAll
+    public static void setup() {
+        System.setProperty("ZEN_HOME", TableauConverterTest.class.getResource("/").getPath());
+        System.setProperty("PROPERTIES_PATH",TableauConverterTest.class.getResource("/").getPath());
+
+    }
+
+    @AfterAll
+    public static void clean() {
+        System.clearProperty("ZEN_HOME");
+        System.clearProperty("PROPERTIES_PATH");
+    }
 
 
     @Test

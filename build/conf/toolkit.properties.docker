@@ -26,4 +26,4 @@ zen.ml.toolkit.server.port=9000
 
 ## Tableau Parse
 # origin or sql
-# zen.ml.toolkit.parse.tableau.format=sql
+zen.ml.toolkit.parse.tableau.format=origin
