@@ -46,7 +46,6 @@ Start docker container
 docker run -p 9000:9000 -dit kyligence/zenml-toolkit:${project.version}
 ```
 
-
 ## Entry Class
 
 ### For Command Line Interface Entry
@@ -66,6 +65,9 @@ The entry class is `io.kyligence.zenml.toolkit.ZenMlToolkitServer`
 Debug `io.kyligence.zenml.toolkit.ZenMlToolkitServer#main()`, in debug configuration, you need to define an Environment
 variable named `ZEN_HOME`, the value is a directory path, put `build/conf/toolkit.properties`
 to `$ZEN_HOME/conf/toolkit.properties`
+
+### Frontend
+See [Frontend README](../frontend/README.md)
 
 ### License
 
