@@ -28,30 +28,47 @@ a:link, a:visited, a:hover {
     text-decoration: none;
 }
 .kyligence-zen-ml-toolkit{
-    padding:20px 0;
     width: 100%;
     min-height: 210px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.kyligence-zen-ml-toolkit .upload-box,
-.kyligence-zen-ml-toolkit .dowload-box{
+.kyligence-zen-ml-toolkit .upload-box{
     width: 100%;
-    height: 100%;
+    padding: 32px;
+}
+.kyligence-zen-ml-toolkit .upload-box .el-upload{
+    display: block;
+}
+.kyligence-zen-ml-toolkit .upload-box .el-upload .el-upload-dragger{
+    width: 100%;
+}
+.kyligence-zen-ml-toolkit .upload-box .error-msg{
+    color:#ff4159;
+    font-size: 12px;
+    margin-top:5px;
+    text-align: center;
+}
+.kyligence-zen-ml-toolkit .upload-box .el-upload__tip{
+    text-align: center;
+}
+.kyligence-zen-ml-toolkit .dowload-box {
+    width: 100%;
+    padding: 32px;
+}
+.kyligence-zen-ml-toolkit .dowload-box .btn-box{
+    width: 100%;
+    height: 180px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     flex-direction: column;
+    border: 1px dashed #409EFF;
+    border-radius: 6px;
+    box-sizing: border-box;
 }
-
-.kyligence-zen-ml-toolkit .upload-box .error-msg{
-    color:#ff4159;
-    font-size: 12px;
-    margin-top:5px;
-}
-
 .kyligence-zen-ml-toolkit .dowload-box .btn{
     min-width: 120px;
     padding: 11px 20px;
@@ -63,8 +80,12 @@ a:link, a:visited, a:hover {
     text-transform: uppercase;
     -webkit-transition: background-color .4s ease;
     transition: background-color .4s ease;
+    margin-bottom: 10px;
 }
-
 .kyligence-zen-ml-toolkit .dowload-box .btn:hover{
     background-color: #498cff;
+}
+
+.kyligence-zen-ml-toolkit .dowload-box .btn i{
+    font-weight: bold;
 }

@@ -10,19 +10,21 @@
         :show-file-list="false"
         :on-success="handleSuccess"
         :on-error="handleError"
-        :on-change="handleChange">
+        :on-change="handleChange"
+        :before-upload="handleBeforeUpload">
         <i class="el-icon-upload"></i>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div class="el-upload__tip" slot="tip">只能上传 tds 文件，且不超过 500kb</div>
-        <!-- <el-button class="upload-btn" type="primary" :loading="isUploading">Upload</el-button> -->
+        <div class="el-upload__text">Drag your files here, or <em>click to upload</em></div>
+        <div class="el-upload__tip" slot="tip">Upload your .tds or .twb file, we help you export your Tableau calculated fields into an Excel spreadsheet. 1MB maximum file size.</div>
       </el-upload>
       <p v-if="errorMsg" class="error-msg">{{errorMsg}}</p>
     </div>
     <div class="dowload-box" v-else>
-      <div>
-        <a download :href="dowloadFileUrl" class="el-button el-button--primary btn">下载</a>
+      <div class="btn-box">
+        <div>
+          <a download :href="dowloadFileUrl" class="el-button el-button--primary btn"><i class="el-icon-download"></i> Download</a>
+        </div>
+        <el-button type="text" @click="dowloadFileUrl = ''">Try another .tds or .twb file</el-button>
       </div>
-      <el-button type="text" @click="dowloadFileUrl = ''">转换另一个</el-button>
     </div>
   </div>
 </template>
@@ -37,6 +39,22 @@ export default {
     }
   },
   methods: {
+    handleBeforeUpload (file) {
+      const filename = file.name
+      const strArr = filename.split('.')
+      const sufix = strArr[strArr.length - 1]
+      const fileTypeValid = sufix === 'tds' || sufix === 'twb'
+      const isLt1M = file.size <= 1 * 1024 * 1024
+
+      if (!fileTypeValid) {
+        this.errorMsg = 'Only support .tds or .twb file'
+      } else if (!isLt1M) {
+        this.errorMsg = '1MB maximum file size'
+      } else {
+        this.errorMsg = ''
+      }
+      return fileTypeValid && isLt1M
+    },
     handleChange (file, fileList) {
       this.isUploading = true
     },
@@ -51,13 +69,11 @@ export default {
       let msg = ''
       try {
         const errorJson = JSON.parse(err.message)
-        console.log(errorJson)
         msg = errorJson.error ? errorJson.error : 'Upload Error'
       } catch (e) {
         console.log(e)
         msg = 'Upload Error'
       }
-      console.log(msg)
       this.isUploading = false
       this.dowloadFileUrl = ''
       this.errorMsg = msg
