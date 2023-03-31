@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -15,10 +16,10 @@
 # limitations under the License.
 #
 
-# Uncomment and change value
 
-zen.ml.toolkit.server.port=9000
-
-# zen.ml.toolkit.env.tmp-folder=$ZEN_HOME}/tmp
-# zen.ml.toolkit.resource.file-size-limit-kb=2000
-# zen.ml.toolkit.security.key=6173646661736466e4bda0e8bf983161
+## Start Kyligence ZenML Toolkit Server
+$ZEN_HOME/sbin/container_start.sh start >> $ZEN_HOME/logs/toolkit-docker.log 2>&1
+while :
+do
+  sleep 1
+done
