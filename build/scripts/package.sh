@@ -28,6 +28,11 @@ fi
 echo "ZEN_HOME: ${root_dir}"
 cd ${root_dir}
 
+# build frontend
+sh build/scripts/package-frontend.sh
+front_static_rsc_dir=${root_dir}/src/main/resources/public
+mv frontend/dist $front_static_rsc_dir
+
 ## build console fat jar
 mvn_version=$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version|grep -Ev '(^\[|Download\w+:)')
 if [[ -z "${version}" ]]; then
@@ -157,3 +162,7 @@ if [ -d ${package_name}/jdk ]; then
 fi
 tar -zcvf ${package_name}.tar.gz ${package_name}
 echo "    Location: ${root_dir}/dist/${package_name}.tar.gz"
+
+
+# clean
+rm -rf $front_static_rsc_dir
