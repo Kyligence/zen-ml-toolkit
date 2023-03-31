@@ -10,7 +10,7 @@
     </parent>
     <groupId>io.kyligence</groupId>
     <artifactId>zen-ml-toolkit</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.1.1</version>
     <name>zen-ml-toolkit</name>
     <description>zen-ml-toolkit</description>
     <properties>
