@@ -20,6 +20,10 @@
 echo "Begin to package frontend..."
 # project root dir absolute path
 root_dir=$(cd -P -- "$(dirname -- "$0")/../.." && pwd -P)
+if [[ -n "${ZEN_HOME}" ]]; then
+   root_dir=${ZEN_HOME}
+fi
+
 cd ${root_dir}/frontend
 rm -rf package-lock.json
 rm -rf node_modules

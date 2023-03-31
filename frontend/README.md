@@ -1,8 +1,14 @@
-# 前端命令
+# FrontEnd Command
 
-## node 版本
+## node version
 ```
-16.0.0
+14.18.2
+```
+
+You can use `nvm` to install node `v14.18.2`, then use it
+```shell
+$ nvm install v14.18.2
+$ nvm use v14.18.2
 ```
 
 ## Project setup

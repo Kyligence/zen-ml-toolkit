@@ -5,6 +5,7 @@
         drag
         :multiple="false"
         class="upload"
+        name="file"
         action="/upload"
         :show-file-list="false"
         :on-success="handleSuccess"
