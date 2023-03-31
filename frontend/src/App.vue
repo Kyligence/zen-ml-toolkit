@@ -59,8 +59,8 @@ export default {
     handleBeforeUpload (file) {
       const filename = file.name
       const strArr = filename.split('.')
-      const sufix = strArr[strArr.length - 1]
-      const fileTypeValid = sufix === 'tds' || sufix === 'twb'
+      const sufix = strArr.length ? strArr[strArr.length - 1] : ''
+      const fileTypeValid = sufix.toLocaleLowerCase() === 'tds' || sufix.toLocaleLowerCase() === 'twb'
       const isLt1M = file.size <= 1 * 1024 * 1024
 
       if (!fileTypeValid) {
