@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -14,11 +15,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+root_dir=$(cd -P -- "$(dirname -- "$0")/../.." && pwd -P)
+if [[ -n "${ZEN_HOME}" ]]; then
+  root_dir=${ZEN_HOME}
+fi
+export VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -Ev '(^\[|Download\w+:)')
 
-# Uncomment and change value
+cd ${root_dir}
+#sh build/scripts/package.sh
+cd dist
+tar -zxvf Kyligence-ZenML-Toolkit-Linux-x64-$VERSION.tar.gz
+mv Kyligence-ZenML-Toolkit-Linux-x64-$VERSION Kyligence-ZenML-Toolkit
 
-zen.ml.toolkit.server.port=9000
-
-# zen.ml.toolkit.env.tmp-folder=$ZEN_HOME}/tmp
-# zen.ml.toolkit.resource.file-size-limit-kb=2000
-# zen.ml.toolkit.security.key=6173646661736466e4bda0e8bf983161
+docker build -t kyligence/zenml-toolkit:${VERSION}  --no-cache ${root_dir}/

@@ -14,11 +14,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# The Dockerfile for Byzer Sandbox
+# Byzer Sandbox has different tags for Spark 3.x and Spark 2.4.x.
+# Therefore, Byzer-lang and Spark tar names are arguments
+#
 
-# Uncomment and change value
+FROM ubuntu:22.04
+MAINTAINER Kyligence
 
-zen.ml.toolkit.server.port=9000
 
-# zen.ml.toolkit.env.tmp-folder=$ZEN_HOME}/tmp
-# zen.ml.toolkit.resource.file-size-limit-kb=2000
-# zen.ml.toolkit.security.key=6173646661736466e4bda0e8bf983161
+## Environment Variables
+ENV ZEN_HOME /opt/Kyligence-ZenML-Toolkit
+
+ADD dist/Kyligence-ZenML-Toolkit $ZEN_HOME
+WORKDIR $ZEN_HOME
+
+ENTRYPOINT $ZEN_HOME/bin/entrypoint.sh

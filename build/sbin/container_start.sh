@@ -18,7 +18,6 @@
 
 source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/header.sh $@
 source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/setenv.sh
-source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/check-env.sh
 
 MAIN_JAR="zen-ml-toolkit.jar"
 
@@ -85,15 +84,11 @@ function checkIfStopUserSameAsStartUser() {
     fi
 }
 
-function runCommand() {
-    ${JAVA} -Xms${JAVA_VM_XMS} -Xmx${JAVA_VM_XMX}  -DZEN_HOME=${ZEN_HOME}  -cp  "${ZEN_HOME}/lib/${MAIN_JAR}"  -Dloader.main=io.kyligence.zenml.toolkit.ZenMlToolkitCLI org.springframework.boot.loader.PropertiesLauncher  "$@"
-    exit $?
-}
 
 function start() {
       setLogRotate
       clearRedundantProcess
-  
+
       # check $ZEN_HOME
       [[ -z ${ZEN_HOME} ]] && quit "{ZEN_HOME} is not set, exit"
       if [ -f "${ZEN_HOME}/pid" ]; then
@@ -102,30 +97,30 @@ function start() {
             quit "Kyligence ZenML Toolkit server is already running, stop it first, PID is $PID"
           fi
       fi
-  
+
       START_TIME=$(date "+%Y-%m-%d %H:%M:%S")
-  
+
       recordStartOrStop "start" "${START_TIME}"
-  
+
       prepareEnv
-  
+
 
       ${ZEN_HOME}/sbin/port-check.sh >> ${ZEN_HOME}/logs/check-env.out 2>&1
       [[ $? == 0 ]] || quit "ERROR: Port ${NOTEBOOK_PORT} is in use, another Kyligence ZenML Toolkit server is running?"
 
-      
+
       echo "${START_TIME} Start Kyligence ZenML Toolkit server..."
       nohup ${JAVA} -Xms${JAVA_VM_XMS} -Xmx${JAVA_VM_XMX}  -DZEN_HOME=${ZEN_HOME}  -jar  "${ZEN_HOME}/lib/${MAIN_JAR}"  >> ${ZEN_HOME}/logs/toolkit.out 2>&1 & echo $! >> ${ZEN_HOME}/pid &
-  
+
       sleep 3
       clearRedundantProcess
-  
+
       PID=`cat ${ZEN_HOME}/pid`
       [[ -z $PID ]] && quit "Starting Kyligence ZenML Toolkit server failed, please check error in ${ZEN_HOME}/logs/shell.stderr"
-      
+
       CUR_DATE=$(date "+%Y-%m-%d %H:%M:%S")
       echo $CUR_DATE" new Kyligence ZenML Toolkit process pid is "$PID >> ${ZEN_HOME}/logs/toolkit.out
-  
+
       echo ""
       echo $(setColor 33 "Kyligence ZenML Toolkit server is starting. It may take a while. For status, please visit http://$TOOLKIT_SERVER_IP:$TOOLKIT_SERVER_PORT.")
       echo ""
@@ -194,6 +189,5 @@ elif [ "$1" == "restart" ]; then
     echo "--> Starting Kyligence ZenML toolkit server..."
     start
 else
-    runCommand "$@"
+    quit "Illegal arguments"
 fi
-

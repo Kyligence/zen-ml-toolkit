@@ -14,13 +14,13 @@ You should follow the git workflow to contribute, fork the repo and pull request
 
 ## Build
 
-```
+```shell
 $ mvn clean install
 ```
 
 ## Package
 
-```
+```shell
 $ ./build/scripts/package.sh
 ```
 
@@ -34,6 +34,18 @@ $ ./build/scripts/package.sh
     - `Kyligence-ZenML-Toolkit-Linux-x64-${project.version}.tar.gz`
 
 The openjdk17 is downloaded during package process, you can refer to `build/scripts/download-jdk.sh` for more details.
+
+##  Docker Build
+```shell
+$ ./build/scripts/build_docker_image.sh
+```
+
+Start docker container
+
+```shell
+docker run -p 9000:9000 -dit kyligence/zenml-toolkit:${project.version}
+```
+
 
 ## Entry Class
 
