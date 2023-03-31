@@ -23,17 +23,21 @@ import io.kyligence.zenml.toolkit.converter.MetricsConverter;
 import io.kyligence.zenml.toolkit.converter.tableau.TableauConverter;
 import io.kyligence.zenml.toolkit.metrics.Metrics;
 import org.dom4j.DocumentException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = ZenMlToolkitServer.class)
 public class TableauConverterTest {
+
+    private static final String TDS_BASE_DIR = "src/test/resources/sources/tableau/tds/";
     @Test
     public void testConvert2ZenML1() throws DocumentException {
-        var tdsPath = "src/test/resources/sources/tableau/SSB.tds";
+        var tdsName = "SSB.tds";
+        var tdsPath = TDS_BASE_DIR + tdsName;
         var converter = new TableauConverter();
         var metrics = converter.convert2Metrics(tdsPath);
-        System.out.println(metrics);
+        Assertions.assertEquals(4, metrics.getMetrics().size());
     }
 
 }
