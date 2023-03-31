@@ -44,16 +44,10 @@ public class TableauParser {
     public static final String TABLE = "table";
 
     public static final String COLLECTION = "collection";
-    public static final String IDENTIFIER_REGEX = "[\\[\\]]";
-    public static final String WHITE_SPACE = " ";
 
-    public static final String DOT = ".";
-    public static final String DOT_REGEX = "\\.";
-    public static final String MATH_OPERATOR_REGEX = "((?<=[+\\-*/])|(?=[+\\-*/]))";
-    public static final String PARENTHESIS_REGEX = "((?<=[()])|(?=[()]))";
     private final SAXReader reader = new SAXReader();
-    private boolean useColumnAlias = false;
 
+    private final TableauContentFormatter formatter = new TableauContentFormatter();
 
     public List<TableauCalculatedFields> parseTableauFile(String filePath, String fileType) throws DocumentException {
         if (StringUtils.equalsIgnoreCase(fileType, FileType.TWB_FILE)) {
@@ -201,7 +195,7 @@ public class TableauParser {
         if (aliases != null) {
             var enabled = aliases.attribute(TableauFileTag.ENABLED);
             if (enabled != null && enabled.getValue().equalsIgnoreCase(TableauFileTag.YES)) {
-                this.useColumnAlias = true;
+                formatter.setUseColumnAlias(true);
             }
         }
     }
@@ -217,7 +211,7 @@ public class TableauParser {
                 if (mapElements != null) {
                     for (Element map : mapElements) {
                         var key = map.attributeValue(TableauFileTag.KEY);
-                        var val = formatIdentifier(map.attributeValue(TableauFileTag.VALUE));
+                        var val = formatter.formatIdentifier(map.attributeValue(TableauFileTag.VALUE));
                         columnAlias.put(key, val);
                     }
                 }
@@ -225,7 +219,7 @@ public class TableauParser {
         }
         // if there is no column aliases map, set to false
         if (columnAlias.isEmpty()) {
-            this.useColumnAlias = false;
+            formatter.setUseColumnAlias(false);
         }
 
         return columnAlias;
@@ -265,9 +259,9 @@ public class TableauParser {
         var nameAttr = column.attribute(TableauFileTag.NAME);
         var name = getAttributeOrDefault(nameAttr);
         if (StringUtils.isNotEmpty(role) && StringUtils.equalsIgnoreCase(role, TableauColumn.DIMENSION)) {
-            tableauColumn.setName(getColumnNameFromAlias(columnAlias, name));
+            tableauColumn.setName(formatter.getColumnNameFromAlias(columnAlias, name));
         } else {
-            tableauColumn.setName(formatName(name));
+            tableauColumn.setName(formatter.formatName(name));
         }
 
         // type
@@ -281,7 +275,7 @@ public class TableauParser {
         // semantic-role
         var semanticRoleAttr = column.attribute(TableauFileTag.SEMANTIC_ROLE);
         var semanticRole = getAttributeOrDefault(semanticRoleAttr);
-        tableauColumn.setSemanticRole(formatName(semanticRole));
+        tableauColumn.setSemanticRole(formatter.formatName(semanticRole));
 
         // aggregation
         var aggAttr = column.attribute(TableauFileTag.AGGREGATION);
@@ -306,13 +300,13 @@ public class TableauParser {
         if (calcClass.equalsIgnoreCase(TableauCalculation.CLASS_TABLEAU)) {
             // tableau class means measure, the formula is measure expression
             var formulaAttr = calculationEle.attribute(TableauFileTag.FORMULA);
-            calc.setFormula(formatFormula(getAttributeOrDefault(formulaAttr), columnAlias));
+            calc.setFormula(formatter.formatFormula(getAttributeOrDefault(formulaAttr), columnAlias));
         } else if (calcClass.equalsIgnoreCase(TableauCalculation.CLASS_BIN)) {
             var decimalAttr = calculationEle.attribute(TableauFileTag.DECIMALS);
             calc.setDecimals(getAttributeOrDefault(decimalAttr));
 
             var formulaAttr = calculationEle.attribute(TableauFileTag.FORMULA);
-            calc.setFormula(formatFormula(getAttributeOrDefault(formulaAttr), columnAlias));
+            calc.setFormula(formatter.formatFormula(getAttributeOrDefault(formulaAttr), columnAlias));
 
             var pegAttr = calculationEle.attribute(TableauFileTag.PEG);
             calc.setPeg(getAttributeOrDefault(pegAttr));
@@ -323,7 +317,7 @@ public class TableauParser {
         } else if (calcClass.equalsIgnoreCase(TableauCalculation.CLASS_CATEGORICAL_BIN)) {
             // skip the child node parse, which named tag is <bin>
             var colAttr = calculationEle.attribute(TableauFileTag.COLUMN);
-            calc.setColumn(getColumnNameFromAlias(columnAlias, getAttributeOrDefault(colAttr)));
+            calc.setColumn(formatter.getColumnNameFromAlias(columnAlias, getAttributeOrDefault(colAttr)));
 
             var newBinAttr = calculationEle.attribute(TableauFileTag.NEW_BIN);
             calc.setNewBin(getAttributeOrDefault(newBinAttr));
@@ -331,83 +325,6 @@ public class TableauParser {
         return calc;
     }
 
-    // replace [ ] to blank
-    // replace whitespace and underscore to dash -
-    // to lowercase
-    private String formatIdentifier(String identifier) {
-        if (identifier == null) {
-            return null;
-        }
-        return identifier.replaceAll(IDENTIFIER_REGEX, "").replaceAll(WHITE_SPACE, "_").replaceAll("[/-]", "_").trim()
-                .toLowerCase();
-    }
-
-    private String formatName(String name) {
-        if (name == null) {
-            return null;
-        }
-        return name.replaceAll(IDENTIFIER_REGEX, "").trim().toLowerCase();
-    }
-
-    private String formatFormula(String formula, Map<String, String> columnAlias) {
-        if (formula == null) {
-            return null;
-        }
-
-        if (useColumnAlias) {
-            var sb = new StringBuilder();
-            if (formula.contains("+") || formula.contains("-") || formula.contains("*") || formula.contains("/")) {
-                String[] parts = formula.split(MATH_OPERATOR_REGEX);
-                for (int i = 0; i < parts.length; i++) {
-                    var part = parts[i];
-                    if (part.contains("(") || part.contains(")")) {
-                        String[] subParts = part.split(PARENTHESIS_REGEX);
-                        for (String subpart : subParts) {
-                            var identifier = getColumnNameFromAlias(columnAlias, subpart);
-                            sb.append(removeTableIdentifier(identifier));
-                        }
-                    } else {
-                        sb.append(part.toLowerCase());
-                    }
-
-                    if (i < parts.length - 1) {
-                        sb.append(" ");
-                    }
-                }
-            } else if (formula.contains("(") || formula.contains(")")) {
-                String[] subParts = formula.split(PARENTHESIS_REGEX);
-                for (String subpart : subParts) {
-                    var identifier = getColumnNameFromAlias(columnAlias, subpart);
-                    sb.append(removeTableIdentifier(identifier));
-                }
-            } else {
-                var identifier = getColumnNameFromAlias(columnAlias, formula);
-                sb.append(removeTableIdentifier(identifier));
-            }
-
-            return sb.toString();
-        } else {
-            return formula.toLowerCase();
-        }
-
-    }
-
-    private String getColumnNameFromAlias(Map<String, String> columnAlias, String alias) {
-        if (useColumnAlias) {
-            return columnAlias.getOrDefault(alias, formatIdentifier(alias));
-        } else {
-            return formatIdentifier(alias);
-        }
-    }
-
-
-    private String removeTableIdentifier(String column) {
-        if (column.contains(DOT)) {
-            String[] parts = column.split(DOT_REGEX);
-            return parts[1];
-        }
-        return column;
-    }
 
     private String getAttributeOrDefault(Attribute attr) {
         return attr != null ? attr.getValue() : null;

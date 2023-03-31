@@ -22,9 +22,15 @@ fi
 export VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -Ev '(^\[|Download\w+:)')
 
 cd ${root_dir}
-#sh build/scripts/package.sh
-cd dist
+sh build/scripts/package.sh
+
+cd ${root_dir}/dist
 tar -zxvf Kyligence-ZenML-Toolkit-Linux-x64-$VERSION.tar.gz
+
+cd ${root_dir}/dist/Kyligence-ZenML-Toolkit-Linux-x64-$VERSION
+mv conf/toolkit.properties.docker conf/toolkit.properties.override
+
+cd ${root_dir}/dist
 mv Kyligence-ZenML-Toolkit-Linux-x64-$VERSION Kyligence-ZenML-Toolkit
 
 docker build -t kyligence/zenml-toolkit:${VERSION}  --no-cache ${root_dir}/

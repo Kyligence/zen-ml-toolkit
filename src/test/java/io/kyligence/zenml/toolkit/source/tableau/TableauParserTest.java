@@ -19,7 +19,11 @@
 package io.kyligence.zenml.toolkit.source.tableau;
 
 import io.kyligence.zenml.toolkit.ZenMlToolkitServer;
+import io.kyligence.zenml.toolkit.converter.tableau.TableauConverterTest;
 import org.dom4j.DocumentException;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -27,36 +31,77 @@ import java.util.List;
 
 @SpringBootTest(classes = ZenMlToolkitServer.class)
 public class TableauParserTest {
+    private static final String TDS_BASE_DIR = "src/test/resources/sources/tableau/tds/";
+    private static final String TWB_BASE_DIR = "src/test/resources/sources/tableau/twb/";
+    private static final String TWBX_BASE_DIR = "src/test/resources/sources/tableau/twbx/";
+
+    @BeforeAll
+    public static void setup() {
+        System.setProperty("ZEN_HOME", TableauConverterTest.class.getResource("/").getPath());
+        System.setProperty("PROPERTIES_PATH",TableauConverterTest.class.getResource("/").getPath());
+
+    }
+
+    @AfterAll
+    public static void clean() {
+        System.clearProperty("ZEN_HOME");
+        System.clearProperty("PROPERTIES_PATH");
+    }
+
 
     @Test
-    public void testParseTdsFile() throws DocumentException {
-        var tdsPath = "src/test/resources/sources/tableau/SSB.tds";
+    public void testParseTdsFileCase1() throws DocumentException {
+        var tdsName = "SSB.tds";
+        var tdsPath = TDS_BASE_DIR + tdsName;
         var parser = new TableauParser();
-        List<TableauCalculatedFields> calculatedFields = parser.parseTableauFile(tdsPath, "tds");
-        System.out.println(calculatedFields);
+        List<TableauCalculatedFields> calculatedFields = parser.parseTdsFile(tdsPath);
+        Assertions.assertEquals(1, calculatedFields.size());
+        Assertions.assertEquals(63, calculatedFields.get(0).getColumns().size());
+        Assertions.assertEquals(2, calculatedFields.get(0).getTags().size());
     }
 
     @Test
-    public void testParseTdsFile2() throws DocumentException {
-        var tdsPath = "src/test/resources/sources/tableau/superstore.tds";
+    public void testParseTdsFileCase2() throws DocumentException {
+        var tdsName = "superstore.tds";
+        var tdsPath = TDS_BASE_DIR + tdsName;
         TableauParser parser = new TableauParser();
-        List<TableauCalculatedFields> calculatedFields = parser.parseTableauFile(tdsPath, "tds");
-        System.out.println(calculatedFields);
+        List<TableauCalculatedFields> calculatedFields = parser.parseTdsFile(tdsPath);
+        Assertions.assertEquals(1, calculatedFields.size());
+        Assertions.assertEquals(28, calculatedFields.get(0).getColumns().size());
+        Assertions.assertEquals(2, calculatedFields.get(0).getTags().size());
     }
 
     @Test
-    public void testParseTdsFile3() throws DocumentException {
-        var tdsPath = "src/test/resources/sources/tableau/Sample-Superstore.tds";
+    public void testParseTdsFileCase3() throws DocumentException {
+        var tdsName = "Sample-Superstore.tds";
+        var tdsPath = TDS_BASE_DIR + tdsName;
         var parser = new TableauParser();
-        List<TableauCalculatedFields> calculatedFields = parser.parseTableauFile(tdsPath, "tds");
-        System.out.println(calculatedFields);
+        List<TableauCalculatedFields> calculatedFields = parser.parseTdsFile(tdsPath);
+        Assertions.assertEquals(1, calculatedFields.size());
+        Assertions.assertEquals(16, calculatedFields.get(0).getColumns().size());
+        Assertions.assertEquals(2, calculatedFields.get(0).getTags().size());
     }
 
     @Test
-    public void testParseTwbFile() throws DocumentException {
-        var tdsPath = "src/test/resources/sources/tableau/SuperStoreSample.twb";
+    public void testParseTwbFileCase1() throws DocumentException {
+        var twbName = "SuperStoreSample.twb";
+        var twbPath = TWB_BASE_DIR + twbName;
         var parser = new TableauParser();
-        List<TableauCalculatedFields> calculatedFields = parser.parseTwbFile(tdsPath);
-        System.out.println(calculatedFields);
+        List<TableauCalculatedFields> calculatedFields = parser.parseTwbFile(twbPath);
+        Assertions.assertEquals(2, calculatedFields.size());
+        Assertions.assertEquals(16, calculatedFields.get(1).getColumns().size());
+        Assertions.assertEquals(2, calculatedFields.get(0).getTags().size());
     }
+
+    @Test
+    public void testParseTwbFileCase2() throws DocumentException {
+        var twbName = "twb_test_1.twb";
+        var twbPath = TWB_BASE_DIR + twbName;
+        var parser = new TableauParser();
+        List<TableauCalculatedFields> calculatedFields = parser.parseTwbFile(twbPath);
+        Assertions.assertEquals(2, calculatedFields.size());
+        Assertions.assertEquals(16, calculatedFields.get(1).getColumns().size());
+        Assertions.assertEquals(2, calculatedFields.get(0).getTags().size());
+    }
+
 }

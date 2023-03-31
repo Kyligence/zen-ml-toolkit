@@ -44,8 +44,8 @@ public class ExcelWriter {
 
     public Sheet createSheet(String sheetName) {
         var sheet = workbook.createSheet(sheetName);
-        sheet.setColumnWidth(0, 25 * 256);
-        sheet.setColumnWidth(1, 50 * 256);
+        sheet.setColumnWidth(0, 50 * 256);
+        sheet.setColumnWidth(1, 150 * 256);
         return sheet;
     }
 

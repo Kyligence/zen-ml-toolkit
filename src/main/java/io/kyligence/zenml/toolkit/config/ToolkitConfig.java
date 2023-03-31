@@ -130,10 +130,14 @@ public class ToolkitConfig {
     }
 
     public Double getFileSizeLimit() {
-        return Double.parseDouble(getOptional("zen.ml.toolkit.resource.file-size-limit-kb", "200"));
+        return Double.parseDouble(getOptional("zen.ml.toolkit.resource.file-size-limit-kb", "1024"));
     }
 
     public String getSecretKey() {
         return getOptional("zen.ml.toolkit.security.key", "6173646661736466e4bda0e8bf983161");
+    }
+
+    public String getTableauParseFormat(){
+        return getOptional("zen.ml.toolkit.parse.tableau.format", "sql");
     }
 }

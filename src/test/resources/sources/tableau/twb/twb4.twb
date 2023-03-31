@@ -1,0 +1,1770 @@
+<?xml version='1.0' encoding='utf-8' ?>
+
+<!-- build 20231.23.0320.2007                               -->
+<workbook original-version='18.1' source-build='2018.1.2 (20181.18.0615.1128)' source-platform='win' version='18.1' xml:base='https://public.tableau.com' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <document-format-change-manifest>
+    <SortTagCleanup />
+  </document-format-change-manifest>
+  <repository-location derived-from='https://public.tableau.com/workbooks/StateMedigapCosts-ProjectHealthViz?rev=1.0' id='StateMedigapCosts-ProjectHealthViz' path='/workbooks' revision='1.0' />
+  <preferences>
+    <preference name='ui.encoding.shelf.height' value='24' />
+    <preference name='ui.shelf.height' value='26' />
+    <color-palette custom='true' name='Earth' type='ordered-diverging'>
+      <color>#ffd300</color>
+      <color>#d4ad00</color>
+      <color>#168423</color>
+      <color>#08a045</color>
+      <color>#0b6e4f</color>
+      <color>#073b3a</color>
+      <color>#3a0514</color>
+    </color-palette>
+  </preferences>
+  <datasources>
+    <datasource caption='HexStates' inline='true' name='federated.0spo7hc01nqwqv1d1h5tc0s7msd3' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='HexStates' name='ogrdirect.0r7mvfm065ty4f1531omn18s482r'>
+            <connection class='ogrdirect' directory='H:/Data Innovation/Tableau/HexStates' ogr-grid-shift-folder='C:\Program Files\Tableau\Tableau 2018.1\local\proj4' tablename='' workgroup-auth-mode='as-is' />
+          </named-connection>
+          <named-connection caption='State Medicare Coverage Gaps' name='excel-direct.0yrzi3819x9epw1c9hqxb005g61k'>
+            <connection class='excel-direct' cleaning='no' compat='no' dataRefreshTime='' interpretationMode='0' validate='no' workgroup-auth-mode='as-is' />
+          </named-connection>
+        </named-connections>
+        <relation join='inner' type='join'>
+          <clause type='join'>
+            <expression op='='>
+              <expression op='[HexStates.shp].[State]' />
+              <expression op='[Sheet1].[State]' />
+            </expression>
+          </clause>
+          <relation connection='ogrdirect.0r7mvfm065ty4f1531omn18s482r' name='HexStates.shp' table='[HexStates.shp]' type='table'>
+            <columns>
+              <column datatype='string' name='State' ordinal='0' />
+              <column datatype='string' name='State_Abbr' ordinal='1' />
+              <column datatype='spatial' name='Geometry' ordinal='2' />
+            </columns>
+          </relation>
+          <relation connection='excel-direct.0yrzi3819x9epw1c9hqxb005g61k' name='Sheet1' table='[Sheet1$]' type='table'>
+            <columns gridOrigin='A1:D52:no:A1:D52:0' header='yes' outcome='6'>
+              <column datatype='integer' name='Rank' ordinal='0' />
+              <column datatype='string' name='State' ordinal='1' />
+              <column datatype='integer' name='Average annual Medigap plan cost ($)' ordinal='2' />
+              <column datatype='real' name='Average monthly Medigap plan cost ($)' ordinal='3' />
+            </columns>
+          </relation>
+        </relation>
+        <cols>
+          <map key='[Average annual Medigap plan cost ($)]' value='[Sheet1].[Average annual Medigap plan cost ($)]' />
+          <map key='[Average monthly Medigap plan cost ($)]' value='[Sheet1].[Average monthly Medigap plan cost ($)]' />
+          <map key='[Geometry]' value='[HexStates.shp].[Geometry]' />
+          <map key='[Rank]' value='[Sheet1].[Rank]' />
+          <map key='[State (Sheet1)]' value='[Sheet1].[State]' />
+          <map key='[State]' value='[HexStates.shp].[State]' />
+          <map key='[State_Abbr]' value='[HexStates.shp].[State_Abbr]' />
+        </cols>
+        <refresh increment-key='' incremental-updates='false' />
+        <metadata-records>
+          <metadata-record class='column'>
+            <remote-name>State</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[State]</local-name>
+            <parent-name>[HexStates.shp]</parent-name>
+            <remote-alias>State</remote-alias>
+            <ordinal>0</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='binary' />
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>State_Abbr</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[State_Abbr]</local-name>
+            <parent-name>[HexStates.shp]</parent-name>
+            <remote-alias>State_Abbr</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='binary' />
+          </metadata-record>
+          <metadata-record class='measure'>
+            <remote-name>Geometry</remote-name>
+            <remote-type>8</remote-type>
+            <local-name>[Geometry]</local-name>
+            <parent-name>[HexStates.shp]</parent-name>
+            <remote-alias>Geometry</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>spatial</local-type>
+            <aggregation>Collect</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Rank</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[Rank]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>Rank</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;I8&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>State</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[State (Sheet1)]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>State</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Average annual Medigap plan cost ($)</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[Average annual Medigap plan cost ($)]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>Average annual Medigap plan cost ($)</remote-alias>
+            <ordinal>5</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;I8&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Average monthly Medigap plan cost ($)</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[Average monthly Medigap plan cost ($)]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>Average monthly Medigap plan cost ($)</remote-alias>
+            <ordinal>6</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>15</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;R8&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='capability'>
+            <remote-name />
+            <remote-type>0</remote-type>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias />
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='integer' name='context'>0</attribute>
+              <attribute datatype='string' name='gridOrigin'>&quot;A1:D52:no:A1:D52:0&quot;</attribute>
+              <attribute datatype='boolean' name='header'>true</attribute>
+              <attribute datatype='integer' name='outcome'>6</attribute>
+            </attributes>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='Max' datatype='integer' name='[Calculation_193936291602841600]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='{FIXED [US Region]: MAX([Average annual Medigap plan cost ($)])}' />
+      </column>
+      <column caption='Rank Size' datatype='integer' name='[Calculation_193936291657854984]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='IF [Rank]&lt;=10 THEN 2 else 1 END' />
+      </column>
+      <column datatype='integer' name='[Number of Records]' role='measure' type='quantitative' user:auto-column='numrec'>
+        <calculation class='tableau' formula='1' />
+      </column>
+      <column datatype='string' name='[State (Sheet1)]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+      <column datatype='string' name='[State]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+      <column caption='State Abbr' datatype='string' name='[State_Abbr]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+      <column datatype='string' name='[US Region]' role='dimension' semantic-role='[State].[Name]' type='nominal'>
+        <calculation class='categorical-bin' column='[State]' new-bin='true'>
+          <bin default-name='false' value='&quot;East North Central&quot;'>
+            <value>&quot;ILLINOIS&quot;</value>
+            <value>&quot;INDIANA&quot;</value>
+            <value>&quot;Illinois&quot;</value>
+            <value>&quot;Indiana&quot;</value>
+            <value>&quot;MICHIGAN&quot;</value>
+            <value>&quot;Michigan&quot;</value>
+            <value>&quot;OHIO&quot;</value>
+            <value>&quot;Ohio&quot;</value>
+            <value>&quot;WISCONSIN&quot;</value>
+            <value>&quot;Wisconsin&quot;</value>
+          </bin>
+          <bin default-name='false' value='&quot;East South Central&quot;'>
+            <value>&quot;ALABAMA&quot;</value>
+            <value>&quot;Alabama&quot;</value>
+            <value>&quot;KENTUCKY&quot;</value>
+            <value>&quot;Kentucky&quot;</value>
+            <value>&quot;MISSISSIPPI&quot;</value>
+            <value>&quot;Mississippi&quot;</value>
+            <value>&quot;TENNESSEE&quot;</value>
+            <value>&quot;Tennessee&quot;</value>
+          </bin>
+          <bin default-name='false' value='&quot;Mid-Atlantic&quot;'>
+            <value>&quot;NEW JERSEY&quot;</value>
+            <value>&quot;NEW YORK&quot;</value>
+            <value>&quot;New Jersey&quot;</value>
+            <value>&quot;New York&quot;</value>
+            <value>&quot;PENNSYLVANIA&quot;</value>
+            <value>&quot;Pennsylvania&quot;</value>
+          </bin>
+          <bin default-name='false' value='&quot;Mountain&quot;'>
+            <value>&quot;ARIZONA&quot;</value>
+            <value>&quot;Arizona&quot;</value>
+            <value>&quot;COLORADO&quot;</value>
+            <value>&quot;Colorado&quot;</value>
+            <value>&quot;IDAHO&quot;</value>
+            <value>&quot;Idaho&quot;</value>
+            <value>&quot;MONTANA&quot;</value>
+            <value>&quot;Montana&quot;</value>
+            <value>&quot;NEVADA&quot;</value>
+            <value>&quot;NEW MEXICO&quot;</value>
+            <value>&quot;Nevada&quot;</value>
+            <value>&quot;New Mexico&quot;</value>
+            <value>&quot;UTAH&quot;</value>
+            <value>&quot;Utah&quot;</value>
+            <value>&quot;WYOMING&quot;</value>
+            <value>&quot;Wyoming&quot;</value>
+          </bin>
+          <bin default-name='false' value='&quot;New England&quot;'>
+            <value>&quot;CONNECTICUT&quot;</value>
+            <value>&quot;Connecticut&quot;</value>
+            <value>&quot;MAINE&quot;</value>
+            <value>&quot;MASSACHUSETTS&quot;</value>
+            <value>&quot;Maine&quot;</value>
+            <value>&quot;Massachusetts&quot;</value>
+            <value>&quot;NEW HAMPSHIRE&quot;</value>
+            <value>&quot;New Hampshire&quot;</value>
+            <value>&quot;RHODE ISLAND&quot;</value>
+            <value>&quot;Rhode Island&quot;</value>
+            <value>&quot;VERMONT&quot;</value>
+            <value>&quot;Vermont&quot;</value>
+          </bin>
+          <bin default-name='false' value='&quot;Pacific&quot;'>
+            <value>&quot;ALASKA&quot;</value>
+            <value>&quot;Alaska&quot;</value>
+            <value>&quot;CALIFORNIA&quot;</value>
+            <value>&quot;California&quot;</value>
+            <value>&quot;HAWAII&quot;</value>
+            <value>&quot;Hawaii&quot;</value>
+            <value>&quot;OREGON&quot;</value>
+            <value>&quot;Oregon&quot;</value>
+            <value>&quot;WASHINGTON&quot;</value>
+            <value>&quot;Washington&quot;</value>
+          </bin>
+          <bin default-name='false' value='&quot;South Atlantic&quot;'>
+            <value>&quot;DELAWARE&quot;</value>
+            <value>&quot;Delaware&quot;</value>
+            <value>&quot;District of Columbia&quot;</value>
+            <value>&quot;FLORIDA&quot;</value>
+            <value>&quot;Florida&quot;</value>
+            <value>&quot;GEORGIA&quot;</value>
+            <value>&quot;Georgia&quot;</value>
+            <value>&quot;MARYLAND&quot;</value>
+            <value>&quot;Maryland&quot;</value>
+            <value>&quot;NORTH CAROLINA&quot;</value>
+            <value>&quot;North Carolina&quot;</value>
+            <value>&quot;SOUTH CAROLINA&quot;</value>
+            <value>&quot;South Carolina&quot;</value>
+            <value>&quot;VIRGINIA&quot;</value>
+            <value>&quot;Virginia&quot;</value>
+            <value>&quot;WASHINGTON DC&quot;</value>
+            <value>&quot;WEST VIRGINIA&quot;</value>
+            <value>&quot;West Virginia&quot;</value>
+          </bin>
+          <bin default-name='false' value='&quot;West North Central&quot;'>
+            <value>&quot;IOWA&quot;</value>
+            <value>&quot;Iowa&quot;</value>
+            <value>&quot;KANSAS&quot;</value>
+            <value>&quot;Kansas&quot;</value>
+            <value>&quot;MINNESOTA&quot;</value>
+            <value>&quot;MISSOURI&quot;</value>
+            <value>&quot;Minnesota&quot;</value>
+            <value>&quot;Missouri&quot;</value>
+            <value>&quot;NEBRASKA&quot;</value>
+            <value>&quot;NORTH DAKOTA&quot;</value>
+            <value>&quot;Nebraska&quot;</value>
+            <value>&quot;North Dakota&quot;</value>
+            <value>&quot;SOUTH DAKOTA&quot;</value>
+            <value>&quot;South Dakota&quot;</value>
+          </bin>
+          <bin default-name='false' value='&quot;West South Central&quot;'>
+            <value>&quot;ARKANSAS&quot;</value>
+            <value>&quot;Arkansas&quot;</value>
+            <value>&quot;LOUISIANA&quot;</value>
+            <value>&quot;Louisiana&quot;</value>
+            <value>&quot;OKLAHOMA&quot;</value>
+            <value>&quot;Oklahoma&quot;</value>
+            <value>&quot;TEXAS&quot;</value>
+            <value>&quot;Texas&quot;</value>
+          </bin>
+        </calculation>
+      </column>
+      <extract count='-1' enabled='true' units='records'>
+        <connection access_mode='readonly' authentication='auth-none' author-locale='en_US' class='hyper' dbname='Data/M4 - Aug/MediGap.hyper' default-settings='yes' schema='Extract' sslmode='' tablename='Extract' update-time='08/20/2018 12:58:42 AM'>
+          <relation name='Extract' table='[Extract].[Extract]' type='table' />
+          <cols>
+            <map key='[Average annual Medigap plan cost ($)]' value='[Extract].[Average annual Medigap plan cost ($)]' />
+            <map key='[Average monthly Medigap plan cost ($)]' value='[Extract].[Average monthly Medigap plan cost ($)]' />
+            <map key='[Geometry]' value='[Extract].[Geometry]' />
+            <map key='[Rank]' value='[Extract].[Rank]' />
+            <map key='[State (Sheet1)]' value='[Extract].[State]' />
+            <map key='[State]' value='[Extract].[State1]' />
+            <map key='[State_Abbr]' value='[Extract].[State_Abbr]' />
+          </cols>
+          <refresh increment-key='' incremental-updates='false'>
+            <refresh-event add-from-file-path='' increment-value='%null%' refresh-type='create' rows-inserted='50' timestamp-start='2018-08-20 00:58:42.690' />
+          </refresh>
+          <metadata-records>
+            <metadata-record class='column'>
+              <remote-name>State1</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[State]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>State1</remote-alias>
+              <ordinal>0</ordinal>
+              <family>HexStates.shp</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>50</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='binary' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>State_Abbr</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[State_Abbr]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>State_Abbr</remote-alias>
+              <ordinal>1</ordinal>
+              <family>HexStates.shp</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>50</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='binary' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Geometry</remote-name>
+              <remote-type>128</remote-type>
+              <local-name>[Geometry]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Geometry</remote-alias>
+              <ordinal>2</ordinal>
+              <family>HexStates.shp</family>
+              <local-type>spatial</local-type>
+              <aggregation>Collect</aggregation>
+              <approx-count>50</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Rank</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[Rank]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Rank</remote-alias>
+              <ordinal>3</ordinal>
+              <family>Sheet1</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>50</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>State</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[State (Sheet1)]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>State</remote-alias>
+              <ordinal>4</ordinal>
+              <family>Sheet1</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>50</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='1' name='LEN_RUS_S2' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Average annual Medigap plan cost ($)</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[Average annual Medigap plan cost ($)]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Average annual Medigap plan cost ($)</remote-alias>
+              <ordinal>5</ordinal>
+              <family>Sheet1</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>50</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Average monthly Medigap plan cost ($)</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[Average monthly Medigap plan cost ($)]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Average monthly Medigap plan cost ($)</remote-alias>
+              <ordinal>6</ordinal>
+              <family>Sheet1</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>50</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+          </metadata-records>
+        </connection>
+      </extract>
+      <layout dim-ordering='alphabetic' dim-percentage='0.469461' measure-ordering='alphabetic' measure-percentage='0.530539' show-structure='true' />
+      <style>
+        <style-rule element='mark'>
+          <encoding attr='color' field='[US Region]' palette='nuriel_stone_10_0' type='palette'>
+            <map to='#027b8e'>
+              <bucket>&quot;West North Central&quot;</bucket>
+            </map>
+            <map to='#31a1b3'>
+              <bucket>&quot;Mid-Atlantic&quot;</bucket>
+            </map>
+            <map to='#499894'>
+              <bucket>&quot;Florida&quot;</bucket>
+            </map>
+            <map to='#499894'>
+              <bucket>&quot;New Hampshire&quot;</bucket>
+            </map>
+            <map to='#499894'>
+              <bucket>&quot;Wisconsin&quot;</bucket>
+            </map>
+            <map to='#4e79a7'>
+              <bucket>&quot;Alabama&quot;</bucket>
+            </map>
+            <map to='#4e79a7'>
+              <bucket>&quot;Massachusetts&quot;</bucket>
+            </map>
+            <map to='#4e79a7'>
+              <bucket>&quot;South Dakota&quot;</bucket>
+            </map>
+            <map to='#59a14f'>
+              <bucket>&quot;California&quot;</bucket>
+            </map>
+            <map to='#59a14f'>
+              <bucket>&quot;Missouri&quot;</bucket>
+            </map>
+            <map to='#59a14f'>
+              <bucket>&quot;Vermont&quot;</bucket>
+            </map>
+            <map to='#6fb899'>
+              <bucket>&quot;East South Central&quot;</bucket>
+            </map>
+            <map to='#79706e'>
+              <bucket>&quot;Illinois&quot;</bucket>
+            </map>
+            <map to='#79706e'>
+              <bucket>&quot;North Carolina&quot;</bucket>
+            </map>
+            <map to='#8175aa'>
+              <bucket>&quot;East North Central&quot;</bucket>
+            </map>
+            <map to='#86bcb6'>
+              <bucket>&quot;Georgia&quot;</bucket>
+            </map>
+            <map to='#86bcb6'>
+              <bucket>&quot;New Jersey&quot;</bucket>
+            </map>
+            <map to='#86bcb6'>
+              <bucket>&quot;Wyoming&quot;</bucket>
+            </map>
+            <map to='#8cd17d'>
+              <bucket>&quot;Colorado&quot;</bucket>
+            </map>
+            <map to='#8cd17d'>
+              <bucket>&quot;Montana&quot;</bucket>
+            </map>
+            <map to='#8cd17d'>
+              <bucket>&quot;Virginia&quot;</bucket>
+            </map>
+            <map to='#94d0c0'>
+              <bucket>&quot;Pacific&quot;</bucket>
+            </map>
+            <map to='#959c9e'>
+              <bucket>&quot;South Atlantic&quot;</bucket>
+            </map>
+            <map to='#9d7660'>
+              <bucket>&quot;Maine&quot;</bucket>
+            </map>
+            <map to='#9d7660'>
+              <bucket>&quot;Rhode Island&quot;</bucket>
+            </map>
+            <map to='#9f8f12'>
+              <bucket>&quot;West South Central&quot;</bucket>
+            </map>
+            <map to='#a0cbe8'>
+              <bucket>&quot;Alaska&quot;</bucket>
+            </map>
+            <map to='#a0cbe8'>
+              <bucket>&quot;Michigan&quot;</bucket>
+            </map>
+            <map to='#a0cbe8'>
+              <bucket>&quot;Tennessee&quot;</bucket>
+            </map>
+            <map to='#a39fc9'>
+              <bucket>&quot;New England&quot;</bucket>
+            </map>
+            <map to='#b07aa1'>
+              <bucket>&quot;Kentucky&quot;</bucket>
+            </map>
+            <map to='#b07aa1'>
+              <bucket>&quot;Oregon&quot;</bucket>
+            </map>
+            <map to='#b6992d'>
+              <bucket>&quot;Connecticut&quot;</bucket>
+            </map>
+            <map to='#b6992d'>
+              <bucket>&quot;Nebraska&quot;</bucket>
+            </map>
+            <map to='#b6992d'>
+              <bucket>&quot;Washington&quot;</bucket>
+            </map>
+            <map to='#bab0ac'>
+              <bucket>&quot;Indiana&quot;</bucket>
+            </map>
+            <map to='#bab0ac'>
+              <bucket>&quot;North Dakota&quot;</bucket>
+            </map>
+            <map to='#ccb22b'>
+              <bucket>&quot;Mountain&quot;</bucket>
+            </map>
+            <map to='#d37295'>
+              <bucket>&quot;Iowa&quot;</bucket>
+            </map>
+            <map to='#d37295'>
+              <bucket>&quot;Ohio&quot;</bucket>
+            </map>
+            <map to='#d4a6c8'>
+              <bucket>&quot;Louisiana&quot;</bucket>
+            </map>
+            <map to='#d4a6c8'>
+              <bucket>&quot;Pennsylvania&quot;</bucket>
+            </map>
+            <map to='#d7b5a6'>
+              <bucket>&quot;Maryland&quot;</bucket>
+            </map>
+            <map to='#d7b5a6'>
+              <bucket>&quot;South Carolina&quot;</bucket>
+            </map>
+            <map to='#e15759'>
+              <bucket>&quot;Hawaii&quot;</bucket>
+            </map>
+            <map to='#e15759'>
+              <bucket>&quot;New Mexico&quot;</bucket>
+            </map>
+            <map to='#f1ce63'>
+              <bucket>&quot;Delaware&quot;</bucket>
+            </map>
+            <map to='#f1ce63'>
+              <bucket>&quot;Nevada&quot;</bucket>
+            </map>
+            <map to='#f1ce63'>
+              <bucket>&quot;West Virginia&quot;</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>&quot;Arizona&quot;</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>&quot;Minnesota&quot;</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>&quot;Texas&quot;</bucket>
+            </map>
+            <map to='#fabfd2'>
+              <bucket>&quot;Kansas&quot;</bucket>
+            </map>
+            <map to='#fabfd2'>
+              <bucket>&quot;Oklahoma&quot;</bucket>
+            </map>
+            <map to='#ff9d9a'>
+              <bucket>&quot;Idaho&quot;</bucket>
+            </map>
+            <map to='#ff9d9a'>
+              <bucket>&quot;New York&quot;</bucket>
+            </map>
+            <map to='#ffbe7d'>
+              <bucket>&quot;Arkansas&quot;</bucket>
+            </map>
+            <map to='#ffbe7d'>
+              <bucket>&quot;Mississippi&quot;</bucket>
+            </map>
+            <map to='#ffbe7d'>
+              <bucket>&quot;Utah&quot;</bucket>
+            </map>
+          </encoding>
+        </style-rule>
+      </style>
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='&quot;United States&quot;' />
+      </semantic-values>
+    </datasource>
+  </datasources>
+  <mapsources>
+    <mapsource name='Tableau' />
+  </mapsources>
+  <actions>
+    <action caption='Highlight1' name='[Action1]'>
+      <activation auto-clear='true' type='on-hover' />
+      <source dashboard='Medigap' type='sheet' worksheet='Map' />
+      <command command='tsc:brush'>
+        <param name='exclude' value='Map' />
+        <param name='field-captions' value='State' />
+        <param name='target' value='Medigap' />
+      </command>
+    </action>
+  </actions>
+  <worksheets>
+    <worksheet name='Box Whisker'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run fontcolor='#b07aa1' fontname='Tableau Medium' fontsize='12'>Annual Average Medigap Plan Cost</run>
+            <run>Æ&#10;</run>
+            <run fontcolor='#b07aa1' fontsize='11' italic='true'>by region</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='HexStates' name='federated.0spo7hc01nqwqv1d1h5tc0s7msd3' />
+          </datasources>
+          <datasource-dependencies datasource='federated.0spo7hc01nqwqv1d1h5tc0s7msd3'>
+            <column datatype='integer' name='[Average annual Medigap plan cost ($)]' role='measure' type='quantitative' />
+            <column datatype='real' name='[Average monthly Medigap plan cost ($)]' role='measure' type='quantitative' />
+            <column caption='Max' datatype='integer' name='[Calculation_193936291602841600]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='{FIXED [US Region]: MAX([Average annual Medigap plan cost ($)])}' />
+            </column>
+            <column caption='Rank Size' datatype='integer' name='[Calculation_193936291657854984]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='IF [Rank]&lt;=10 THEN 2 else 1 END' />
+            </column>
+            <column datatype='integer' name='[Rank]' role='measure' type='quantitative' />
+            <column datatype='string' name='[State (Sheet1)]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+            <column datatype='string' name='[State]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+            <column datatype='string' name='[US Region]' role='dimension' semantic-role='[State].[Name]' type='nominal'>
+              <calculation class='categorical-bin' column='[State]' new-bin='true'>
+                <bin default-name='false' value='&quot;East North Central&quot;'>
+                  <value>&quot;ILLINOIS&quot;</value>
+                  <value>&quot;INDIANA&quot;</value>
+                  <value>&quot;Illinois&quot;</value>
+                  <value>&quot;Indiana&quot;</value>
+                  <value>&quot;MICHIGAN&quot;</value>
+                  <value>&quot;Michigan&quot;</value>
+                  <value>&quot;OHIO&quot;</value>
+                  <value>&quot;Ohio&quot;</value>
+                  <value>&quot;WISCONSIN&quot;</value>
+                  <value>&quot;Wisconsin&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;East South Central&quot;'>
+                  <value>&quot;ALABAMA&quot;</value>
+                  <value>&quot;Alabama&quot;</value>
+                  <value>&quot;KENTUCKY&quot;</value>
+                  <value>&quot;Kentucky&quot;</value>
+                  <value>&quot;MISSISSIPPI&quot;</value>
+                  <value>&quot;Mississippi&quot;</value>
+                  <value>&quot;TENNESSEE&quot;</value>
+                  <value>&quot;Tennessee&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Mid-Atlantic&quot;'>
+                  <value>&quot;NEW JERSEY&quot;</value>
+                  <value>&quot;NEW YORK&quot;</value>
+                  <value>&quot;New Jersey&quot;</value>
+                  <value>&quot;New York&quot;</value>
+                  <value>&quot;PENNSYLVANIA&quot;</value>
+                  <value>&quot;Pennsylvania&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Mountain&quot;'>
+                  <value>&quot;ARIZONA&quot;</value>
+                  <value>&quot;Arizona&quot;</value>
+                  <value>&quot;COLORADO&quot;</value>
+                  <value>&quot;Colorado&quot;</value>
+                  <value>&quot;IDAHO&quot;</value>
+                  <value>&quot;Idaho&quot;</value>
+                  <value>&quot;MONTANA&quot;</value>
+                  <value>&quot;Montana&quot;</value>
+                  <value>&quot;NEVADA&quot;</value>
+                  <value>&quot;NEW MEXICO&quot;</value>
+                  <value>&quot;Nevada&quot;</value>
+                  <value>&quot;New Mexico&quot;</value>
+                  <value>&quot;UTAH&quot;</value>
+                  <value>&quot;Utah&quot;</value>
+                  <value>&quot;WYOMING&quot;</value>
+                  <value>&quot;Wyoming&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;New England&quot;'>
+                  <value>&quot;CONNECTICUT&quot;</value>
+                  <value>&quot;Connecticut&quot;</value>
+                  <value>&quot;MAINE&quot;</value>
+                  <value>&quot;MASSACHUSETTS&quot;</value>
+                  <value>&quot;Maine&quot;</value>
+                  <value>&quot;Massachusetts&quot;</value>
+                  <value>&quot;NEW HAMPSHIRE&quot;</value>
+                  <value>&quot;New Hampshire&quot;</value>
+                  <value>&quot;RHODE ISLAND&quot;</value>
+                  <value>&quot;Rhode Island&quot;</value>
+                  <value>&quot;VERMONT&quot;</value>
+                  <value>&quot;Vermont&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Pacific&quot;'>
+                  <value>&quot;ALASKA&quot;</value>
+                  <value>&quot;Alaska&quot;</value>
+                  <value>&quot;CALIFORNIA&quot;</value>
+                  <value>&quot;California&quot;</value>
+                  <value>&quot;HAWAII&quot;</value>
+                  <value>&quot;Hawaii&quot;</value>
+                  <value>&quot;OREGON&quot;</value>
+                  <value>&quot;Oregon&quot;</value>
+                  <value>&quot;WASHINGTON&quot;</value>
+                  <value>&quot;Washington&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;South Atlantic&quot;'>
+                  <value>&quot;DELAWARE&quot;</value>
+                  <value>&quot;Delaware&quot;</value>
+                  <value>&quot;District of Columbia&quot;</value>
+                  <value>&quot;FLORIDA&quot;</value>
+                  <value>&quot;Florida&quot;</value>
+                  <value>&quot;GEORGIA&quot;</value>
+                  <value>&quot;Georgia&quot;</value>
+                  <value>&quot;MARYLAND&quot;</value>
+                  <value>&quot;Maryland&quot;</value>
+                  <value>&quot;NORTH CAROLINA&quot;</value>
+                  <value>&quot;North Carolina&quot;</value>
+                  <value>&quot;SOUTH CAROLINA&quot;</value>
+                  <value>&quot;South Carolina&quot;</value>
+                  <value>&quot;VIRGINIA&quot;</value>
+                  <value>&quot;Virginia&quot;</value>
+                  <value>&quot;WASHINGTON DC&quot;</value>
+                  <value>&quot;WEST VIRGINIA&quot;</value>
+                  <value>&quot;West Virginia&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;West North Central&quot;'>
+                  <value>&quot;IOWA&quot;</value>
+                  <value>&quot;Iowa&quot;</value>
+                  <value>&quot;KANSAS&quot;</value>
+                  <value>&quot;Kansas&quot;</value>
+                  <value>&quot;MINNESOTA&quot;</value>
+                  <value>&quot;MISSOURI&quot;</value>
+                  <value>&quot;Minnesota&quot;</value>
+                  <value>&quot;Missouri&quot;</value>
+                  <value>&quot;NEBRASKA&quot;</value>
+                  <value>&quot;NORTH DAKOTA&quot;</value>
+                  <value>&quot;Nebraska&quot;</value>
+                  <value>&quot;North Dakota&quot;</value>
+                  <value>&quot;SOUTH DAKOTA&quot;</value>
+                  <value>&quot;South Dakota&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;West South Central&quot;'>
+                  <value>&quot;ARKANSAS&quot;</value>
+                  <value>&quot;Arkansas&quot;</value>
+                  <value>&quot;LOUISIANA&quot;</value>
+                  <value>&quot;Louisiana&quot;</value>
+                  <value>&quot;OKLAHOMA&quot;</value>
+                  <value>&quot;Oklahoma&quot;</value>
+                  <value>&quot;TEXAS&quot;</value>
+                  <value>&quot;Texas&quot;</value>
+                </bin>
+              </calculation>
+            </column>
+            <column-instance column='[State (Sheet1)]' derivation='None' name='[none:State (Sheet1):nk]' pivot='key' type='nominal' />
+            <column-instance column='[State]' derivation='None' name='[none:State:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Average annual Medigap plan cost ($)]' derivation='Sum' name='[sum:Average annual Medigap plan cost ($):qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Average monthly Medigap plan cost ($)]' derivation='Sum' name='[sum:Average monthly Medigap plan cost ($):qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_193936291602841600]' derivation='Sum' name='[sum:Calculation_193936291602841600:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_193936291657854984]' derivation='Sum' name='[sum:Calculation_193936291657854984:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Rank]' derivation='Sum' name='[sum:Rank:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <computed-sort column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]' direction='DESC' using='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Calculation_193936291602841600:qk]' />
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <encoding attr='space' class='0' field='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]' field-type='quantitative' major-origin='0' major-spacing='100' max='2200' min='1200' minor-origin='0' minor-show='false' minor-spacing='10' range-type='fixed' scope='cols' type='space' />
+          </style-rule>
+          <style-rule element='cell'>
+            <format attr='text-format' field='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]' value='c&quot;$&quot;#,##0.00;(&quot;$&quot;#,##0.00)' />
+            <format attr='text-format' field='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average monthly Medigap plan cost ($):qk]' value='c&quot;$&quot;#,##0.00;(&quot;$&quot;#,##0.00)' />
+          </style-rule>
+          <style-rule element='label'>
+            <format attr='text-format' field='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]' value='c&quot;$&quot;#,##0;(&quot;$&quot;#,##0)' />
+          </style-rule>
+          <style-rule element='mark'>
+            <encoding attr='size' field='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Calculation_193936291657854984:qk]' field-type='quantitative' max-size='1' min-size='0.64514' type='rangesize' />
+          </style-rule>
+          <style-rule element='table'>
+            <format attr='background-color' value='#00000000' />
+          </style-rule>
+          <style-rule element='worksheet'>
+            <format attr='display-field-labels' scope='rows' value='false' />
+          </style-rule>
+          <style-rule element='refboxplot'>
+            <format attr='stroke-color' id='refline0' value='#898989' />
+            <format attr='boxplot-style' id='refline0' value='glass' />
+            <format attr='fill-color' id='refline0' value='#f0f0f041' />
+            <format attr='palette' id='refline0' value='Earth' />
+            <format attr='opacity' id='refline0' value='65' />
+            <format attr='whisker-end' id='refline0' value='small' />
+            <format attr='whisker-stroke-color' id='refline0' value='#898989' />
+            <format attr='whisker-stroke-size' id='refline0' value='1' />
+          </style-rule>
+          <style-rule element='annotation'>
+            <format attr='fill-color' id='annotation_0' value='#00000000' />
+            <format attr='line-end' id='annotation_0' value='arrow' />
+            <format attr='fill-color' id='annotation_1' value='#00000000' />
+            <format attr='line-end' id='annotation_1' value='arrow' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane id='1' selection-relaxation-option='selection-relaxation-disallow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Shape' />
+            <mark-sizing mark-sizing-setting='marks-scaling-off' />
+            <encodings>
+              <color column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]' />
+              <size column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Calculation_193936291657854984:qk]' />
+              <lod column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State (Sheet1):nk]' />
+              <lod column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State:nk]' />
+              <tooltip column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Rank:qk]' />
+              <tooltip column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average monthly Medigap plan cost ($):qk]' />
+            </encodings>
+            <reference-line axis-column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]' boxplot-mark-exclusion='false' boxplot-whisker-type='standard' enable-instant-analytics='true' formula='average' id='refline0' label-type='automatic' probability='95' scope='per-cell' symmetric='false' value-column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]' z-order='1' />
+            <customized-tooltip show-buttons='false'>
+              <formatted-text>
+                <run fontalignment='1' fontcolor='#555555' fontname='Tableau Bold' fontsize='12'><![CDATA[#<[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Rank:qk]> <[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State (Sheet1):nk]>]]></run>
+                <run fontalignment='1'>Æ&#10;</run>
+                <run bold='true' fontalignment='1'><![CDATA[<[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]>]]></run>
+                <run fontalignment='1'>Æ&#10;</run>
+                <run fontalignment='1' fontcolor='#787878'>Average annual Medigap plan cost ($): </run>
+                <run bold='true' fontalignment='1'><![CDATA[<[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]>]]></run>
+                <run fontalignment='1'>Æ&#10;</run>
+                <run fontalignment='1' fontcolor='#787878'>Average monthly Medigap plan cost ($): </run>
+                <run bold='true' fontalignment='1'><![CDATA[<[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average monthly Medigap plan cost ($):qk]>]]></run>
+              </formatted-text>
+            </customized-tooltip>
+            <style>
+              <style-rule element='mark'>
+                <format attr='size' value='1.5645185708999634' />
+                <format attr='shape' value=':filled/circle' />
+                <format attr='mark-color' value='#b013a8' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]</rows>
+        <cols>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]</cols>
+        <annotations>
+          <annotation class='point' id='0' mark-position='1' pullback='12' text-width='175'>
+            <formatted-text>
+              <run bold='true' fontsize='8'><![CDATA[<[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State:nk]>]]></run>
+              <run>Æ&#10;</run>
+              <run fontsize='8'><![CDATA[Has the lowest Medigap plan cost and is ranked #<[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Rank:qk]>.]]></run>
+            </formatted-text>
+            <point>
+              <visual-coordinate class='mark'>
+                <tuple-reference>
+                  <tuple-descriptor>
+                    <pane-descriptor>
+                      <x-fields>
+                        <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]</field>
+                      </x-fields>
+                      <y-fields>
+                        <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]</field>
+                      </y-fields>
+                    </pane-descriptor>
+                    <columns>
+                      <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]</field>
+                      <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State (Sheet1):nk]</field>
+                      <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State:nk]</field>
+                      <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]</field>
+                      <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average monthly Medigap plan cost ($):qk]</field>
+                      <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Calculation_193936291602841600:qk]</field>
+                      <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Calculation_193936291657854984:qk]</field>
+                      <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Rank:qk]</field>
+                    </columns>
+                  </tuple-descriptor>
+                  <tuple>
+                    <value>&quot;Pacific&quot;</value>
+                    <value>&quot;HAWAII&quot;</value>
+                    <value>&quot;Hawaii&quot;</value>
+                    <value>1310</value>
+                    <value>109.16</value>
+                    <value>1851</value>
+                    <value>1</value>
+                    <value>51</value>
+                  </tuple>
+                </tuple-reference>
+              </visual-coordinate>
+            </point>
+            <body x='-12' y='-61' />
+          </annotation>
+          <annotation class='point' id='1' mark-position='1' pullback='12' text-width='158'>
+            <formatted-text>
+              <run bold='true' fontsize='8'><![CDATA[<[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State:nk]>]]></run>
+              <run>Æ&#10;</run>
+              <run fontsize='8'><![CDATA[Has the highest Medigap plan cost and is ranked #<[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Rank:qk]>.]]></run>
+            </formatted-text>
+            <point>
+              <visual-coordinate class='mark'>
+                <tuple-reference>
+                  <tuple-descriptor>
+                    <pane-descriptor>
+                      <x-fields>
+                        <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]</field>
+                      </x-fields>
+                      <y-fields>
+                        <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]</field>
+                      </y-fields>
+                    </pane-descriptor>
+                    <columns>
+                      <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]</field>
+                      <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State (Sheet1):nk]</field>
+                      <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State:nk]</field>
+                      <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]</field>
+                      <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average monthly Medigap plan cost ($):qk]</field>
+                      <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Calculation_193936291602841600:qk]</field>
+                      <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Calculation_193936291657854984:qk]</field>
+                      <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Rank:qk]</field>
+                    </columns>
+                  </tuple-descriptor>
+                  <tuple>
+                    <value>&quot;New England&quot;</value>
+                    <value>&quot;MASSACHUSETTS&quot;</value>
+                    <value>&quot;Massachusetts&quot;</value>
+                    <value>1947</value>
+                    <value>162.25</value>
+                    <value>1947</value>
+                    <value>2</value>
+                    <value>1</value>
+                  </tuple>
+                </tuple-reference>
+              </visual-coordinate>
+            </point>
+            <body x='137' y='14' />
+          </annotation>
+        </annotations>
+      </table>
+    </worksheet>
+    <worksheet name='Box Whisker (2)'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run fontcolor='#b07aa1' fontname='Tableau Medium' fontsize='12'>Annual Average Medigap Plan Cost</run>
+            <run>Æ&#10;</run>
+            <run fontcolor='#b07aa1' fontsize='11' italic='true'>by region</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='HexStates' name='federated.0spo7hc01nqwqv1d1h5tc0s7msd3' />
+          </datasources>
+          <datasource-dependencies datasource='federated.0spo7hc01nqwqv1d1h5tc0s7msd3'>
+            <column datatype='integer' name='[Average annual Medigap plan cost ($)]' role='measure' type='quantitative' />
+            <column datatype='real' name='[Average monthly Medigap plan cost ($)]' role='measure' type='quantitative' />
+            <column caption='Max' datatype='integer' name='[Calculation_193936291602841600]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='{FIXED [US Region]: MAX([Average annual Medigap plan cost ($)])}' />
+            </column>
+            <column datatype='integer' name='[Rank]' role='measure' type='quantitative' />
+            <column datatype='string' name='[State (Sheet1)]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+            <column datatype='string' name='[State]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+            <column datatype='string' name='[US Region]' role='dimension' semantic-role='[State].[Name]' type='nominal'>
+              <calculation class='categorical-bin' column='[State]' new-bin='true'>
+                <bin default-name='false' value='&quot;East North Central&quot;'>
+                  <value>&quot;ILLINOIS&quot;</value>
+                  <value>&quot;INDIANA&quot;</value>
+                  <value>&quot;Illinois&quot;</value>
+                  <value>&quot;Indiana&quot;</value>
+                  <value>&quot;MICHIGAN&quot;</value>
+                  <value>&quot;Michigan&quot;</value>
+                  <value>&quot;OHIO&quot;</value>
+                  <value>&quot;Ohio&quot;</value>
+                  <value>&quot;WISCONSIN&quot;</value>
+                  <value>&quot;Wisconsin&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;East South Central&quot;'>
+                  <value>&quot;ALABAMA&quot;</value>
+                  <value>&quot;Alabama&quot;</value>
+                  <value>&quot;KENTUCKY&quot;</value>
+                  <value>&quot;Kentucky&quot;</value>
+                  <value>&quot;MISSISSIPPI&quot;</value>
+                  <value>&quot;Mississippi&quot;</value>
+                  <value>&quot;TENNESSEE&quot;</value>
+                  <value>&quot;Tennessee&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Mid-Atlantic&quot;'>
+                  <value>&quot;NEW JERSEY&quot;</value>
+                  <value>&quot;NEW YORK&quot;</value>
+                  <value>&quot;New Jersey&quot;</value>
+                  <value>&quot;New York&quot;</value>
+                  <value>&quot;PENNSYLVANIA&quot;</value>
+                  <value>&quot;Pennsylvania&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Mountain&quot;'>
+                  <value>&quot;ARIZONA&quot;</value>
+                  <value>&quot;Arizona&quot;</value>
+                  <value>&quot;COLORADO&quot;</value>
+                  <value>&quot;Colorado&quot;</value>
+                  <value>&quot;IDAHO&quot;</value>
+                  <value>&quot;Idaho&quot;</value>
+                  <value>&quot;MONTANA&quot;</value>
+                  <value>&quot;Montana&quot;</value>
+                  <value>&quot;NEVADA&quot;</value>
+                  <value>&quot;NEW MEXICO&quot;</value>
+                  <value>&quot;Nevada&quot;</value>
+                  <value>&quot;New Mexico&quot;</value>
+                  <value>&quot;UTAH&quot;</value>
+                  <value>&quot;Utah&quot;</value>
+                  <value>&quot;WYOMING&quot;</value>
+                  <value>&quot;Wyoming&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;New England&quot;'>
+                  <value>&quot;CONNECTICUT&quot;</value>
+                  <value>&quot;Connecticut&quot;</value>
+                  <value>&quot;MAINE&quot;</value>
+                  <value>&quot;MASSACHUSETTS&quot;</value>
+                  <value>&quot;Maine&quot;</value>
+                  <value>&quot;Massachusetts&quot;</value>
+                  <value>&quot;NEW HAMPSHIRE&quot;</value>
+                  <value>&quot;New Hampshire&quot;</value>
+                  <value>&quot;RHODE ISLAND&quot;</value>
+                  <value>&quot;Rhode Island&quot;</value>
+                  <value>&quot;VERMONT&quot;</value>
+                  <value>&quot;Vermont&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Pacific&quot;'>
+                  <value>&quot;ALASKA&quot;</value>
+                  <value>&quot;Alaska&quot;</value>
+                  <value>&quot;CALIFORNIA&quot;</value>
+                  <value>&quot;California&quot;</value>
+                  <value>&quot;HAWAII&quot;</value>
+                  <value>&quot;Hawaii&quot;</value>
+                  <value>&quot;OREGON&quot;</value>
+                  <value>&quot;Oregon&quot;</value>
+                  <value>&quot;WASHINGTON&quot;</value>
+                  <value>&quot;Washington&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;South Atlantic&quot;'>
+                  <value>&quot;DELAWARE&quot;</value>
+                  <value>&quot;Delaware&quot;</value>
+                  <value>&quot;District of Columbia&quot;</value>
+                  <value>&quot;FLORIDA&quot;</value>
+                  <value>&quot;Florida&quot;</value>
+                  <value>&quot;GEORGIA&quot;</value>
+                  <value>&quot;Georgia&quot;</value>
+                  <value>&quot;MARYLAND&quot;</value>
+                  <value>&quot;Maryland&quot;</value>
+                  <value>&quot;NORTH CAROLINA&quot;</value>
+                  <value>&quot;North Carolina&quot;</value>
+                  <value>&quot;SOUTH CAROLINA&quot;</value>
+                  <value>&quot;South Carolina&quot;</value>
+                  <value>&quot;VIRGINIA&quot;</value>
+                  <value>&quot;Virginia&quot;</value>
+                  <value>&quot;WASHINGTON DC&quot;</value>
+                  <value>&quot;WEST VIRGINIA&quot;</value>
+                  <value>&quot;West Virginia&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;West North Central&quot;'>
+                  <value>&quot;IOWA&quot;</value>
+                  <value>&quot;Iowa&quot;</value>
+                  <value>&quot;KANSAS&quot;</value>
+                  <value>&quot;Kansas&quot;</value>
+                  <value>&quot;MINNESOTA&quot;</value>
+                  <value>&quot;MISSOURI&quot;</value>
+                  <value>&quot;Minnesota&quot;</value>
+                  <value>&quot;Missouri&quot;</value>
+                  <value>&quot;NEBRASKA&quot;</value>
+                  <value>&quot;NORTH DAKOTA&quot;</value>
+                  <value>&quot;Nebraska&quot;</value>
+                  <value>&quot;North Dakota&quot;</value>
+                  <value>&quot;SOUTH DAKOTA&quot;</value>
+                  <value>&quot;South Dakota&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;West South Central&quot;'>
+                  <value>&quot;ARKANSAS&quot;</value>
+                  <value>&quot;Arkansas&quot;</value>
+                  <value>&quot;LOUISIANA&quot;</value>
+                  <value>&quot;Louisiana&quot;</value>
+                  <value>&quot;OKLAHOMA&quot;</value>
+                  <value>&quot;Oklahoma&quot;</value>
+                  <value>&quot;TEXAS&quot;</value>
+                  <value>&quot;Texas&quot;</value>
+                </bin>
+              </calculation>
+            </column>
+            <column-instance column='[State (Sheet1)]' derivation='None' name='[none:State (Sheet1):nk]' pivot='key' type='nominal' />
+            <column-instance column='[State]' derivation='None' name='[none:State:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Average annual Medigap plan cost ($)]' derivation='Sum' name='[sum:Average annual Medigap plan cost ($):qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Average monthly Medigap plan cost ($)]' derivation='Sum' name='[sum:Average monthly Medigap plan cost ($):qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_193936291602841600]' derivation='Sum' name='[sum:Calculation_193936291602841600:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Rank]' derivation='Sum' name='[sum:Rank:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <computed-sort column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]' direction='DESC' using='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Calculation_193936291602841600:qk]' />
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <encoding attr='space' class='0' field='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]' field-type='quantitative' major-origin='0' major-spacing='100' min='1200' minor-origin='0' minor-show='false' minor-spacing='10' range-type='fixedmin' scope='cols' type='space' />
+          </style-rule>
+          <style-rule element='cell'>
+            <format attr='text-format' field='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]' value='c&quot;$&quot;#,##0.00;(&quot;$&quot;#,##0.00)' />
+            <format attr='text-format' field='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average monthly Medigap plan cost ($):qk]' value='c&quot;$&quot;#,##0.00;(&quot;$&quot;#,##0.00)' />
+            <format attr='height' field='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]' value='53' />
+          </style-rule>
+          <style-rule element='header'>
+            <format attr='width' field='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]' value='76' />
+          </style-rule>
+          <style-rule element='label'>
+            <format attr='text-format' field='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]' value='c&quot;$&quot;#,##0;(&quot;$&quot;#,##0)' />
+            <format attr='color' field='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]' value='#898989' />
+            <format attr='font-size' field='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]' value='8' />
+          </style-rule>
+          <style-rule element='table'>
+            <format attr='background-color' value='#00000000' />
+          </style-rule>
+          <style-rule element='worksheet'>
+            <format attr='display-field-labels' scope='rows' value='false' />
+          </style-rule>
+          <style-rule element='refboxplot'>
+            <format attr='stroke-color' id='refline0' value='#898989' />
+            <format attr='boxplot-style' id='refline0' value='glass' />
+            <format attr='fill-color' id='refline0' value='#f0f0f041' />
+            <format attr='palette' id='refline0' value='Earth' />
+            <format attr='opacity' id='refline0' value='65' />
+            <format attr='whisker-end' id='refline0' value='small' />
+            <format attr='whisker-stroke-color' id='refline0' value='#898989' />
+            <format attr='whisker-stroke-size' id='refline0' value='1' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane id='1' selection-relaxation-option='selection-relaxation-disallow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Shape' />
+            <mark-sizing mark-sizing-setting='marks-scaling-off' />
+            <encodings>
+              <color column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]' />
+              <lod column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State (Sheet1):nk]' />
+              <lod column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State:nk]' />
+              <tooltip column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Rank:qk]' />
+              <tooltip column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average monthly Medigap plan cost ($):qk]' />
+            </encodings>
+            <reference-line axis-column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]' boxplot-mark-exclusion='false' boxplot-whisker-type='standard' enable-instant-analytics='true' formula='average' id='refline0' label-type='automatic' probability='95' scope='per-cell' symmetric='false' value-column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]' z-order='1' />
+            <customized-tooltip show-buttons='false'>
+              <formatted-text>
+                <run fontalignment='1' fontcolor='#555555' fontname='Tableau Bold' fontsize='12'><![CDATA[#<[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Rank:qk]> <[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State (Sheet1):nk]>]]></run>
+                <run fontalignment='1'>Æ&#10;</run>
+                <run bold='true' fontalignment='1'><![CDATA[<[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]>]]></run>
+                <run fontalignment='1'>Æ&#10;</run>
+                <run fontalignment='1' fontcolor='#787878'>Average annual Medigap plan cost ($): </run>
+                <run bold='true' fontalignment='1'><![CDATA[<[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]>]]></run>
+                <run fontalignment='1'>Æ&#10;</run>
+                <run fontalignment='1' fontcolor='#787878'>Average monthly Medigap plan cost ($): </run>
+                <run bold='true' fontalignment='1'><![CDATA[<[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average monthly Medigap plan cost ($):qk]>]]></run>
+              </formatted-text>
+            </customized-tooltip>
+            <style>
+              <style-rule element='mark'>
+                <format attr='size' value='0.60370165109634399' />
+                <format attr='shape' value=':filled/circle' />
+                <format attr='mark-color' value='#b013a8' />
+              </style-rule>
+              <style-rule element='pane'>
+                <format attr='minheight' value='-1' />
+                <format attr='maxheight' value='-1' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]</rows>
+        <cols>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]</cols>
+      </table>
+    </worksheet>
+    <worksheet name='Map'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='HexStates' name='federated.0spo7hc01nqwqv1d1h5tc0s7msd3' />
+          </datasources>
+          <mapsources>
+            <mapsource name='Tableau' />
+          </mapsources>
+          <datasource-dependencies datasource='federated.0spo7hc01nqwqv1d1h5tc0s7msd3'>
+            <column datatype='integer' name='[Average annual Medigap plan cost ($)]' role='measure' type='quantitative' />
+            <column datatype='real' name='[Average monthly Medigap plan cost ($)]' role='measure' type='quantitative' />
+            <column datatype='spatial' name='[Geometry]' role='measure' type='nominal' />
+            <column datatype='integer' name='[Rank]' role='measure' type='quantitative' />
+            <column datatype='string' name='[State]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+            <column caption='State Abbr' datatype='string' name='[State_Abbr]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+            <column datatype='string' name='[US Region]' role='dimension' semantic-role='[State].[Name]' type='nominal'>
+              <calculation class='categorical-bin' column='[State]' new-bin='true'>
+                <bin default-name='false' value='&quot;East North Central&quot;'>
+                  <value>&quot;ILLINOIS&quot;</value>
+                  <value>&quot;INDIANA&quot;</value>
+                  <value>&quot;Illinois&quot;</value>
+                  <value>&quot;Indiana&quot;</value>
+                  <value>&quot;MICHIGAN&quot;</value>
+                  <value>&quot;Michigan&quot;</value>
+                  <value>&quot;OHIO&quot;</value>
+                  <value>&quot;Ohio&quot;</value>
+                  <value>&quot;WISCONSIN&quot;</value>
+                  <value>&quot;Wisconsin&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;East South Central&quot;'>
+                  <value>&quot;ALABAMA&quot;</value>
+                  <value>&quot;Alabama&quot;</value>
+                  <value>&quot;KENTUCKY&quot;</value>
+                  <value>&quot;Kentucky&quot;</value>
+                  <value>&quot;MISSISSIPPI&quot;</value>
+                  <value>&quot;Mississippi&quot;</value>
+                  <value>&quot;TENNESSEE&quot;</value>
+                  <value>&quot;Tennessee&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Mid-Atlantic&quot;'>
+                  <value>&quot;NEW JERSEY&quot;</value>
+                  <value>&quot;NEW YORK&quot;</value>
+                  <value>&quot;New Jersey&quot;</value>
+                  <value>&quot;New York&quot;</value>
+                  <value>&quot;PENNSYLVANIA&quot;</value>
+                  <value>&quot;Pennsylvania&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Mountain&quot;'>
+                  <value>&quot;ARIZONA&quot;</value>
+                  <value>&quot;Arizona&quot;</value>
+                  <value>&quot;COLORADO&quot;</value>
+                  <value>&quot;Colorado&quot;</value>
+                  <value>&quot;IDAHO&quot;</value>
+                  <value>&quot;Idaho&quot;</value>
+                  <value>&quot;MONTANA&quot;</value>
+                  <value>&quot;Montana&quot;</value>
+                  <value>&quot;NEVADA&quot;</value>
+                  <value>&quot;NEW MEXICO&quot;</value>
+                  <value>&quot;Nevada&quot;</value>
+                  <value>&quot;New Mexico&quot;</value>
+                  <value>&quot;UTAH&quot;</value>
+                  <value>&quot;Utah&quot;</value>
+                  <value>&quot;WYOMING&quot;</value>
+                  <value>&quot;Wyoming&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;New England&quot;'>
+                  <value>&quot;CONNECTICUT&quot;</value>
+                  <value>&quot;Connecticut&quot;</value>
+                  <value>&quot;MAINE&quot;</value>
+                  <value>&quot;MASSACHUSETTS&quot;</value>
+                  <value>&quot;Maine&quot;</value>
+                  <value>&quot;Massachusetts&quot;</value>
+                  <value>&quot;NEW HAMPSHIRE&quot;</value>
+                  <value>&quot;New Hampshire&quot;</value>
+                  <value>&quot;RHODE ISLAND&quot;</value>
+                  <value>&quot;Rhode Island&quot;</value>
+                  <value>&quot;VERMONT&quot;</value>
+                  <value>&quot;Vermont&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;Pacific&quot;'>
+                  <value>&quot;ALASKA&quot;</value>
+                  <value>&quot;Alaska&quot;</value>
+                  <value>&quot;CALIFORNIA&quot;</value>
+                  <value>&quot;California&quot;</value>
+                  <value>&quot;HAWAII&quot;</value>
+                  <value>&quot;Hawaii&quot;</value>
+                  <value>&quot;OREGON&quot;</value>
+                  <value>&quot;Oregon&quot;</value>
+                  <value>&quot;WASHINGTON&quot;</value>
+                  <value>&quot;Washington&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;South Atlantic&quot;'>
+                  <value>&quot;DELAWARE&quot;</value>
+                  <value>&quot;Delaware&quot;</value>
+                  <value>&quot;District of Columbia&quot;</value>
+                  <value>&quot;FLORIDA&quot;</value>
+                  <value>&quot;Florida&quot;</value>
+                  <value>&quot;GEORGIA&quot;</value>
+                  <value>&quot;Georgia&quot;</value>
+                  <value>&quot;MARYLAND&quot;</value>
+                  <value>&quot;Maryland&quot;</value>
+                  <value>&quot;NORTH CAROLINA&quot;</value>
+                  <value>&quot;North Carolina&quot;</value>
+                  <value>&quot;SOUTH CAROLINA&quot;</value>
+                  <value>&quot;South Carolina&quot;</value>
+                  <value>&quot;VIRGINIA&quot;</value>
+                  <value>&quot;Virginia&quot;</value>
+                  <value>&quot;WASHINGTON DC&quot;</value>
+                  <value>&quot;WEST VIRGINIA&quot;</value>
+                  <value>&quot;West Virginia&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;West North Central&quot;'>
+                  <value>&quot;IOWA&quot;</value>
+                  <value>&quot;Iowa&quot;</value>
+                  <value>&quot;KANSAS&quot;</value>
+                  <value>&quot;Kansas&quot;</value>
+                  <value>&quot;MINNESOTA&quot;</value>
+                  <value>&quot;MISSOURI&quot;</value>
+                  <value>&quot;Minnesota&quot;</value>
+                  <value>&quot;Missouri&quot;</value>
+                  <value>&quot;NEBRASKA&quot;</value>
+                  <value>&quot;NORTH DAKOTA&quot;</value>
+                  <value>&quot;Nebraska&quot;</value>
+                  <value>&quot;North Dakota&quot;</value>
+                  <value>&quot;SOUTH DAKOTA&quot;</value>
+                  <value>&quot;South Dakota&quot;</value>
+                </bin>
+                <bin default-name='false' value='&quot;West South Central&quot;'>
+                  <value>&quot;ARKANSAS&quot;</value>
+                  <value>&quot;Arkansas&quot;</value>
+                  <value>&quot;LOUISIANA&quot;</value>
+                  <value>&quot;Louisiana&quot;</value>
+                  <value>&quot;OKLAHOMA&quot;</value>
+                  <value>&quot;Oklahoma&quot;</value>
+                  <value>&quot;TEXAS&quot;</value>
+                  <value>&quot;Texas&quot;</value>
+                </bin>
+              </calculation>
+            </column>
+            <column-instance column='[State]' derivation='Attribute' name='[attr:State:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Geometry]' derivation='Collect' name='[clct:Geometry:nk]' pivot='key' type='nominal' />
+            <column-instance column='[State]' derivation='None' name='[none:State:nk]' pivot='key' type='nominal' />
+            <column-instance column='[State_Abbr]' derivation='None' name='[none:State_Abbr:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Average annual Medigap plan cost ($)]' derivation='Sum' name='[sum:Average annual Medigap plan cost ($):qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Average monthly Medigap plan cost ($)]' derivation='Sum' name='[sum:Average monthly Medigap plan cost ($):qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Rank]' derivation='Sum' name='[sum:Rank:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='cell'>
+            <format attr='text-format' field='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]' value='c&quot;$&quot;#,##0.00;(&quot;$&quot;#,##0.00)' />
+            <format attr='text-format' field='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average monthly Medigap plan cost ($):qk]' value='c&quot;$&quot;#,##0.00;(&quot;$&quot;#,##0.00)' />
+          </style-rule>
+          <style-rule element='header'>
+            <format attr='border-style' data-class='total' value='none' />
+          </style-rule>
+          <style-rule element='pane'>
+            <format attr='border-style' data-class='total' value='none' />
+          </style-rule>
+          <style-rule element='table-div'>
+            <format attr='line-visibility' scope='rows' value='off' />
+            <format attr='line-visibility' scope='cols' value='off' />
+          </style-rule>
+          <style-rule element='map-layer'>
+            <format attr='enabled' id='tab_base' value='true' />
+            <format attr='enabled' id='um_lcover' value='true' />
+            <format attr='enabled' id='tab_coastline' value='false' />
+            <format attr='enabled' id='pp2_line' value='false' />
+            <format attr='enabled' id='light_adm0_bnd' value='false' />
+            <format attr='enabled' id='light_adm0_lbl' value='false' />
+            <format attr='enabled' id='um_adm0_bnd' value='true' />
+            <format attr='enabled' id='um_adm0_lbl' value='true' />
+            <format attr='enabled' id='light_pp2_statebounds' value='false' />
+            <format attr='enabled' id='light_pp2_statelabels' value='false' />
+            <format attr='enabled' id='pp2_adminlabels' value='false' />
+            <format attr='enabled' id='pp2_statebounds' value='true' />
+            <format attr='enabled' id='pp2_statelabels' value='false' />
+            <format attr='enabled' id='countybounds' value='false' />
+            <format attr='enabled' id='countylabels' value='false' />
+            <format attr='enabled' id='zipbounds' value='false' />
+            <format attr='enabled' id='ziplabels' value='false' />
+            <format attr='enabled' id='tab_areabounds' value='false' />
+            <format attr='enabled' id='tab_arealabels' value='false' />
+            <format attr='enabled' id='tab_msabounds' value='false' />
+            <format attr='enabled' id='tab_msalabels' value='false' />
+          </style-rule>
+          <style-rule element='map'>
+            <format attr='washout' value='1' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-disallow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <color column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]' />
+              <text column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State_Abbr:nk]' />
+              <lod column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[clct:Geometry:nk]' />
+              <lod column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State:nk]' />
+              <tooltip column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[attr:State:nk]' />
+              <tooltip column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]' />
+              <tooltip column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average monthly Medigap plan cost ($):qk]' />
+              <tooltip column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Rank:qk]' />
+              <geometry column='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[clct:Geometry:nk]' />
+            </encodings>
+            <customized-tooltip show-buttons='false'>
+              <formatted-text>
+                <run fontalignment='1' fontcolor='#555555' fontname='Tableau Bold' fontsize='12'><![CDATA[#<[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Rank:qk]> <[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[attr:State:nk]>]]></run>
+                <run fontalignment='1'>Æ&#10;</run>
+                <run bold='true' fontalignment='1'><![CDATA[<[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]>]]></run>
+                <run fontalignment='1'>Æ&#10;</run>
+                <run fontalignment='1' fontcolor='#787878'>Average annual Medigap plan cost ($): </run>
+                <run bold='true' fontalignment='1'><![CDATA[<[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average annual Medigap plan cost ($):qk]>]]></run>
+                <run fontalignment='1'>Æ&#10;</run>
+                <run fontalignment='1' fontcolor='#787878'>Average monthly Medigap plan cost ($): </run>
+                <run bold='true' fontalignment='1'><![CDATA[<[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Average monthly Medigap plan cost ($):qk]>]]></run>
+              </formatted-text>
+            </customized-tooltip>
+            <customized-label>
+              <formatted-text>
+                <run fontsize='7'>&lt;</run>
+                <run fontsize='7'>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State_Abbr:nk]</run>
+                <run fontsize='7'>&gt;</run>
+              </formatted-text>
+            </customized-label>
+            <style>
+              <style-rule element='datalabel'>
+                <format attr='color-mode' value='auto' />
+                <format attr='font-size' value='8' />
+              </style-rule>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='true' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[Latitude (generated)]</rows>
+        <cols>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[Longitude (generated)]</cols>
+      </table>
+    </worksheet>
+  </worksheets>
+  <dashboards>
+    <dashboard name='Medigap'>
+      <repository-location derived-from='https://public.tableau.com/workbooks/StateMedigapCosts-ProjectHealthViz/Medigap?rev=' id='21074243' path='/workbooks/StateMedigapCosts-ProjectHealthViz' revision='' />
+      <style>
+        <style-rule element='dash-text'>
+          <format attr='text-orientation' id='dash-text_16' value='-90' />
+        </style-rule>
+      </style>
+      <size maxheight='700' maxwidth='1000' minheight='700' minwidth='1000' sizing-mode='fixed' />
+      <zones>
+        <zone h='100000' id='2' type='layout-basic' w='100000' x='0' y='0'>
+          <zone h='97714' id='12' param='horz' type='layout-flow' w='98400' x='800' y='1143'>
+            <zone h='97714' id='5' param='horz' type='layout-flow' w='98400' x='800' y='1143'>
+              <zone h='97714' id='3' type='layout-basic' w='98400' x='800' y='1143'>
+                <zone h='62428' id='7' name='Box Whisker' w='98400' x='800' y='36429'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                  </zone-style>
+                </zone>
+                <zone forceUpdate='true' h='13143' id='8' type='text' w='59600' x='800' y='1143'>
+                  <formatted-text>
+                    <run fontcolor='#b07aa1' fontname='Tableau Light' fontsize='52'>the</run>
+                    <run fontcolor='#b07aa1' fontname='Tableau Medium' fontsize='52'> m e d i G A P</run>
+                  </formatted-text>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                  </zone-style>
+                </zone>
+                <zone forceUpdate='true' h='17143' id='9' type='text' w='59600' x='800' y='19286'>
+                  <formatted-text>
+                    <run fontcolor='#b2a540' fontname='Tableau Medium' fontsize='12'>Once you turn 65 you qualify for Medicare health insurance. However, Medicare doesn&apos;t cover everything. Medigap plans are sold by private companies to help pay for some of those extra costs. Depending on where you live, it will cost you.</run>
+                  </formatted-text>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                  </zone-style>
+                </zone>
+                <zone h='35286' id='10' name='Map' show-title='false' w='38800' x='60400' y='1143'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                  </zone-style>
+                </zone>
+                <zone forceUpdate='true' h='5000' id='18' type='text' w='59600' x='800' y='14286'>
+                  <formatted-text>
+                    <run fontalignment='1' fontcolor='#898989' fontsize='10'>SOURCE | business insider     </run>
+                    <run fontalignment='1' fontcolor='#898989' fontname='Benton Sans Book' fontsize='10'>●     </run>
+                    <run fontalignment='1' fontcolor='#898989' fontsize='10'>DESIGN | lindsay betzendahl     </run>
+                    <run fontalignment='1' fontcolor='#898989' fontname='Benton Sans Book' fontsize='10'>●     </run>
+                    <run fontalignment='1' fontcolor='#898989' fontsize='10'>PROJECT | project health viz</run>
+                  </formatted-text>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                  </zone-style>
+                </zone>
+              </zone>
+            </zone>
+          </zone>
+          <zone-style>
+            <format attr='border-color' value='#000000' />
+            <format attr='border-style' value='none' />
+            <format attr='border-width' value='0' />
+            <format attr='margin' value='8' />
+          </zone-style>
+        </zone>
+        <zone forceUpdate='true' h='7429' id='13' type='text' w='12300' x='107100' y='87429'>
+          <formatted-text>
+            <run fontcolor='#b07aa1' fontname='Tableau Light' fontsize='32'>the</run>
+            <run fontcolor='#b07aa1' fontname='Tableau Medium' fontsize='32'> m e d i G A P</run>
+          </formatted-text>
+        </zone>
+        <zone forceUpdate='true' h='12857' id='14' type='text' w='22000' x='107500' y='55000'>
+          <formatted-text>
+            <run fontcolor='#b2a540'>Once you turn 65 you qualify for Medicare health insurance. However, Medicare doesn&apos;t cover everything. Medigap plans are sold by private companies to help pay for some of those extra costs. Depending on where you live, it will cost you.</run>
+          </formatted-text>
+        </zone>
+        <zone h='27857' id='15' type='empty' w='300' x='79600' y='46857'>
+          <zone-style>
+            <format attr='border-color' value='#000000' />
+            <format attr='border-style' value='none' />
+            <format attr='border-width' value='0' />
+            <format attr='background-color' value='#898989' />
+          </zone-style>
+        </zone>
+        <zone forceUpdate='true' h='24286' id='16' type='text' w='2900' x='79700' y='48429'>
+          <formatted-text>
+            <run fontalignment='1' fontcolor='#898989' fontname='Benton Sans Book' fontsize='14'>●</run>
+            <run fontalignment='1' fontcolor='#898989' fontname='Benton Sans Book'>Æ </run>
+            <run fontalignment='1' fontcolor='#898989'>Top 10 with largest gap</run>
+          </formatted-text>
+        </zone>
+        <zone forceUpdate='true' h='4286' id='17' type='text' w='10000' x='88700' y='26286'>
+          <formatted-text>
+            <run fontalignment='1' fontcolor='#898989' italic='true'>hover for details</run>
+          </formatted-text>
+        </zone>
+        <zone h='33286' id='19' name='Box Whisker (2)' w='13900' x='102200' y='69429' />
+      </zones>
+      <devicelayouts>
+        <devicelayout name='Phone'>
+          <size maxheight='900' minheight='900' sizing-mode='vscroll' />
+          <zones>
+            <zone h='100000' id='2' type='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98222' id='12' param='horz' type='layout-flow' w='95734' x='2133' y='889'>
+                <zone h='98222' id='5' param='horz' type='layout-flow' w='95734' x='2133' y='889'>
+                  <zone h='98222' id='3' type='layout-basic' w='95734' x='2133' y='889'>
+                    <zone h='29889' id='10' name='Map' show-title='false' w='95734' x='2133' y='17889'>
+                      <zone-style>
+                        <format attr='border-color' value='#000000' />
+                        <format attr='border-style' value='none' />
+                        <format attr='border-width' value='0' />
+                        <format attr='margin' value='4' />
+                      </zone-style>
+                    </zone>
+                    <zone forceUpdate='true' h='7111' id='13' type='text' w='95734' x='2133' y='889'>
+                      <formatted-text>
+                        <run fontcolor='#b07aa1' fontname='Tableau Light' fontsize='32'>the</run>
+                        <run fontcolor='#b07aa1' fontname='Tableau Medium' fontsize='32'> m e d i G A P</run>
+                      </formatted-text>
+                      <zone-style>
+                        <format attr='border-color' value='#000000' />
+                        <format attr='border-style' value='none' />
+                        <format attr='border-width' value='0' />
+                        <format attr='margin' value='4' />
+                      </zone-style>
+                    </zone>
+                    <zone forceUpdate='true' h='9889' id='14' type='text' w='95734' x='2133' y='8000'>
+                      <formatted-text>
+                        <run fontcolor='#b2a540'>Once you turn 65 you qualify for Medicare health insurance. However, Medicare doesn&apos;t cover everything. Medigap plans are sold by private companies to help pay for some of those extra costs. Depending on where you live, it will cost you.</run>
+                      </formatted-text>
+                      <zone-style>
+                        <format attr='border-color' value='#000000' />
+                        <format attr='border-style' value='none' />
+                        <format attr='border-width' value='0' />
+                        <format attr='margin' value='4' />
+                      </zone-style>
+                    </zone>
+                    <zone h='46222' id='19' name='Box Whisker (2)' w='95734' x='2133' y='47778'>
+                      <zone-style>
+                        <format attr='border-color' value='#000000' />
+                        <format attr='border-style' value='none' />
+                        <format attr='border-width' value='0' />
+                        <format attr='margin' value='4' />
+                      </zone-style>
+                    </zone>
+                    <zone forceUpdate='true' h='5111' id='18' type='text' w='95734' x='2133' y='94000'>
+                      <formatted-text>
+                        <run fontalignment='1' fontcolor='#898989' fontsize='10'>SOURCE | business insider     </run>
+                        <run fontalignment='1' fontcolor='#898989' fontname='Benton Sans Book' fontsize='10'>●     </run>
+                        <run fontalignment='1' fontcolor='#898989' fontsize='10'>DESIGN | lindsay betzendahl     </run>
+                        <run fontalignment='1' fontcolor='#898989' fontname='Benton Sans Book' fontsize='10'>●     </run>
+                        <run fontalignment='1' fontcolor='#898989' fontsize='10'>PROJECT | project health viz</run>
+                      </formatted-text>
+                      <zone-style>
+                        <format attr='border-color' value='#000000' />
+                        <format attr='border-style' value='none' />
+                        <format attr='border-width' value='0' />
+                        <format attr='margin' value='4' />
+                      </zone-style>
+                    </zone>
+                  </zone>
+                </zone>
+              </zone>
+              <zone-style>
+                <format attr='border-color' value='#000000' />
+                <format attr='border-style' value='none' />
+                <format attr='border-width' value='0' />
+                <format attr='margin' value='8' />
+              </zone-style>
+            </zone>
+          </zones>
+        </devicelayout>
+      </devicelayouts>
+    </dashboard>
+  </dashboards>
+  <windows source-height='30'>
+    <window class='dashboard' maximized='true' name='Medigap'>
+      <viewpoints>
+        <viewpoint name='Box Whisker'>
+          <zoom type='entire-view' />
+        </viewpoint>
+        <viewpoint name='Box Whisker (2)'>
+          <zoom type='entire-view' />
+        </viewpoint>
+        <viewpoint name='Map'>
+          <zoom type='entire-view' />
+          <highlight>
+            <color-one-way>
+              <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]</field>
+            </color-one-way>
+          </highlight>
+          <floating-toolbar-visibility value='2' />
+          <geo-search-visibility value='1' />
+          <map-navigation value='1' />
+        </viewpoint>
+      </viewpoints>
+      <active id='-1' />
+      <device-preview visible='true'>
+        <device name='Generic Phone' type='Phone' />
+      </device-preview>
+    </window>
+    <window class='worksheet' hidden='true' name='Box Whisker'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='31'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='1' param='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]' type='color' />
+            <card pane-specification-id='1' param='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[sum:Calculation_193936291657854984:qk]' type='size' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <highlight>
+          <color-one-way>
+            <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]</field>
+            <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State (Sheet1):nk]</field>
+            <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State:nk]</field>
+          </color-one-way>
+        </highlight>
+      </viewpoint>
+    </window>
+    <window class='worksheet' hidden='true' name='Box Whisker (2)'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='31'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='1' param='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <highlight>
+          <color-one-way>
+            <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]</field>
+            <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State (Sheet1):nk]</field>
+            <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State:nk]</field>
+          </color-one-way>
+        </highlight>
+      </viewpoint>
+    </window>
+    <window class='worksheet' hidden='true' name='Map'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='0' param='[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <highlight>
+          <color-one-way>
+            <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[US Region]</field>
+            <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State (Sheet1):nk]</field>
+            <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State:nk]</field>
+            <field>[federated.0spo7hc01nqwqv1d1h5tc0s7msd3].[none:State_Abbr:nk]</field>
+          </color-one-way>
+        </highlight>
+        <default-map-tool-selection tool='2' />
+      </viewpoint>
+    </window>
+  </windows>
+</workbook>
