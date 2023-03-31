@@ -87,9 +87,6 @@ public class TableauContentFormatter {
             return null;
         }
 
-        if (usingOriginFormatStyle())
-            return formula;
-
         if (useColumnAlias) {
             var sb = new StringBuilder();
             if (formula.contains("+") || formula.contains("-") || formula.contains("*") || formula.contains("/")) {
@@ -137,6 +134,9 @@ public class TableauContentFormatter {
     }
 
     public String removeTableIdentifier(String column) {
+        if (usingOriginFormatStyle())
+            return column;
+
         if (column.contains(DOT)) {
             String[] parts = column.split(DOT_REGEX);
             return parts[1];
