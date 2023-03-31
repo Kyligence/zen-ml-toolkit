@@ -62,7 +62,7 @@ public class ZenMlController {
     }
 
     @PostMapping(value = "/upload")
-    public Map<String, String> upload(@RequestParam("files") MultipartFile file) throws IOException {
+    public Map<String, String> upload(@RequestParam("file") MultipartFile file) throws IOException {
         var uuid = UUID.randomUUID().toString();
         var srcFilePath = uploadFileService.uploadFile(file, uuid);
         var outputFilePath = generator.generateZenMetricsZip(srcFilePath, uuid);
