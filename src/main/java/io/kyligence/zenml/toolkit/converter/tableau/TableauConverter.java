@@ -43,6 +43,11 @@ import java.util.Map;
 @Slf4j
 public class TableauConverter implements MetricsConverter {
 
+    // todo
+    // 1.twb support
+    // 2. find right data model (relation --> table, dsname --> view, 单表 table，多表 view)
+    // 2. expression formatter
+
     private static final String TABLEAU_TAG = "Tableau";
 
 
