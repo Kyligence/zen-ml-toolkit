@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.model.tableau;
+package io.kyligence.zenml.toolkit.utils.tableau;
 
 import io.kyligence.zenml.toolkit.config.ToolkitConfig;
 import lombok.AllArgsConstructor;
