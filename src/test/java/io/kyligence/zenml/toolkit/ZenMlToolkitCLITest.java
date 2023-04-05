@@ -37,7 +37,6 @@ public class ZenMlToolkitCLITest {
     @BeforeAll
     public static void setup() {
         System.setProperty("ZEN_HOME", TableauConverterTest.class.getResource("/").getPath());
-        System.setProperty("PROPERTIES_PATH",TableauConverterTest.class.getResource("/").getPath());
         File destDir = new File(destDirPath);
         FileUtils.deleteQuietly(destDir);
         destDir.mkdirs();
@@ -46,7 +45,6 @@ public class ZenMlToolkitCLITest {
     @AfterAll
     public static void clean() {
         System.clearProperty("ZEN_HOME");
-        System.clearProperty("PROPERTIES_PATH");
         FileUtils.deleteQuietly(new File(destDirPath));
     }
 

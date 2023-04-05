@@ -1,0 +1,11 @@
+<datasource caption='' inline='true' name='federated.0w8ouer0unopov15s2h4514j6k1u' version=''>
+    <connection class='federated'>
+        <named-connections>
+            <named-connection caption='' name=''>
+                <connection class='genericodbc' dbname='' odbc-connect-string-extras='' odbc-dbms-name='MySQL' odbc-driver='KyligenceODBCDriver' odbc-dsn='' odbc-suppress-connection-pooling='' odbc-use-connection-pooling='' port='7070' schema='' server='localhost' username=''>
+                </connection>
+            </named-connection>
+        </named-connections>
+    </connection>
+    <aliases enabled='yes' />
+</datasource>

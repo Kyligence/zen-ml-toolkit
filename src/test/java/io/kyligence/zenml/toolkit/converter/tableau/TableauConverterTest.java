@@ -36,14 +36,11 @@ public class TableauConverterTest {
     @BeforeAll
     public static void setup() {
         System.setProperty("ZEN_HOME", TableauConverterTest.class.getResource("/").getPath());
-        System.setProperty("PROPERTIES_PATH",TableauConverterTest.class.getResource("/").getPath());
-
     }
 
     @AfterAll
     public static void clean() {
         System.clearProperty("ZEN_HOME");
-        System.clearProperty("PROPERTIES_PATH");
     }
 
     @Test
