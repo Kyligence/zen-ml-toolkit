@@ -19,6 +19,7 @@
 package io.kyligence.zenml.toolkit.utils;
 
 import io.kyligence.zenml.toolkit.ZenMlToolkitServer;
+import io.kyligence.zenml.toolkit.utils.sql.SqlUtils;
 import org.apache.calcite.util.Pair;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

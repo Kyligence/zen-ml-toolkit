@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.tool.excel;
+package io.kyligence.zenml.toolkit.utils.excel;
 
 import io.kyligence.zenml.toolkit.converter.FileType;
 import io.kyligence.zenml.toolkit.model.zenml.Metrics;

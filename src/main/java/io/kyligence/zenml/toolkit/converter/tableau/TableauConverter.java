@@ -22,7 +22,6 @@ import io.kyligence.zenml.toolkit.converter.MetricsConverter;
 import io.kyligence.zenml.toolkit.exception.ErrorCode;
 import io.kyligence.zenml.toolkit.exception.ToolkitException;
 import io.kyligence.zenml.toolkit.model.zenml.*;
-import io.kyligence.zenml.toolkit.zenml.*;
 import io.kyligence.zenml.toolkit.model.tableau.TableauCalculatedFields;
 import io.kyligence.zenml.toolkit.model.tableau.TableauColumn;
 import io.kyligence.zenml.toolkit.model.tableau.TableauParser;

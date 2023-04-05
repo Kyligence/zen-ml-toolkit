@@ -16,11 +16,9 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.utils;
+package io.kyligence.zenml.toolkit.utils.sql;
 
 import com.google.common.collect.ImmutableList;
-import io.kyligence.zenml.toolkit.tool.sql.CalciteParser;
-import io.kyligence.zenml.toolkit.tool.sql.DwSqlDialect;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.calcite.sql.SqlBasicCall;

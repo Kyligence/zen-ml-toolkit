@@ -16,10 +16,9 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.tool.sql;
+package io.kyligence.zenml.toolkit.utils.sql;
 
 import io.kyligence.zenml.toolkit.exception.SQLErrorBuilder;
-import io.kyligence.zenml.toolkit.utils.SqlUtils;
 import org.apache.calcite.plan.RelOptCluster;
 import org.apache.calcite.plan.RelOptTable;
 import org.apache.calcite.prepare.CalciteCatalogReader;

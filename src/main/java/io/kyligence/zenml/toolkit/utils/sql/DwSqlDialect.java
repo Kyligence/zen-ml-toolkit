@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.tool.sql;
+package io.kyligence.zenml.toolkit.utils.sql;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
