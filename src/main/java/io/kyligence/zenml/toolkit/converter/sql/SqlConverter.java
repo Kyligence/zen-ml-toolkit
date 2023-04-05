@@ -19,7 +19,7 @@
 package io.kyligence.zenml.toolkit.converter.sql;
 
 import io.kyligence.zenml.toolkit.converter.MetricsConverter;
-import io.kyligence.zenml.toolkit.metrics.Metrics;
+import io.kyligence.zenml.toolkit.model.zenml.Metrics;
 
 public class SqlConverter implements MetricsConverter {
     @Override

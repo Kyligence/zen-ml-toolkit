@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.source.tableau;
+package io.kyligence.zenml.toolkit.model.tableau;
 
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;

@@ -16,32 +16,8 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.source.tableau;
+package io.kyligence.zenml.toolkit.model.sql;
 
-import lombok.*;
-
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode
-@Getter
-@Setter
-@Builder
-@ToString
-public class TableauCalculation {
-    // measure type
-    public static final String CLASS_TABLEAU = "tableau";
-    // non-measure
-    public static final String CLASS_CATEGORICAL_BIN = "categorical-bin";
-    // non-measure
-    public static final String CLASS_BIN = "bin";
-
-    private String clazz;
-    private String column;
-    private String decimals;
-    private String formula;
-    private String peg;
-    private String sizeParameter;
-    private String newBin;
-
+public class SqlFileParser {
+    //TODO: parse sql file
 }
-

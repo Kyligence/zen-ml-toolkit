@@ -16,8 +16,9 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.source.sql;
+package io.kyligence.zenml.toolkit.model.zenml;
 
-public class SqlFileParser {
-    //TODO: parse sql file
+public enum MetricType {
+    BASIC, COMPOSITE, DERIVED, GROUP;
+
 }

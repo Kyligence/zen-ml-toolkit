@@ -19,7 +19,7 @@
 package io.kyligence.zenml.toolkit.tool.excel;
 
 import io.kyligence.zenml.toolkit.converter.FileType;
-import io.kyligence.zenml.toolkit.metrics.Metrics;
+import io.kyligence.zenml.toolkit.model.zenml.Metrics;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;

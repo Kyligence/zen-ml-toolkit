@@ -19,7 +19,7 @@
 package io.kyligence.zenml.toolkit.converter.excel;
 
 import io.kyligence.zenml.toolkit.converter.MetricsConverter;
-import io.kyligence.zenml.toolkit.metrics.Metrics;
+import io.kyligence.zenml.toolkit.model.zenml.Metrics;
 
 public class ExcelConverter implements MetricsConverter {
     @Override

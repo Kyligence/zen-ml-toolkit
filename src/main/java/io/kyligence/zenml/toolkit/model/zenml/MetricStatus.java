@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.source.excel;
+package io.kyligence.zenml.toolkit.model.zenml;
 
-public class ExcelParser {
-    //TODO: parse excel
+public enum MetricStatus {
+    ONLINE, OFFLINE
 }

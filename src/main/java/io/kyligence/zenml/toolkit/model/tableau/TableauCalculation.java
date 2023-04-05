@@ -16,9 +16,8 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.metrics;
+package io.kyligence.zenml.toolkit.model.tableau;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @AllArgsConstructor
@@ -28,14 +27,21 @@ import lombok.*;
 @Setter
 @Builder
 @ToString
-public class TimeDimension {
+public class TableauCalculation {
+    // measure type
+    public static final String CLASS_TABLEAU = "tableau";
+    // non-measure
+    public static final String CLASS_CATEGORICAL_BIN = "categorical-bin";
+    // non-measure
+    public static final String CLASS_BIN = "bin";
 
-    @JsonProperty("name")
-    private String name;
+    private String clazz;
+    private String column;
+    private String decimals;
+    private String formula;
+    private String peg;
+    private String sizeParameter;
+    private String newBin;
 
-    @JsonProperty("granularity")
-    private String granularity = "DAY";
-
-    @JsonProperty("display_option")
-    private String displayOption = "LATEST";
 }
+

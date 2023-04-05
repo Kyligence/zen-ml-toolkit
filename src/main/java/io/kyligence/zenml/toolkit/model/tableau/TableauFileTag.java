@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.source.tableau;
+package io.kyligence.zenml.toolkit.model.tableau;
 
 public class TableauFileTag {
 

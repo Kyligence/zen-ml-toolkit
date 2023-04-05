@@ -16,34 +16,8 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.source.tableau;
+package io.kyligence.zenml.toolkit.model.excel;
 
-import lombok.*;
-
-import java.util.List;
-import java.util.Map;
-
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode
-@Getter
-@Setter
-@Builder
-@ToString
-public class TableauCalculatedFields {
-
-    // tds file name as tag
-    private List<String> tags;
-
-    // use connection name as view name
-    private List<String> views;
-
-    // TODO: support tables join
-    private List<String> tables;
-
-    // column alias 2 column name
-    private Map<String, String> alias2columnMap;
-
-    // tableau columns(include dimensions & measures)
-    private List<TableauColumn> columns;
+public class ExcelParser {
+    //TODO: parse excel
 }

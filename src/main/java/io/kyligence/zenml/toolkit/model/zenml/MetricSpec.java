@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.metrics;
+package io.kyligence.zenml.toolkit.model.zenml;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

@@ -21,10 +21,11 @@ package io.kyligence.zenml.toolkit.converter.tableau;
 import io.kyligence.zenml.toolkit.converter.MetricsConverter;
 import io.kyligence.zenml.toolkit.exception.ErrorCode;
 import io.kyligence.zenml.toolkit.exception.ToolkitException;
-import io.kyligence.zenml.toolkit.metrics.*;
-import io.kyligence.zenml.toolkit.source.tableau.TableauCalculatedFields;
-import io.kyligence.zenml.toolkit.source.tableau.TableauColumn;
-import io.kyligence.zenml.toolkit.source.tableau.TableauParser;
+import io.kyligence.zenml.toolkit.model.zenml.*;
+import io.kyligence.zenml.toolkit.zenml.*;
+import io.kyligence.zenml.toolkit.model.tableau.TableauCalculatedFields;
+import io.kyligence.zenml.toolkit.model.tableau.TableauColumn;
+import io.kyligence.zenml.toolkit.model.tableau.TableauParser;
 import org.apache.commons.io.FilenameUtils;
 import org.dom4j.DocumentException;
 

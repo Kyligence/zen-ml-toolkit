@@ -16,9 +16,26 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.metrics;
+package io.kyligence.zenml.toolkit.model.zenml;
 
-public enum MetricType {
-    BASIC, COMPOSITE, DERIVED, GROUP;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+@Getter
+@Setter
+@Builder
+@ToString
+public class TimeDimension {
+
+    @JsonProperty("name")
+    private String name;
+
+    @JsonProperty("granularity")
+    private String granularity = "DAY";
+
+    @JsonProperty("display_option")
+    private String displayOption = "LATEST";
 }

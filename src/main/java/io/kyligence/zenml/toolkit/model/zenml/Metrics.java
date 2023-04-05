@@ -16,23 +16,21 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.source.tableau;
+package io.kyligence.zenml.toolkit.model.zenml;
 
-import org.apache.commons.lang3.StringUtils;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
-public class TableauDataType {
-    public static final String REAL = "real";
-    public static final String DOUBLE = "double";
+import java.util.List;
 
-    public static final String DATE = "date";
-
-    public static final String TIMESTAMP = "timestamp";
-
-    public static String convertDataType(String dataType) {
-        if (StringUtils.equalsIgnoreCase(dataType, REAL)) {
-            return DOUBLE;
-        } else {
-            return dataType.toLowerCase();
-        }
-    }
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+@Getter
+@Setter
+@Builder
+@ToString
+public class Metrics {
+    @JsonProperty(value = "metrics")
+    private List<MetricSpec> metrics;
 }
