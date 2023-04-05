@@ -44,7 +44,7 @@ public class ToolkitConfigCLI {
             }
         }
 
-        var config = ToolkitConfig.getInstance().getProperties();
+        var config = ToolkitConfig.getProperties();
 
         var key = args[0].trim();
         if (!key.endsWith(".")) {

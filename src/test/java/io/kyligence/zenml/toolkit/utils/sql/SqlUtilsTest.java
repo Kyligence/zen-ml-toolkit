@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.utils;
+package io.kyligence.zenml.toolkit.utils.sql;
 
 import io.kyligence.zenml.toolkit.ZenMlToolkitServer;
 import io.kyligence.zenml.toolkit.utils.sql.SqlUtils;

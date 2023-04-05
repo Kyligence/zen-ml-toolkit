@@ -18,6 +18,7 @@
 
 package io.kyligence.zenml.toolkit.model.tableau;
 
+import io.kyligence.zenml.toolkit.utils.tableau.TableauDataTypeUtils;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 
@@ -64,8 +65,8 @@ public class TableauColumn {
             return false;
         }
 
-        return StringUtils.equalsAnyIgnoreCase(this.datatype, TableauDataType.DATE) ||
-                StringUtils.equalsAnyIgnoreCase(this.datatype, TableauDataType.TIMESTAMP);
+        return StringUtils.equalsAnyIgnoreCase(this.datatype, TableauDataTypeUtils.DATE) ||
+                StringUtils.equalsAnyIgnoreCase(this.datatype, TableauDataTypeUtils.TIMESTAMP);
     }
 
     public boolean isMeasure() {

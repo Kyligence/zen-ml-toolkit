@@ -21,6 +21,7 @@ package io.kyligence.zenml.toolkit.model.tableau;
 import io.kyligence.zenml.toolkit.converter.FileType;
 import io.kyligence.zenml.toolkit.exception.ErrorCode;
 import io.kyligence.zenml.toolkit.exception.ToolkitException;
+import io.kyligence.zenml.toolkit.utils.tableau.TableauDataTypeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Attribute;
@@ -246,7 +247,7 @@ public class TableauParser {
         // datatype
         var datatypeAttr = column.attribute(TableauFileTag.DATATYPE);
         var datatype = getAttributeOrDefault(datatypeAttr);
-        tableauColumn.setDatatype(TableauDataType.convertDataType(datatype));
+        tableauColumn.setDatatype(TableauDataTypeUtils.convertDataType(datatype));
 
         // role
         var roleAttr = column.attribute(TableauFileTag.ROLE);

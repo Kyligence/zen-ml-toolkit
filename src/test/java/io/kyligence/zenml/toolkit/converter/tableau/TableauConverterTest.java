@@ -44,6 +44,14 @@ public class TableauConverterTest {
     }
 
     @Test
+    public void testConvert2ZenMLCase0() throws DocumentException {
+        var tdsName = "superstore.tds";
+        var tdsPath = TDS_BASE_DIR + tdsName;
+        var converter = new TableauConverter();
+        var metrics = converter.convert2Metrics(tdsPath);
+        Assertions.assertEquals(7, metrics.getMetrics().size());
+    }
+    @Test
     public void testConvert2ZenMLCase1() throws DocumentException {
         var tdsName = "SSB.tds";
         var tdsPath = TDS_BASE_DIR + tdsName;

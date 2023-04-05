@@ -82,8 +82,6 @@ public class TableauRWUtils {
             Matcher matcher1 = columnPattern.matcher(dependenceStr);
             StringBuffer sb1 = new StringBuffer();
             while (matcher1.find()) {
-                System.out.println("**********************");
-                System.out.println(matcher1.group(0));
                 matcher1.appendReplacement(sb1, "");
             }
             matcher1.appendTail(sb1);
@@ -97,10 +95,6 @@ public class TableauRWUtils {
 
         try (BufferedReader reader = new BufferedReader(strReader)) {
             return mapper.readValue(reader, TableauWorkbook.class);
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -116,10 +110,6 @@ public class TableauRWUtils {
 
         try (BufferedReader reader = new BufferedReader(new FileReader(tdsFile))) {
             return mapper.readValue(reader, TableauDatasource.class);
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -135,8 +125,6 @@ public class TableauRWUtils {
                 sb.append(LINE_SEP);
             }
             return sb.toString();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -170,10 +158,6 @@ public class TableauRWUtils {
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         try (BufferedReader reader = new BufferedReader(new StringReader(sb.toString()))) {
             return mapper.readValue(reader, TableauDatasource.class);
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

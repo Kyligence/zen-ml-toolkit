@@ -22,7 +22,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import io.kyligence.zenml.toolkit.model.tableau.tds.connection.Cols;
 import io.kyligence.zenml.toolkit.model.tableau.tds.connection.NamedConnectionList;
-import io.kyligence.zenml.toolkit.model.tableau.tds.connection.TwbCalculation;
+import io.kyligence.zenml.toolkit.model.tableau.tds.connection.Calculation;
 import io.kyligence.zenml.toolkit.model.tableau.tds.connection.metadata.MetadataRecordList;
 import io.kyligence.zenml.toolkit.model.tableau.tds.connection.relation.Relation;
 import lombok.*;
@@ -48,7 +48,7 @@ public class TableauConnection {
 
     @JacksonXmlProperty(localName = "calculation")
     @JacksonXmlElementWrapper(localName = "calculations")
-    private List<TwbCalculation> twbCalculations;
+    private List<Calculation> calculations;
 
     @JacksonXmlProperty(localName = "cols")
     private Cols cols;

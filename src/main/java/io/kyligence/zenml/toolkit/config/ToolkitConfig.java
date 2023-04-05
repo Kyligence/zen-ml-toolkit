@@ -68,7 +68,7 @@ public class ToolkitConfig {
         this.properties = getProperties();
     }
 
-    private static Properties getProperties() {
+    public static Properties getProperties() {
         var propFile = getPropertiesFile();
         if (!propFile.exists()) {
             log.error("fail to locate " + PROPERTIES_FILE);
@@ -156,5 +156,13 @@ public class ToolkitConfig {
 
     public String getTableauParseFormat() {
         return getOptional("zen.ml.toolkit.parse.tableau.format", "sql");
+    }
+
+    public Boolean isTableSourceNameIgnore() {
+        // by default ignore table schema name because Zen table doesn't have schema
+        // [SSB].[LineOrder]
+        // if true: return LineOrder
+        // if false: return SSB.LineOrder
+        return Boolean.valueOf(getOptional("zen.ml.toolkit.parse.table.schema-ignore", "true"));
     }
 }

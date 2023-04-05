@@ -16,23 +16,21 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.model.tableau;
+package io.kyligence.zenml.toolkit.model.tableau.tds.connection;
 
-import org.apache.commons.lang3.StringUtils;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import lombok.*;
 
-public class TableauDataType {
-    public static final String REAL = "real";
-    public static final String DOUBLE = "double";
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+public class Calculation {
 
-    public static final String DATE = "date";
+    @JacksonXmlProperty(localName = "column", isAttribute = true)
+    private String column;
 
-    public static final String TIMESTAMP = "timestamp";
-
-    public static String convertDataType(String dataType) {
-        if (StringUtils.equalsIgnoreCase(dataType, REAL)) {
-            return DOUBLE;
-        } else {
-            return dataType.toLowerCase();
-        }
-    }
+    @JacksonXmlProperty(localName = "formula", isAttribute = true)
+    private String formula;
 }

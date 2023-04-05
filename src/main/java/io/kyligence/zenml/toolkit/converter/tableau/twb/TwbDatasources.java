@@ -16,9 +16,9 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.model.tableau.tds.connection;
+package io.kyligence.zenml.toolkit.converter.tableau.twb;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import io.kyligence.zenml.toolkit.converter.tableau.tds.TdsSpec;
 import lombok.*;
 
 @Getter
@@ -26,11 +26,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class TwbCalculation {
-
-    @JacksonXmlProperty(localName = "column", isAttribute = true)
-    private String column;
-
-    @JacksonXmlProperty(localName = "formula", isAttribute = true)
-    private String formula;
+public class TwbDatasources {
+    private TdsSpec tdsSpec;
 }
