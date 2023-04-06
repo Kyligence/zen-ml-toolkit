@@ -75,20 +75,7 @@ public class TableauRWUtils {
 
     public static TableauWorkbook readTwb(File twbFile) {
         String twbStr = readFileAsString(twbFile);
-        Matcher matcher0 = datasourceDepPattern.matcher(twbStr);
-        StringBuffer sb0 = new StringBuffer();
-        while (matcher0.find()) {
-            String dependenceStr = matcher0.group(0);
-            Matcher matcher1 = columnPattern.matcher(dependenceStr);
-            StringBuffer sb1 = new StringBuffer();
-            while (matcher1.find()) {
-                matcher1.appendReplacement(sb1, "");
-            }
-            matcher1.appendTail(sb1);
-            matcher0.appendReplacement(sb0, sb1.toString());
-        }
-        matcher0.appendTail(sb0);
-        StringReader strReader = new StringReader(sb0.toString());
+        StringReader strReader = new StringReader(twbStr);
         XmlMapper mapper = new XmlMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);

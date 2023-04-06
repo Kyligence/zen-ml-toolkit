@@ -43,7 +43,9 @@ public class TdsSpec {
 
     private Map<String, TableauSourceColumn> sourceColumnMap;
 
-    private List<TableauDimension> dimensions;
+    private List<TableauColumn> dimensions;
 
-    private List<TableauMeasure> measures;
+    private List<TableauColumn> measures;
+
+    private Map<String, TableauColumn> tableauColumnMap;
 }

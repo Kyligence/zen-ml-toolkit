@@ -67,7 +67,7 @@ public class TableauConverterTest {
         var twbPath = TWB_BASE_DIR + twbName;
         var converter = new TableauConverter();
         var metrics = converter.convert2Metrics(twbPath);
-        Assertions.assertEquals(16, metrics.getMetrics().size());
+        Assertions.assertEquals(15, metrics.getMetrics().size());
     }
 
     @Test
@@ -76,7 +76,7 @@ public class TableauConverterTest {
         var twbPath = TWB_BASE_DIR + twbName;
         var converter = new TableauConverter();
         var metrics = converter.convert2Metrics(twbPath);
-        Assertions.assertEquals(7, metrics.getMetrics().size());
+        Assertions.assertEquals(5, metrics.getMetrics().size());
     }
 
     @Test
@@ -85,7 +85,7 @@ public class TableauConverterTest {
         var twbPath = TWB_BASE_DIR + twbName;
         var converter = new TableauConverter();
         var metrics = converter.convert2Metrics(twbPath);
-        Assertions.assertEquals(10, metrics.getMetrics().size());
+        Assertions.assertEquals(8, metrics.getMetrics().size());
     }
 
     @Test
@@ -103,7 +103,7 @@ public class TableauConverterTest {
         var twbPath = TWB_BASE_DIR + twbName;
         var converter = new TableauConverter();
         var metrics = converter.convert2Metrics(twbPath);
-        Assertions.assertEquals(28, metrics.getMetrics().size());
+        Assertions.assertEquals(25, metrics.getMetrics().size());
     }
 
     @Test
@@ -139,7 +139,7 @@ public class TableauConverterTest {
         var twbPath = TWB_BASE_DIR + twbName;
         var converter = new TableauConverter();
         var metrics = converter.convert2Metrics(twbPath);
-        Assertions.assertEquals(6, metrics.getMetrics().size());
+        Assertions.assertEquals(4, metrics.getMetrics().size());
     }
 
     @Test
@@ -157,7 +157,7 @@ public class TableauConverterTest {
         var twbPath = TWB_BASE_DIR + twbName;
         var converter = new TableauConverter();
         var metrics = converter.convert2Metrics(twbPath);
-        Assertions.assertEquals(15, metrics.getMetrics().size());
+        Assertions.assertEquals(4, metrics.getMetrics().size());
     }
 
     @Test
@@ -184,6 +184,6 @@ public class TableauConverterTest {
         var twbPath = TWB_BASE_DIR + twbName;
         var converter = new TableauConverter();
         var metrics = converter.convert2Metrics(twbPath);
-        Assertions.assertEquals(3, metrics.getMetrics().size());
+        Assertions.assertEquals(2, metrics.getMetrics().size());
     }
 }

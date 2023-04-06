@@ -16,19 +16,32 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.converter.tableau.twb;
+package io.kyligence.zenml.toolkit.converter.tableau;
 
 import io.kyligence.zenml.toolkit.converter.tableau.tds.TdsSpec;
-import lombok.*;
+import io.kyligence.zenml.toolkit.converter.tableau.twb.TwbSpec;
+import io.kyligence.zenml.toolkit.model.tableau.tds.TableauDatasource;
+import io.kyligence.zenml.toolkit.model.tableau.twb.TableauWorkbook;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode
-public class TwbSpec {
+public class TwbAnalyzer {
 
-    private List<TdsSpec> tdsSpecs;
+    public TwbSpec analyzeTwbSpec(TableauWorkbook twb) {
+        var twbDs = twb.getDatasources();
+        List<TableauDatasource> tdsList = twbDs.getDatasources();
+
+        var tdsAnalyzer = new TdsAnalyzer();
+        List<TdsSpec> tdsSpecs = new ArrayList<>();
+        for (TableauDatasource tds : tdsList) {
+            var tdsSpec = tdsAnalyzer.analyzeTdsSpec(tds);
+            if (tdsSpec == null)
+                continue;
+            tdsSpecs.add(tdsSpec);
+        }
+        var twbSpec = new TwbSpec();
+        twbSpec.setTdsSpecs(tdsSpecs);
+        return twbSpec;
+    }
 }

@@ -34,6 +34,9 @@ public class Connection {
     @JacksonXmlProperty(localName = "dbname", isAttribute = true)
     private String dbName;
 
+    @JacksonXmlProperty(localName = "tablename", isAttribute = true)
+    private String tableName;
+
     @JacksonXmlProperty(localName = "odbc-connect-string-extras", isAttribute = true)
     private String odbcConnectStringExtras;
 

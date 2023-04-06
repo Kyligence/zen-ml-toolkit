@@ -16,25 +16,19 @@
  * limitations under the License.
  */
 
-package io.kyligence.zenml.toolkit.converter.tableau;
+package io.kyligence.zenml.toolkit.utils.tableau;
 
 import io.kyligence.zenml.toolkit.ZenMlToolkitServer;
-import io.kyligence.zenml.toolkit.utils.tableau.TableauRWUtils;
-import io.kyligence.zenml.toolkit.utils.tableau.TableauRWUtilsTest;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.io.File;
-
 @SpringBootTest(classes = ZenMlToolkitServer.class)
-public class TdsAnalyzerTest {
-    private static final String TDS_BASE_DIR = "src/test/resources/sources/tableau/tds/";
-
+public class TableauFuncUtilsTest {
     @BeforeAll
     public static void setup() {
-        System.setProperty("ZEN_HOME", TdsAnalyzerTest.class.getResource("/").getPath());
+        System.setProperty("ZEN_HOME", TableauRWUtilsTest.class.getResource("/").getPath());
     }
 
     @AfterAll
@@ -43,12 +37,12 @@ public class TdsAnalyzerTest {
     }
 
     @Test
-    public void testAnalyzeTdsFileCase1(){
-        var tdsName = "SSB.tds";
-        var tdsPath = TDS_BASE_DIR + tdsName;
-        var analyzer = new TdsAnalyzer();
-        var tds = TableauRWUtils.getTds(new File(tdsPath));
-        var tdsSpec = analyzer.analyzeTdsSpec(tds);
-        System.out.println(tdsSpec);
+    public void testReplaceCalculation(){
+        String replacedCalculation = "if year(#2018-09-11#) and year(#2011-09-11#) and month([cat])";
+        replacedCalculation = TableauFuncUtils.replaceDateFun(replacedCalculation, "YEAR");
+        replacedCalculation = TableauFuncUtils.replaceDateFun(replacedCalculation, "MONTH");
+        replacedCalculation = TableauFuncUtils.replaceDateFun(replacedCalculation, "DAY");
+        replacedCalculation = TableauFuncUtils.replaceDateFun(replacedCalculation, "QUARTER");
+        System.out.println(replacedCalculation);
     }
 }

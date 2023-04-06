@@ -36,7 +36,7 @@ public class TableauRWUtilsTest {
 
     @BeforeAll
     public static void setup() {
-        System.setProperty("ZEN_HOME", TableauConverterTest.class.getResource("/").getPath());
+        System.setProperty("ZEN_HOME", TableauRWUtilsTest.class.getResource("/").getPath());
     }
 
     @AfterAll

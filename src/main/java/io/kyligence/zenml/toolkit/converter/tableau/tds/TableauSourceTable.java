@@ -52,4 +52,12 @@ public class TableauSourceTable {
         this.catalog = sourceTable.getCatalog();
         this.schema = sourceTable.getSchema();
     }
+
+    public void fillTable(String tableauTableName, String tableName, String catalog, String schema) {
+        assert this.tableauTableName == null;
+        this.tableauTableName = tableauTableName;
+        this.tableName = tableName;
+        this.catalog = catalog;
+        this.schema = schema;
+    }
 }

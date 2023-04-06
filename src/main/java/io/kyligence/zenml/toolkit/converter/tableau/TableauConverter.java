@@ -20,31 +20,26 @@ package io.kyligence.zenml.toolkit.converter.tableau;
 
 import io.kyligence.zenml.toolkit.converter.FileType;
 import io.kyligence.zenml.toolkit.converter.MetricsConverter;
-import io.kyligence.zenml.toolkit.converter.tableau.tds.TableauDimension;
-import io.kyligence.zenml.toolkit.converter.tableau.tds.TableauMeasure;
+import io.kyligence.zenml.toolkit.converter.tableau.tds.TableauColumn;
 import io.kyligence.zenml.toolkit.converter.tableau.tds.TdsSpec;
 import io.kyligence.zenml.toolkit.exception.ErrorCode;
 import io.kyligence.zenml.toolkit.exception.ToolkitException;
 import io.kyligence.zenml.toolkit.model.tableau.tds.TableauDatasource;
 import io.kyligence.zenml.toolkit.model.tableau.twb.TableauWorkbook;
 import io.kyligence.zenml.toolkit.model.zenml.*;
-import io.kyligence.zenml.toolkit.utils.tableau.TableauDataTypeUtils;
 import io.kyligence.zenml.toolkit.utils.tableau.TableauRWUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 public class TableauConverter implements MetricsConverter {
 
     // todo
-    // 1.twb support
+
     // 2. find right data model (relation --> table, dsname --> view, 单表 table，多表 view)
     // 2. expression formatter
 
@@ -65,20 +60,39 @@ public class TableauConverter implements MetricsConverter {
         }
     }
 
-    private List<String> generateTags(TdsSpec spec) {
-        var tableauDsName = spec.getTableauDsName();
-        List<String> tags = new ArrayList<>();
-        tags.add(tableauDsName);
-        tags.add(TABLEAU_TAG);
-        return tags;
+
+    private Metrics convertTds2Metrics(TableauDatasource tds) {
+        var metrics = new Metrics();
+        var tdsAnalyzer = new TdsAnalyzer();
+        var tdsSpec = tdsAnalyzer.analyzeTdsSpec(tds);
+        Set<String> measureNameSet = new HashSet<>();
+        if (tdsSpec != null) {
+            List<MetricSpec> metricSpecs = getMetricSpecsFromTds(tdsSpec, measureNameSet);
+            metrics.setMetrics(metricSpecs);
+        }
+
+        return metrics;
+    }
+
+    private Metrics convertTwb2Metrics(TableauWorkbook twb) {
+        List<MetricSpec> allMetricSpecs = new ArrayList<>();
+
+        var twbAnalyzer = new TwbAnalyzer();
+        var twbSpec = twbAnalyzer.analyzeTwbSpec(twb);
+        List<TdsSpec> tdsSpecs = twbSpec.getTdsSpecs();
+        Set<String> measureNameSet = new HashSet<>();
+        for (TdsSpec tdsSpec : tdsSpecs) {
+            List<MetricSpec> metricSpecs = getMetricSpecsFromTds(tdsSpec, measureNameSet);
+            allMetricSpecs.addAll(metricSpecs);
+        }
+        var metrics = new Metrics();
+        metrics.setMetrics(allMetricSpecs);
+        return metrics;
     }
 
 
-    private Metrics convertTds2Metrics(TableauDatasource tds) {
+    private List<MetricSpec> getMetricSpecsFromTds(TdsSpec tdsSpec, Set<String> measureNames) {
         List<MetricSpec> metricSpecs = new ArrayList<>();
-        var tdsAnalyzer = new TdsAnalyzer();
-        var tdsSpec = tdsAnalyzer.analyzeTdsSpec(tds);
-
         var tdsName = tdsSpec.getTableauDsName();
         List<String> tags = generateTags(tdsSpec);
         var tableauMeasures = tdsSpec.getMeasures();
@@ -99,16 +113,32 @@ public class TableauConverter implements MetricsConverter {
             timeDimensions.addAll(timeDim);
         }
 
-        for (TableauMeasure measure : tableauMeasures) {
+        for (TableauColumn measure : tableauMeasures) {
             var measureName = measure.getCaption();
-            var displayName = measure.getTableauIdentifier();
+            var tableauIdentifier = measure.getTableauIdentifier();
             if (StringUtils.isEmpty(measureName))
-                measureName = displayName;
+                measureName = tableauIdentifier;
+            var calculation = measure.getCalculation();
+            if (calculation == null)
+                continue;
             var expr = measure.getCalculation().getFormula();
 
             var metricSpec = new MetricSpec();
-            metricSpec.setName(measureName);
-            metricSpec.setDisplay(displayName);
+            if (measureNames.contains(measureName)) {
+                // measure name should be unique
+                var new_name = measureName + Math.abs(measure.hashCode());
+                metricSpec.setName(new_name);
+                measureNames.add(new_name);
+                var description = "Tableau Identifier: " + tableauIdentifier + " Origin Name: " + measureName;
+                metricSpec.setDescription(description);
+            } else {
+                metricSpec.setName(measureName);
+                measureNames.add(measureName);
+                var description = "Tableau Identifier: " + tableauIdentifier;
+                metricSpec.setDescription(description);
+            }
+
+            metricSpec.setDisplay(measureName);
             metricSpec.setExpression(expr);
             metricSpec.setStatus(MetricStatus.ONLINE);
             metricSpec.setType(MetricType.BASIC);
@@ -118,37 +148,37 @@ public class TableauConverter implements MetricsConverter {
             metricSpec.setTimeDimensions(timeDimensions);
             metricSpecs.add(metricSpec);
         }
-
-        var metrics = new Metrics();
-        metrics.setMetrics(metricSpecs);
-        return metrics;
+        return metricSpecs;
     }
 
-
-    private Metrics convertTwb2Metrics(TableauWorkbook twb) {
-        List<MetricSpec> metricSpecs = new ArrayList<>();
-
-        var metrics = new Metrics();
-        metrics.setMetrics(metricSpecs);
-        return metrics;
+    private List<String> generateTags(TdsSpec spec) {
+        var tableauDsName = spec.getTableauDsName();
+        List<String> tags = new ArrayList<>();
+        tags.add(tableauDsName);
+        tags.add(TABLEAU_TAG);
+        return tags;
     }
 
-    private Map<String, List<String>> parseDimensionsFromTdsSpec(List<TableauDimension> dimensions) {
+    private Map<String, List<String>> parseDimensionsFromTdsSpec(List<TableauColumn> dimensions) {
         Map<String, List<String>> table2Dims = new HashMap<>();
-        for (TableauDimension dimension : dimensions) {
-            var tabName = dimension.getSourceColumn().getSourceTable().getTableWithSchema();
-            var colName = dimension.getSourceColumn().getColName();
-            var dimName = tabName + "." + colName;
-            addDimensionName2TabDimsMap(table2Dims, tabName, dimName);
+        for (TableauColumn dimension : dimensions) {
+            if (!dimension.isCC()) {
+                var tabName = dimension.getSourceColumn().getSourceTable().getTableWithSchema();
+                var colName = dimension.getSourceColumn().getColName();
+                var dimName = tabName + "." + colName;
+                addDimensionName2TabDimsMap(table2Dims, tabName, dimName);
+            } else {
+                //todo: process cc
+            }
         }
         return table2Dims;
     }
 
     private Map<String, List<TimeDimension>>
-    parseTimeDimensionsFromTdsSpec(List<TableauDimension> dimensions) {
+    parseTimeDimensionsFromTdsSpec(List<TableauColumn> dimensions) {
         Map<String, List<TimeDimension>> table2TimeDims = new HashMap<>();
-        for (TableauDimension dimension : dimensions) {
-            if (TableauDataTypeUtils.isTimeDimension(dimension)) {
+        for (TableauColumn dimension : dimensions) {
+            if (dimension.isTimeDimension()) {
                 var tabName = dimension.getSourceColumn().getSourceTable().getTableWithSchema();
                 var colName = dimension.getSourceColumn().getColName();
                 var dimName = tabName + "." + colName;

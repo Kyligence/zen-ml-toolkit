@@ -27,8 +27,6 @@ import io.kyligence.zenml.toolkit.model.tableau.tds.connection.Col;
 import io.kyligence.zenml.toolkit.model.tableau.tds.connection.metadata.MetadataRecord;
 import io.kyligence.zenml.toolkit.model.tableau.tds.connection.relation.Relation;
 import io.kyligence.zenml.toolkit.utils.tableau.TableauDialectUtils;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -45,36 +43,59 @@ public class TdsAnalyzer {
     private static final String TRUE = "true";
     private static final String MEASURE = "measure";
     private static final String DIMENSION = "dimension";
+    private static final String TABLE = "table";
+
 
     public TdsSpec analyzeTdsSpec(TableauDatasource tds) {
         var spec = new TdsSpec();
 
+        var formattedName = tds.getFormattedName();
+        var caption = tds.getCaption();
+        var name = tds.getName();
+
         // get connection name
-        var tableauDsName = tds.getFormattedName() == null ? tds.getCaption() : tds.getFormattedName();
+        String tableauDsName = null;
+        if (!StringUtils.isEmpty(caption))
+            tableauDsName = caption;
+        else if (!StringUtils.isEmpty(formattedName))
+            tableauDsName = formattedName;
+        else
+            tableauDsName = name;
+
         if (StringUtils.isEmpty(tableauDsName)) {
             log.error("tds file has no caption name or formatted-name in datasource, please add it");
             throw new IllegalArgumentException("tds file has no caption name or formatted-name in datasource, please add it");
         }
         spec.setTableauDsName(tableauDsName);
 
+        var tableauConn = tds.getTableauConnection();
+        if (tableauConn == null) {
+            log.error("Tableau data source has no connection, ignore it, ds name: {}", tableauDsName);
+            return null;
+        }
+
         // get connection
-        var connection = tds.getTableauConnection().getNamedConnectionList().getNamedConnections().get(0)
+        var tableauConnection = tds.getTableauConnection();
+        var connection = tableauConnection.getNamedConnectionList().getNamedConnections().get(0)
                 .getConnection();
         var catalog = connection.getDbName();
         var schema = connection.getSchema();
-        var tableauConnection = tds.getTableauConnection();
 
         // analyze table and join relation
         var relation = tableauConnection.getRelation();
-        // fact table must be existed
         var factSourceTable = new TableauSourceTable();
         LinkedList<TableauJoinTable> joinTables = new LinkedList<>();
-        parseRelation(factSourceTable, joinTables, catalog, schema, relation);
+        if (relation == null) {
+            var tableName = connection.getTableName();
+            factSourceTable.fillTable(tableName, tableName, catalog, schema);
+        } else {
+            // fact table must be existed
+            parseRelation(factSourceTable, joinTables, catalog, schema, relation);
+            spec.setJoinTables(joinTables);
+        }
         spec.setFactSourceTable(factSourceTable);
-        spec.setJoinTables(joinTables);
-
         // get table alias to table identifier if alias is enabled
-        Map<String, TableauSourceTable> tableAliases = getTableAliasMap(factSourceTable, joinTables);
+        Map<String, TableauSourceTable> tableAliases = getTableMap(factSourceTable, joinTables);
         spec.setSourceTableMap(tableAliases);
 
         // get column alias to column identifier if alias is enabled
@@ -85,51 +106,63 @@ public class TdsAnalyzer {
         Map<String, TableauCalculation> column2Cal = getColumn2CalculationMap(tds);
 
         // get dimensions
-        Map<String, TableauDimension> col2dimensions = getTableauDimensions(tds, columnAliases, column2Cal);
+        Map<String, TableauColumn> col2dimensions = getTableauDimensions(tds, columnAliases, column2Cal);
         spec.setDimensions(col2dimensions.values().stream().toList());
 
         // get measures
-        Map<String, TableauMeasure> col2Measures = getTableauMeasures(tds, columnAliases, column2Cal);
+        Map<String, TableauColumn> col2Measures = getTableauMeasures(tds, columnAliases, column2Cal);
         spec.setMeasures(col2Measures.values().stream().toList());
 
+        Map<String, TableauColumn> tableauColumnMap = new HashMap<>();
+        tableauColumnMap.putAll(col2dimensions);
+        tableauColumnMap.putAll(col2Measures);
+        spec.setTableauColumnMap(tableauColumnMap);
         return spec;
     }
 
     private void parseRelation(TableauSourceTable factSourceTable, LinkedList<TableauJoinTable> joinTables, String catalog,
                                String schema, Relation relation) {
-        if (relation.getType().equals("table")) {
+
+        var relationType = relation.getType();
+        if (StringUtils.isNotEmpty(relationType) && StringUtils.equalsIgnoreCase(relationType, TABLE)) {
             factSourceTable.fillTable(createTable(relation, schema, catalog));
         } else {
-            var rightJoinTable = relation.getRelationList().get(1);
-            var joinTable = new TableauJoinTable();
-            var lookupSourceTable = createTable(rightJoinTable, schema, catalog);
-            joinTable.setJoinType(relation.getJoin());
-            joinTable.setSourceTable(lookupSourceTable);
+            var relationList = relation.getRelationList();
+            if (relationList.size() == 1) {
+                var subRelation = relationList.get(0);
+                factSourceTable.fillTable(createTable(subRelation, schema, catalog));
+            } else {
+                var rightJoinTable = relationList.get(1);
+                var joinTable = new TableauJoinTable();
+                var lookupSourceTable = createTable(rightJoinTable, schema, catalog);
+                joinTable.setJoinType(relation.getJoin());
+                joinTable.setSourceTable(lookupSourceTable);
 
-            var joinClause = relation.getClause();
-            var expression = joinClause.getExpression();
-            if (StringUtils.equalsIgnoreCase(expression.getOp(), TableauDialectUtils.OP_EQUALS)) {
-                String[] fks = new String[1];
-                String[] pks = new String[1];
-                fks[0] = TableauDialectUtils.removeBracket(expression.getExpressionList().get(0).getOp());
-                pks[0] = TableauDialectUtils.removeBracket(expression.getExpressionList().get(1).getOp());
-                joinTable.setFks(fks);
-                joinTable.setPks(pks);
-            }
-            if (StringUtils.equalsIgnoreCase(expression.getOp(), TableauDialectUtils.OP_AND)) {
-                int length = expression.getExpressionList().size();
-                String[] fks = new String[length];
-                String[] pks = new String[length];
-                for (int i = 0; i < length; i++) {
-                    var operand = expression.getExpressionList().get(i);
-                    fks[i] = TableauDialectUtils.removeBracket(operand.getExpressionList().get(0).getOp());
-                    pks[i] = TableauDialectUtils.removeBracket(operand.getExpressionList().get(1).getOp());
+                var joinClause = relation.getClause();
+                var expression = joinClause.getExpression();
+                if (StringUtils.equalsIgnoreCase(expression.getOp(), TableauDialectUtils.OP_EQUALS)) {
+                    String[] fks = new String[1];
+                    String[] pks = new String[1];
+                    fks[0] = TableauDialectUtils.removeBracket(expression.getExpressionList().get(0).getOp());
+                    pks[0] = TableauDialectUtils.removeBracket(expression.getExpressionList().get(1).getOp());
+                    joinTable.setFks(fks);
+                    joinTable.setPks(pks);
                 }
-                joinTable.setFks(fks);
-                joinTable.setPks(pks);
+                if (StringUtils.equalsIgnoreCase(expression.getOp(), TableauDialectUtils.OP_AND)) {
+                    int length = expression.getExpressionList().size();
+                    String[] fks = new String[length];
+                    String[] pks = new String[length];
+                    for (int i = 0; i < length; i++) {
+                        var operand = expression.getExpressionList().get(i);
+                        fks[i] = TableauDialectUtils.removeBracket(operand.getExpressionList().get(0).getOp());
+                        pks[i] = TableauDialectUtils.removeBracket(operand.getExpressionList().get(1).getOp());
+                    }
+                    joinTable.setFks(fks);
+                    joinTable.setPks(pks);
+                }
+                joinTables.addFirst(joinTable);
+                parseRelation(factSourceTable, joinTables, catalog, schema, relation.getRelationList().get(0));
             }
-            joinTables.addFirst(joinTable);
-            parseRelation(factSourceTable, joinTables, catalog, schema, relation.getRelationList().get(0));
         }
     }
 
@@ -159,42 +192,48 @@ public class TdsAnalyzer {
         return StringUtils.equalsIgnoreCase(alias.getEnabled(), YES);
     }
 
-    private Map<String, TableauSourceTable> getTableAliasMap(TableauSourceTable factSourceTable, List<TableauJoinTable> joinTables) {
-        Map<String, TableauSourceTable> tableAliases = new HashMap<>();
+    private Map<String, TableauSourceTable> getTableMap(TableauSourceTable factSourceTable, List<TableauJoinTable> joinTables) {
+        Map<String, TableauSourceTable> tableMap = new HashMap<>();
 
-        tableAliases.put(factSourceTable.getTableauTableName(), factSourceTable);
+        tableMap.put(factSourceTable.getTableauTableName(), factSourceTable);
         for (TableauJoinTable joinTable : joinTables) {
             var sourceTable = joinTable.getSourceTable();
-            tableAliases.put(sourceTable.getTableauTableName(), sourceTable);
+            tableMap.put(sourceTable.getTableauTableName(), sourceTable);
         }
-        return tableAliases;
+        return tableMap;
     }
 
     private Map<String, TableauSourceColumn> getColumnAliasMap(TableauConnection connection,
-                                                               Map<String, TableauSourceTable> tableAliases) {
+                                                               Map<String, TableauSourceTable> tableMap) {
         Map<String, TableauSourceColumn> columnAliases = new HashMap<>();
 
         var metadataRecords = connection.getMetadataRecords();
         if (metadataRecords != null && metadataRecords.getMetadataRecords() != null) {
             for (MetadataRecord metadataRecord : metadataRecords.getMetadataRecords()) {
-                var tableauIdentify = metadataRecord.getLocalName();
+                var tableauIdentifier = metadataRecord.getLocalName();
+                if (StringUtils.isEmpty(tableauIdentifier)) {
+                    log.error("Metadata Record local name is null, ignore");
+                    continue;
+                }
                 var colTableName = metadataRecord.getParentName();
                 var colName = metadataRecord.getRemoteName().toUpperCase();
-                var colSourceTable = tableAliases.get(colTableName);
-                var sourceColumn = new TableauSourceColumn(tableauIdentify, colName, colSourceTable);
-                columnAliases.put(tableauIdentify, sourceColumn);
+                var colSourceTable = tableMap.get(colTableName);
+                var sourceColumn = new TableauSourceColumn(tableauIdentifier, colName, colSourceTable);
+                columnAliases.put(tableauIdentifier, sourceColumn);
             }
         }
 
         var cols = connection.getCols();
         if (cols != null && cols.getCols() != null) {
             for (Col col : cols.getCols()) {
-                var tableauIdentify = col.getKey();
+                var tableauIdentifier = col.getKey();
+                if (StringUtils.isEmpty(tableauIdentifier))
+                    continue;
                 var colTableName = col.getValue().split("[.]")[0];
                 var colName = TableauDialectUtils.removeBracket(col.getValue().split("[.]")[1]);
-                var colSourceTable = tableAliases.get(colTableName);
-                var sourceColumn = new TableauSourceColumn(tableauIdentify, colName, colSourceTable);
-                columnAliases.put(tableauIdentify, sourceColumn);
+                var colSourceTable = tableMap.get(colTableName);
+                var sourceColumn = new TableauSourceColumn(tableauIdentifier, colName, colSourceTable);
+                columnAliases.put(tableauIdentifier, sourceColumn);
             }
         }
         return columnAliases;
@@ -213,23 +252,25 @@ public class TdsAnalyzer {
         return calculationMap;
     }
 
-    private Map<String, TableauDimension> getTableauDimensions(TableauDatasource tds,
-                                                               Map<String, TableauSourceColumn> columnAliases,
-                                                               Map<String, TableauCalculation> column2Cal) {
-        Map<String, TableauDimension> col2DimMap = new HashMap<>();
+    private Map<String, TableauColumn> getTableauDimensions(TableauDatasource tds,
+                                                            Map<String, TableauSourceColumn> columnAliases,
+                                                            Map<String, TableauCalculation> column2Cal) {
+        Map<String, TableauColumn> col2DimMap = new HashMap<>();
         var columns = tds.getColumns();
         for (Column column : columns) {
             if (isDimensionColumn(column)) {
                 var tableauIdentifier = column.getName();
                 var sourceColumn = columnAliases.get(tableauIdentifier);
+                var dimension = new TableauColumn();
+                dimension.setColumnType(TableauColumn.DIMENSION_TYPE);
+                dimension.setCaption(column.getCaption());
+                dimension.setDataType(column.getDatatype());
+                dimension.setTableauIdentifier(tableauIdentifier);
+
                 if (sourceColumn != null) {
-                    var dimension = new TableauDimension();
-                    dimension.setCaption(column.getCaption());
                     dimension.setSourceColumn(sourceColumn);
-                    dimension.setDataType(column.getDatatype());
-                    dimension.setTableauIdentifier(tableauIdentifier);
-                    col2DimMap.put(tableauIdentifier, dimension);
                 } else {
+                    // it's a cc column as dimension, source column is null
                     var calculation = column2Cal.get(tableauIdentifier);
                     if (calculation == null) {
                         calculation = new TableauCalculation();
@@ -239,37 +280,35 @@ public class TdsAnalyzer {
                         }
                         calculation.setFormula(column.getCalculation().getFormula());
                         column2Cal.put(tableauIdentifier, calculation);
+                        dimension.setCalculation(calculation);
                     }
-                    var dimension = new TableauDimension();
-                    dimension.setCaption(column.getCaption());
-                    dimension.setDataType(column.getDatatype());
-                    dimension.setCalculation(calculation);
-                    dimension.setTableauIdentifier(tableauIdentifier);
-                    col2DimMap.put(tableauIdentifier, dimension);
                 }
+                col2DimMap.put(tableauIdentifier, dimension);
             }
         }
         return col2DimMap;
     }
 
-    private Map<String, TableauMeasure> getTableauMeasures(TableauDatasource tds,
-                                                           Map<String, TableauSourceColumn> columnAliases,
-                                                           Map<String, TableauCalculation> column2Cal) {
-        Map<String, TableauMeasure> col2MeasureMap = new HashMap<>();
+    private Map<String, TableauColumn> getTableauMeasures(TableauDatasource tds,
+                                                          Map<String, TableauSourceColumn> columnAliases,
+                                                          Map<String, TableauCalculation> column2Cal) {
+        Map<String, TableauColumn> col2MeasureMap = new HashMap<>();
         var columns = tds.getColumns();
         for (Column column : columns) {
             if (isMeasureColumn(column)) {
                 var tableauIdentifier = column.getName();
                 var sourceColumn = columnAliases.get(tableauIdentifier);
+
+                var measure = new TableauColumn();
+                measure.setColumnType(TableauColumn.MEASURE_TYPE);
+                measure.setTableauIdentifier(tableauIdentifier);
+                measure.setCaption(column.getCaption());
+                measure.setDataType(column.getDatatype());
+                measure.setAggregation(column.getAggregation());
                 if (sourceColumn != null) {
-                    var measure = new TableauMeasure();
-                    measure.setCaption(column.getCaption());
-                    measure.setDataType(column.getDatatype());
                     measure.setSourceColumn(sourceColumn);
-                    measure.setTableauIdentifier(tableauIdentifier);
-                    measure.setAggregation(column.getAggregation());
-                    col2MeasureMap.put(tableauIdentifier, measure);
                 } else {
+                    // it's a CM, source column is null
                     var calculation = column2Cal.get(tableauIdentifier);
                     if (calculation == null) {
                         calculation = new TableauCalculation();
@@ -280,14 +319,9 @@ public class TdsAnalyzer {
                         calculation.setFormula(column.getCalculation().getFormula());
                         column2Cal.put(tableauIdentifier, calculation);
                     }
-                    var measure = new TableauMeasure();
-                    measure.setCaption(column.getCaption());
-                    measure.setDataType(column.getDatatype());
                     measure.setCalculation(calculation);
-                    measure.setTableauIdentifier(tableauIdentifier);
-                    measure.setAggregation(column.getAggregation());
-                    col2MeasureMap.put(tableauIdentifier, measure);
                 }
+                col2MeasureMap.put(tableauIdentifier, measure);
             }
         }
         return col2MeasureMap;

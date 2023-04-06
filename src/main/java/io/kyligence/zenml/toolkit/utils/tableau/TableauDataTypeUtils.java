@@ -18,7 +18,6 @@
 
 package io.kyligence.zenml.toolkit.utils.tableau;
 
-import io.kyligence.zenml.toolkit.converter.tableau.tds.TableauDimension;
 import org.apache.commons.lang3.StringUtils;
 
 public class TableauDataTypeUtils {
@@ -37,10 +36,5 @@ public class TableauDataTypeUtils {
         }
     }
 
-    public static boolean isTimeDimension(TableauDimension dimension) {
-        var datatype = dimension.getDataType();
 
-        return StringUtils.equalsIgnoreCase(datatype, DATE) ||
-                StringUtils.equalsIgnoreCase(datatype, TIMESTAMP);
-    }
 }
