@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = ZenMlToolkitServer.class)
-public class TableauFuncUtilsTest {
+public class TableauExpressionUtilsTest {
     @BeforeAll
     public static void setup() {
         System.setProperty("ZEN_HOME", TableauRWUtilsTest.class.getResource("/").getPath());
@@ -39,10 +39,10 @@ public class TableauFuncUtilsTest {
     @Test
     public void testReplaceCalculation(){
         String replacedCalculation = "if year(#2018-09-11#) and year(#2011-09-11#) and month([cat])";
-        replacedCalculation = TableauFuncUtils.replaceDateFun(replacedCalculation, "YEAR");
-        replacedCalculation = TableauFuncUtils.replaceDateFun(replacedCalculation, "MONTH");
-        replacedCalculation = TableauFuncUtils.replaceDateFun(replacedCalculation, "DAY");
-        replacedCalculation = TableauFuncUtils.replaceDateFun(replacedCalculation, "QUARTER");
+        replacedCalculation = TableauExpressionUtils.replaceDateFun(replacedCalculation, "YEAR");
+        replacedCalculation = TableauExpressionUtils.replaceDateFun(replacedCalculation, "MONTH");
+        replacedCalculation = TableauExpressionUtils.replaceDateFun(replacedCalculation, "DAY");
+        replacedCalculation = TableauExpressionUtils.replaceDateFun(replacedCalculation, "QUARTER");
         System.out.println(replacedCalculation);
     }
 }

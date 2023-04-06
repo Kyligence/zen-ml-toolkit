@@ -24,6 +24,13 @@ zen.ml.toolkit.server.port=9000
 # zen.ml.toolkit.resource.file-size-limit-kb=1024
 # zen.ml.toolkit.security.key=6173646661736466e4bda0e8bf983161
 
-## Tableau Parse
-# origin or sql
-zen.ml.toolkit.parse.tableau.format=origin
+## Table identifier format case style
+## lower: lowercase [default]
+## upper: uppercase
+## origin: origin case
+# zen.ml.toolkit.parse.format.identifier.case-style=lower
+
+## Tableau parse table identifier with schema
+## true: [DB_NAME].[Table_NAME]
+## false: [Table_NAME]
+# zen.ml.toolkit.parse.table.schema-ignore=true

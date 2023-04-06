@@ -39,9 +39,8 @@ import java.util.*;
 public class TableauConverter implements MetricsConverter {
 
     // todo
-
-    // 2. find right data model (relation --> table, dsname --> view, 单表 table，多表 view)
-    // 2. expression formatter
+    // 1. find right data model (relation --> table, dsname --> view, 单表 table，多表 view)
+    // 2. expression to sql formatter
 
     private static final String TABLEAU_TAG = "Tableau";
 

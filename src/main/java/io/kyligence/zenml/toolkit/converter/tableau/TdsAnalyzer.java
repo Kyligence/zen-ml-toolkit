@@ -47,6 +47,15 @@ public class TdsAnalyzer {
 
 
     public TdsSpec analyzeTdsSpec(TableauDatasource tds) {
+        var originTdsSpec = parseTdsOriginContent(tds);
+        if(originTdsSpec == null)
+            return null;
+        var exprConverter = new TableauFormatter();
+        return exprConverter.formatTdsIdentifierAndExpr(originTdsSpec);
+    }
+
+
+    private TdsSpec parseTdsOriginContent(TableauDatasource tds) {
         var spec = new TdsSpec();
 
         var formattedName = tds.getFormattedName();

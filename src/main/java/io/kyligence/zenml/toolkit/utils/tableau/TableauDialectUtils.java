@@ -18,13 +18,46 @@
 
 package io.kyligence.zenml.toolkit.utils.tableau;
 
+import io.kyligence.zenml.toolkit.config.ToolkitConfig;
+import org.apache.commons.lang3.StringUtils;
+
 public class TableauDialectUtils {
     public static final String OP_EQUALS = "=";
     public static final String OP_AND = "AND";
 
+    public static final String LOWER_CASE = "lower";
+    public static final String UPPER_CASE = "upper";
+
+    private static ToolkitConfig config = ToolkitConfig.getInstance();
+
+    public static String formatIdentifierCase(String identifier) {
+        if (StringUtils.isEmpty(identifier))
+            return identifier;
+
+        var caseStyle = config.getIdentifierCaseFormatStyle();
+        if (StringUtils.equalsIgnoreCase(LOWER_CASE, caseStyle)) {
+            return identifier.toLowerCase();
+        } else if (StringUtils.equalsIgnoreCase(UPPER_CASE, caseStyle)) {
+            return identifier.toUpperCase();
+        } else {
+            return identifier;
+        }
+    }
+
+    public static String formatIdentifier(String identifier) {
+
+        identifier = removeBracket(identifier);
+        identifier = identifier.replaceAll("-", "_");
+        identifier = identifier.replaceAll(" ", "_");
+        identifier = identifier.replaceAll("/", "_");
+
+        return formatIdentifierCase(identifier);
+    }
 
 
     public static String removeBracket(String identifier) {
+        if(StringUtils.isEmpty(identifier))
+            return identifier;
         identifier = identifier.replaceAll("\\[", "");
         identifier = identifier.replaceAll("\\]", "");
         return identifier;
@@ -46,7 +79,6 @@ public class TableauDialectUtils {
         return schemaTable.substring(cut + 1, schemaTable.length());
     }
 
-    //非特殊字符包括数字字母下划线
     public static boolean containSpecialChar(String name) {
         return !name.matches("[a-zA-Z0-9_]+");
     }
