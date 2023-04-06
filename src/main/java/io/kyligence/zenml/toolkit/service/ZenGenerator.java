@@ -20,9 +20,9 @@ package io.kyligence.zenml.toolkit.service;
 
 import io.kyligence.zenml.toolkit.converter.ConverterFactory;
 import io.kyligence.zenml.toolkit.converter.FileType;
-import io.kyligence.zenml.toolkit.metrics.MetricSpec;
-import io.kyligence.zenml.toolkit.metrics.Metrics;
-import io.kyligence.zenml.toolkit.tool.excel.ExcelWriter;
+import io.kyligence.zenml.toolkit.model.zenml.MetricSpec;
+import io.kyligence.zenml.toolkit.model.zenml.Metrics;
+import io.kyligence.zenml.toolkit.utils.excel.ExcelWriter;
 import io.kyligence.zenml.toolkit.utils.WorkDirUtils;
 import io.kyligence.zenml.toolkit.utils.YamlUtils;
 import io.kyligence.zenml.toolkit.utils.ZipUtils;

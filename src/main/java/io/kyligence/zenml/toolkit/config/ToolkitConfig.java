@@ -29,14 +29,33 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+
 @Slf4j
 public class ToolkitConfig {
-    private static final ToolkitConfig INSTANCE = new ToolkitConfig();
+    private static ToolkitConfig INSTANCE = null;
+
+    private static final String CONF_FOLDER = "conf";
+
     private static final String PROPERTIES_FILE = "toolkit.properties";
     private static final String OVERRIDE_PROPERTIES_FILE = "toolkit.properties.override";
 
     public static ToolkitConfig getInstance() {
+        synchronized (ToolkitConfig.class) {
+            if (INSTANCE == null) {
+                try {
+                    ToolkitConfig config = new ToolkitConfig();
+                    config.reloadConfig(getProperties());
+                    INSTANCE = config;
+                } catch (IllegalArgumentException e) {
+                    throw new IllegalStateException("Failed to find TableauToolConfig ", e);
+                }
+            }
+        }
         return INSTANCE;
+    }
+
+    final protected void reloadConfig(Properties properties) {
+        this.properties = properties;
     }
 
 
@@ -47,9 +66,13 @@ public class ToolkitConfig {
     }
 
     private void loadConfig() {
+        this.properties = getProperties();
+    }
+
+    public static Properties getProperties() {
         var propFile = getPropertiesFile();
         if (!propFile.exists()) {
-            log.error("fail to locate {}", PROPERTIES_FILE);
+            log.error("fail to locate " + PROPERTIES_FILE);
             throw new ToolkitException(ErrorCode.LOAD_CONFIG_ERROR, PROPERTIES_FILE);
         }
         var conf = new Properties();
@@ -59,7 +82,7 @@ public class ToolkitConfig {
             is = new FileInputStream(propFile);
             conf.load(is);
 
-            var overridePropFile = new File(propFile.getParentFile(), propFile.getName() + ".override");
+            var overridePropFile = new File(propFile.getParentFile(), OVERRIDE_PROPERTIES_FILE);
             if (overridePropFile.exists()) {
                 ois = new FileInputStream(overridePropFile);
                 var overrideProp = new Properties();
@@ -76,24 +99,19 @@ public class ToolkitConfig {
                 IOUtils.closeQuietly(ois);
             }
         }
-
-        this.properties = conf;
+        return conf;
     }
 
-    private File getPropertiesFile() {
+    private static File getPropertiesFile() {
         var path = System.getProperty("PROPERTIES_PATH");
         if (StringUtils.isBlank(path)) {
-            path = getPropertiesDirPath();
+            path = getConfDirPath();
         }
-        var overrideFile = new File(path, OVERRIDE_PROPERTIES_FILE);
-        if (overrideFile.exists()) {
-            return overrideFile;
-        } else {
-            return new File(path, PROPERTIES_FILE);
-        }
+        return new File(path, PROPERTIES_FILE);
     }
 
-    public String getToolkitHome() {
+
+    public static String getToolkitHome() {
         var home = System.getProperty("ZEN_HOME");
         if (StringUtils.isBlank(home)) {
             home = System.getenv("ZEN_HOME");
@@ -117,12 +135,12 @@ public class ToolkitConfig {
         }
     }
 
-    public Properties getProperties() {
-        return properties;
+    public static String getConfDirPath() {
+        return getToolkitHome() + File.separator + "conf";
     }
 
-    public String getPropertiesDirPath() {
-        return getToolkitHome() + File.separator + "conf";
+    public static String getTemplateTdsFilePath() {
+        return getConfDirPath() + File.separator + "tableau";
     }
 
     public String getLocalTmpFolder() {
@@ -137,7 +155,18 @@ public class ToolkitConfig {
         return getOptional("zen.ml.toolkit.security.key", "6173646661736466e4bda0e8bf983161");
     }
 
-    public String getTableauParseFormat(){
-        return getOptional("zen.ml.toolkit.parse.tableau.format", "sql");
+    public Boolean isTableSourceNameIgnore() {
+        // by default ignore table schema name because Zen table doesn't have schema
+        // [SSB].[LineOrder]
+        // if true: return LineOrder
+        // if false: return SSB.LineOrder
+        return Boolean.valueOf(getOptional("zen.ml.toolkit.parse.table.schema-ignore", "true"));
+    }
+
+    public String getIdentifierCaseFormatStyle() {
+        // lower case
+        // upper case
+        // origin case
+        return getOptional("zen.ml.toolkit.parse.format.identifier.case-style", "lower");
     }
 }

@@ -44,8 +44,6 @@ public class ZenGeneratorTest {
         FileUtils.deleteQuietly(destDir);
         destDir.mkdirs();
         System.setProperty("ZEN_HOME", ZenGeneratorTest.class.getResource("/").getPath());
-        System.setProperty("PROPERTIES_PATH",ZenGeneratorTest.class.getResource("/").getPath());
-
     }
 
     @AfterAll
@@ -54,7 +52,6 @@ public class ZenGeneratorTest {
         FileUtils.deleteQuietly(new File(destDirPath));
         FileUtils.deleteQuietly(new File(config.getLocalTmpFolder()));
         System.clearProperty("ZEN_HOME");
-        System.clearProperty("PROPERTIES_PATH");
     }
 
     @Test

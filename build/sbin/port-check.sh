@@ -24,18 +24,18 @@ source $(cd -P -- "$(dirname -- "$0")" && pwd -P)/header.sh
 function checkRestPort() {
     echo "Checking rest port on ${MACHINE_OS}"
     if [[ $MACHINE_OS == "Linux" ]]; then
-        used=$(netstat -tpln | grep "$ZEN_PORT" | awk '{print $7}' | sed "s/\// /g")
+        used=$(netstat -tpln | grep "$TOOLKIT_SERVER_PORT" | awk '{print $7}' | sed "s/\// /g")
     elif [[ $MACHINE_OS == "Mac" ]]; then
-        used=$(lsof -nP -iTCP:$ZEN_PORT -sTCP:LISTEN | grep $ZEN_PORT | awk '{print $2}')
+        used=$(lsof -nP -iTCP:$TOOLKIT_SERVER_PORT -sTCP:LISTEN | grep $TOOLKIT_SERVER_PORT | awk '{print $2}')
     fi
     if [ ! -z "$used" ]; then
-        quit "ERROR: Port ${ZEN_PORT} is in use, another Kyligence ZenML Toolkit server is running?"
+        quit "ERROR: Port ${TOOLKIT_SERVER_PORT} is in use, another Kyligence ZenML Toolkit server is running?"
     fi
-    echo "${ZEN_PORT} is available"
+    echo "${TOOLKIT_SERVER_PORT} is available"
 }
 
 
 
-echo "Kyligence ZenML toolkit server port has been set as ${ZEN_PORT}"
+echo "Kyligence ZenML toolkit server port has been set as ${TOOLKIT_SERVER_PORT}"
 
-checkRestPort ${ZEN_PORT}
+checkRestPort ${TOOLKIT_SERVER_PORT}

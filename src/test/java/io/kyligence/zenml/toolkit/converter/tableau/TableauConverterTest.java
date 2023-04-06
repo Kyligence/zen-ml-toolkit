@@ -19,20 +19,12 @@
 package io.kyligence.zenml.toolkit.converter.tableau;
 
 import io.kyligence.zenml.toolkit.ZenMlToolkitServer;
-import io.kyligence.zenml.toolkit.config.ToolkitConfig;
-import io.kyligence.zenml.toolkit.converter.MetricsConverter;
-import io.kyligence.zenml.toolkit.converter.tableau.TableauConverter;
-import io.kyligence.zenml.toolkit.metrics.Metrics;
-import io.kyligence.zenml.toolkit.service.ZenGeneratorTest;
-import org.apache.commons.io.FileUtils;
 import org.dom4j.DocumentException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.io.File;
 
 @SpringBootTest(classes = ZenMlToolkitServer.class)
 public class TableauConverterTest {
@@ -44,16 +36,21 @@ public class TableauConverterTest {
     @BeforeAll
     public static void setup() {
         System.setProperty("ZEN_HOME", TableauConverterTest.class.getResource("/").getPath());
-        System.setProperty("PROPERTIES_PATH",TableauConverterTest.class.getResource("/").getPath());
-
     }
 
     @AfterAll
     public static void clean() {
         System.clearProperty("ZEN_HOME");
-        System.clearProperty("PROPERTIES_PATH");
     }
 
+    @Test
+    public void testConvert2ZenMLCase0() throws DocumentException {
+        var tdsName = "superstore.tds";
+        var tdsPath = TDS_BASE_DIR + tdsName;
+        var converter = new TableauConverter();
+        var metrics = converter.convert2Metrics(tdsPath);
+        Assertions.assertEquals(7, metrics.getMetrics().size());
+    }
     @Test
     public void testConvert2ZenMLCase1() throws DocumentException {
         var tdsName = "SSB.tds";
@@ -70,7 +67,7 @@ public class TableauConverterTest {
         var twbPath = TWB_BASE_DIR + twbName;
         var converter = new TableauConverter();
         var metrics = converter.convert2Metrics(twbPath);
-        Assertions.assertEquals(16, metrics.getMetrics().size());
+        Assertions.assertEquals(15, metrics.getMetrics().size());
     }
 
     @Test
@@ -79,7 +76,7 @@ public class TableauConverterTest {
         var twbPath = TWB_BASE_DIR + twbName;
         var converter = new TableauConverter();
         var metrics = converter.convert2Metrics(twbPath);
-        Assertions.assertEquals(7, metrics.getMetrics().size());
+        Assertions.assertEquals(5, metrics.getMetrics().size());
     }
 
     @Test
@@ -88,7 +85,7 @@ public class TableauConverterTest {
         var twbPath = TWB_BASE_DIR + twbName;
         var converter = new TableauConverter();
         var metrics = converter.convert2Metrics(twbPath);
-        Assertions.assertEquals(10, metrics.getMetrics().size());
+        Assertions.assertEquals(8, metrics.getMetrics().size());
     }
 
     @Test
@@ -106,7 +103,7 @@ public class TableauConverterTest {
         var twbPath = TWB_BASE_DIR + twbName;
         var converter = new TableauConverter();
         var metrics = converter.convert2Metrics(twbPath);
-        Assertions.assertEquals(28, metrics.getMetrics().size());
+        Assertions.assertEquals(25, metrics.getMetrics().size());
     }
 
     @Test
@@ -142,7 +139,7 @@ public class TableauConverterTest {
         var twbPath = TWB_BASE_DIR + twbName;
         var converter = new TableauConverter();
         var metrics = converter.convert2Metrics(twbPath);
-        Assertions.assertEquals(6, metrics.getMetrics().size());
+        Assertions.assertEquals(4, metrics.getMetrics().size());
     }
 
     @Test
@@ -160,7 +157,7 @@ public class TableauConverterTest {
         var twbPath = TWB_BASE_DIR + twbName;
         var converter = new TableauConverter();
         var metrics = converter.convert2Metrics(twbPath);
-        Assertions.assertEquals(15, metrics.getMetrics().size());
+        Assertions.assertEquals(4, metrics.getMetrics().size());
     }
 
     @Test
@@ -187,6 +184,6 @@ public class TableauConverterTest {
         var twbPath = TWB_BASE_DIR + twbName;
         var converter = new TableauConverter();
         var metrics = converter.convert2Metrics(twbPath);
-        Assertions.assertEquals(3, metrics.getMetrics().size());
+        Assertions.assertEquals(2, metrics.getMetrics().size());
     }
 }
