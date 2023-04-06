@@ -29,6 +29,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+
 @Slf4j
 public class ToolkitConfig {
     private static ToolkitConfig INSTANCE = null;
@@ -138,7 +139,7 @@ public class ToolkitConfig {
         return getToolkitHome() + File.separator + "conf";
     }
 
-    public static String getTemplateTdsFilePath(){
+    public static String getTemplateTdsFilePath() {
         return getConfDirPath() + File.separator + "tableau";
     }
 
@@ -162,7 +163,7 @@ public class ToolkitConfig {
         return Boolean.valueOf(getOptional("zen.ml.toolkit.parse.table.schema-ignore", "true"));
     }
 
-    public String getIdentifierCaseFormatStyle(){
+    public String getIdentifierCaseFormatStyle() {
         // lower case
         // upper case
         // origin case

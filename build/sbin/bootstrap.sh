@@ -86,7 +86,7 @@ function checkIfStopUserSameAsStartUser() {
 }
 
 function runCommand() {
-    ${JAVA} -Xms${JAVA_VM_XMS} -Xmx${JAVA_VM_XMX}  -DZEN_HOME=${ZEN_HOME}  -cp  "${ZEN_HOME}/lib/${MAIN_JAR}"  -Dloader.main=io.kyligence.zenml.toolkit.ZenMlToolkitCLI org.springframework.boot.loader.PropertiesLauncher  "$@"
+    ${JAVA} -Xms${JAVA_VM_XMS} -Xmx${JAVA_VM_XMX} -Dspring.config.location=classpath:/,file:${ZEN_HOME}/conf/ -DZEN_HOME=${ZEN_HOME}  -cp  "${ZEN_HOME}/lib/${MAIN_JAR}"  -Dloader.main=io.kyligence.zenml.toolkit.ZenMlToolkitCLI org.springframework.boot.loader.PropertiesLauncher  "$@"
     exit $?
 }
 
@@ -111,11 +111,11 @@ function start() {
   
 
       ${ZEN_HOME}/sbin/port-check.sh >> ${ZEN_HOME}/logs/check-env.out 2>&1
-      [[ $? == 0 ]] || quit "ERROR: Port ${NOTEBOOK_PORT} is in use, another Kyligence ZenML Toolkit server is running?"
+      [[ $? == 0 ]] || quit "ERROR: Port ${TOOLKIT_SERVER_PORT} is in use, another Kyligence ZenML Toolkit server is running?"
 
       
       echo "${START_TIME} Start Kyligence ZenML Toolkit server..."
-      nohup ${JAVA} -Xms${JAVA_VM_XMS} -Xmx${JAVA_VM_XMX}  -DZEN_HOME=${ZEN_HOME}  -jar  "${ZEN_HOME}/lib/${MAIN_JAR}"  >> ${ZEN_HOME}/logs/toolkit.out 2>&1 & echo $! >> ${ZEN_HOME}/pid &
+      nohup ${JAVA} -Xms${JAVA_VM_XMS} -Xmx${JAVA_VM_XMX} -Dserver.port=${TOOLKIT_SERVER_PORT}  -DZEN_HOME=${ZEN_HOME}  -jar  "${ZEN_HOME}/lib/${MAIN_JAR}"  >> ${ZEN_HOME}/logs/toolkit.out 2>&1 & echo $! >> ${ZEN_HOME}/pid &
   
       sleep 3
       clearRedundantProcess
