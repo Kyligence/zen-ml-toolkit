@@ -19,10 +19,13 @@
 package io.kyligence.zenml.toolkit.converter.tableau;
 
 import io.kyligence.zenml.toolkit.converter.tableau.tds.TableauColumn;
+import io.kyligence.zenml.toolkit.converter.tableau.tds.TableauSourceColumn;
 import io.kyligence.zenml.toolkit.converter.tableau.tds.TableauSourceTable;
 import io.kyligence.zenml.toolkit.converter.tableau.tds.TdsSpec;
 import io.kyligence.zenml.toolkit.utils.tableau.TableauDialectUtils;
 import io.kyligence.zenml.toolkit.utils.tableau.TableauExpressionUtils;
+
+import java.util.Map;
 
 public class TableauFormatter {
 
@@ -35,12 +38,13 @@ public class TableauFormatter {
             formatSourceTable(sourceTable);
         }
 
+        Map<String, TableauSourceColumn> columnAliases = tdsSpec.getSourceColumnMap();
         // format column identifier
         var measures = tdsSpec.getMeasures();
         for (TableauColumn measure : measures) {
             formatMeasureName(measure);
             formatSourceColumn(measure);
-            formatCalculationExpression(measure);
+            formatCalculationExpression(measure, columnAliases);
         }
 
         // format dimension identifier
@@ -52,7 +56,7 @@ public class TableauFormatter {
         return tdsSpec;
     }
 
-    private void formatMeasureName(TableauColumn measure){
+    private void formatMeasureName(TableauColumn measure) {
         var caption = measure.getCaption();
         var name = measure.getTableauIdentifier();
         measure.setTableauIdentifier(TableauDialectUtils.removeBracket(name));
@@ -89,13 +93,13 @@ public class TableauFormatter {
         sourceTable.setTableauTableName(TableauDialectUtils.formatIdentifier(tableauTableName));
     }
 
-    private void formatCalculationExpression(TableauColumn measure) {
+    private void formatCalculationExpression(TableauColumn measure, Map<String, TableauSourceColumn> columnAliases) {
         var calculation = measure.getCalculation();
-        if(calculation != null){
+        if (calculation != null) {
             var colName = calculation.getColumn();
             var expr = calculation.getFormula();
             calculation.setColumn(TableauDialectUtils.formatIdentifier(colName));
-            var formattedExpr = TableauExpressionUtils.convertTableauCalculation(expr);
+            var formattedExpr = TableauExpressionUtils.convertTableauCalculation(expr, columnAliases);
 
             calculation.setFormula(formattedExpr);
         }

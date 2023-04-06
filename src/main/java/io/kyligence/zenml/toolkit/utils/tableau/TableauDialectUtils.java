@@ -45,7 +45,8 @@ public class TableauDialectUtils {
     }
 
     public static String formatIdentifier(String identifier) {
-
+        if (StringUtils.isEmpty(identifier))
+            return identifier;
         identifier = removeBracket(identifier);
         identifier = identifier.replaceAll("-", "_");
         identifier = identifier.replaceAll(" ", "_");
@@ -56,7 +57,7 @@ public class TableauDialectUtils {
 
 
     public static String removeBracket(String identifier) {
-        if(StringUtils.isEmpty(identifier))
+        if (StringUtils.isEmpty(identifier))
             return identifier;
         identifier = identifier.replaceAll("\\[", "");
         identifier = identifier.replaceAll("\\]", "");

@@ -18,11 +18,10 @@
 
 package io.kyligence.zenml.toolkit.utils.tableau;
 
-import io.kyligence.zenml.toolkit.converter.tableau.tds.TableauColumn;
+import io.kyligence.zenml.toolkit.converter.tableau.tds.TableauSourceColumn;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Slf4j
@@ -49,21 +48,31 @@ public class TableauExpressionUtils {
     private static Pattern simpleAggPattern = Pattern.compile(simpleAgg);
 
 
-    public static String convertTableauCalculation(String calculation) {
+    public static String convertTableauCalculation(String calculation, Map<String, TableauSourceColumn> columnAliases) {
         // step 0
         calculation = calculation.replaceAll("\"", "'");
         calculation = calculation.replaceAll("\n", " ");
 
         // step 1 format column identifier
+        Set<String> columns = new HashSet<>();
         var matcher = colPattern.matcher(calculation);
         var sb = new StringBuffer();
         while (matcher.find()) {
             var tableauCol = matcher.group(0);
-            var formattedCol = TableauDialectUtils.formatIdentifier(tableauCol);
-            matcher.appendReplacement(sb, formattedCol.toUpperCase());
+            columns.add(tableauCol);
         }
-        matcher.appendTail(sb);
-        var replacedCalculation = sb.toString();
+        var replacedCalculation = calculation;
+        for (String column : columns) {
+            var mappedCol = columnAliases.get(column);
+            var formattedCol = column;
+            if (mappedCol != null) {
+                var colName = mappedCol.getColName();
+                formattedCol = TableauDialectUtils.formatIdentifier(colName);
+            }
+            formattedCol = TableauDialectUtils.formatIdentifier(column);
+            // get map
+            replacedCalculation = replacedCalculation.replace(column, formattedCol);
+        }
 
         // step 2 replace tableau function, like IF ELSE
         var ifMatcher = ifPattern.matcher(replacedCalculation);
