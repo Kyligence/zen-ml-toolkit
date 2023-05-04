@@ -20,6 +20,10 @@ package io.kyligence.zenml.toolkit.converter;
 
 import io.kyligence.zenml.toolkit.model.zenml.Metrics;
 
+import java.util.List;
+
 public interface MetricsConverter {
     Metrics convert2Metrics(String filePath);
+
+    List<String> createTags(String dataSource);
 }

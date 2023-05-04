@@ -18,6 +18,29 @@
 
 package io.kyligence.zenml.toolkit.model.sql;
 
-public class SqlFileParser {
-    //TODO: parse sql file
+import io.kyligence.zenml.toolkit.model.zenml.TimeDimension;
+import lombok.*;
+
+import java.util.List;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
+public class SqlMetricSpec {
+    private String datasource;
+
+    private String measureAlias;
+
+    private String measure;
+
+    private List<String> dimensions;
+
+    private List<String> timeDimensionStrs;
+
+    private List<TimeDimension> timeDimensions;
+
+    private String originalSql;
 }

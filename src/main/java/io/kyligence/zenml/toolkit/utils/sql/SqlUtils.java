@@ -21,9 +21,7 @@ package io.kyligence.zenml.toolkit.utils.sql;
 import com.google.common.collect.ImmutableList;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.calcite.sql.SqlBasicCall;
-import org.apache.calcite.sql.SqlCharStringLiteral;
-import org.apache.calcite.sql.SqlIdentifier;
+import org.apache.calcite.sql.*;
 import org.apache.calcite.sql.util.SqlBasicVisitor;
 import org.apache.calcite.util.Pair;
 
@@ -179,21 +177,78 @@ public class SqlUtils {
         List<String> ret = new ArrayList<>();
         try {
             var sqlNode = CalciteParser.parseExpression(expr);
-            sqlNode.accept(new SqlBasicVisitor<>() {
-                @Override
-                public Object visit(SqlIdentifier identifier) {
-                    if (identifier.names.size() == 1) {
-                        if (!identifier.isStar())
-                            ret.add(identifier.names.get(0));
-                    } else {
-                        ret.add(String.join(".", identifier.names));
-                    }
-                    return true;
-                }
-            });
+            visitIdentifierInSqlNode(sqlNode, ret);
         } catch (Exception e) {
-            log.warn("parse expression '{}' failed", expr, e);
+            log.error("parse expression '{}' failed", expr, e);
         }
         return ret;
+    }
+
+    public static List<String> getFullNameIdentifiers(SqlNode sqlNode) {
+        List<String> ret = new ArrayList<>();
+        try {
+            visitIdentifierInSqlNode(sqlNode, ret);
+        } catch (Exception e) {
+            log.error("parse sqlNode '{}' failed", sqlNode, e);
+        }
+        return ret;
+    }
+
+    private static void visitIdentifierInSqlNode(SqlNode sqlNode, List<String> ret) {
+        sqlNode.accept(new SqlBasicVisitor<>() {
+            @Override
+            public Object visit(SqlIdentifier identifier) {
+                if (identifier.names.size() == 1) {
+                    if (!identifier.isStar())
+                        ret.add(identifier.names.get(0));
+                } else {
+                    ret.add(String.join(".", identifier.names));
+                }
+                return true;
+            }
+        });
+    }
+
+    public static boolean isASqlSelect(SqlNode node){
+        return node instanceof SqlSelect;
+    }
+
+    public static boolean isASqlBasicCall(SqlNode node){
+        return node instanceof SqlBasicCall;
+    }
+
+    public static boolean isASqlIdentifier(SqlNode node){
+        return node instanceof SqlIdentifier;
+    }
+
+    public static boolean isAAsOperator(SqlOperator op){
+        return op instanceof SqlAsOperator;
+    }
+
+    public static boolean isASqlDateLiteral(SqlNode node){
+        return node instanceof SqlDateLiteral;
+    }
+
+    public static boolean isASqlLiteral(SqlNode node){
+        return node instanceof SqlLiteral;
+    }
+
+    public static boolean isASqlJoin(SqlNode node) {
+        return node instanceof SqlJoin;
+    }
+
+    public static boolean isASqlOrderBy(SqlNode node) {
+        return node instanceof SqlOrderBy;
+    }
+
+    public static String getSqlIdentifierName(SqlIdentifier identifier){
+        if (identifier.names.size() == 1) {
+            if (!identifier.isStar())
+                return identifier.names.get(0);
+            else
+                return "*";
+        } else {
+            return String.join(".", identifier.names);
+        }
     }
 }
