@@ -31,7 +31,7 @@ limitations under the License.
         :before-upload="handleBeforeUpload">
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">Drag your files here, or <em>click to upload</em></div>
-        <div class="el-upload__tip" slot="tip">Upload your .tds or .twb file, we help you export your Tableau calculated fields into an Excel spreadsheet. 1MB maximum file size.</div>
+        <div class="el-upload__tip" slot="tip">[.tds, .twb, .sql] file supported, we help you export calculated fields or measures into an Excel spreadsheet. 5MB maximum file size.</div>
       </el-upload>
       <p v-if="errorMsg" class="error-msg">{{errorMsg}}</p>
     </div>
@@ -40,7 +40,7 @@ limitations under the License.
         <div>
           <a download :href="dowloadFileUrl" class="el-button el-button--primary btn"><i class="el-icon-download"></i> Download</a>
         </div>
-        <el-button type="text" @click="dowloadFileUrl = ''">Try another .tds or .twb file</el-button>
+        <el-button type="text" @click="dowloadFileUrl = ''">Try another [.tds, .twb, .sql] file</el-button>
       </div>
     </div>
   </div>
@@ -61,12 +61,13 @@ export default {
       const strArr = filename.split('.')
       const sufix = strArr.length ? strArr[strArr.length - 1] : ''
       const fileTypeValid = sufix.toLocaleLowerCase() === 'tds' || sufix.toLocaleLowerCase() === 'twb'
-      const isLt1M = file.size <= 1 * 1024 * 1024
+        || sufix.toLocaleLowerCase() === 'sql'
+      const isLt1M = file.size <= 5 * 1024 * 1024
 
       if (!fileTypeValid) {
-        this.errorMsg = 'Only support .tds or .twb file'
+        this.errorMsg = 'Only support [.tds, .twb, .sql] file'
       } else if (!isLt1M) {
-        this.errorMsg = '1MB maximum file size'
+        this.errorMsg = '5MB maximum file size'
       } else {
         this.errorMsg = ''
       }

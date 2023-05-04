@@ -60,7 +60,7 @@ public class ZenGeneratorTest {
         var destPath = Path.of(destDirPath, "superstore.zen.yml");
         var destFile = destPath.toFile();
         var generator = new ZenGenerator();
-        generator.convertMetrics2ZenMlFile(tdsPath, destDirPath);
+        generator.convertMetrics2ZenMLFileAndExcelFile(tdsPath, destDirPath);
         Assertions.assertTrue(destFile.exists());
     }
 

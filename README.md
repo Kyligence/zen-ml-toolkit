@@ -49,13 +49,13 @@ for free.
 Kyligence ZenML Toolkit is a toolkit which help users to extract metrics metadata from any type of file, includes but
 not only:
 
+- **SQL file (Implemented)**
+    - `.sql`
 - **Tableau (Implemented)**
     - workbook file (`.twb`)
     - datasource file(`.tds`)
 - **Excel file(coming soon)**
     - `.xlsx`
-- **SQL file(coming soon)**
-    - `.sql`
 - More...
 
 ![arch](docs/images/architecture.png)

@@ -94,7 +94,7 @@ public class ZenMlToolkitCLI extends AbstractApplication {
 
         try {
             var generator = new ZenGenerator();
-            generator.convertMetrics2ZenMlFile(srcFilePath, destDirPath);
+            generator.convertMetrics2ZenMLFileAndExcelFile(srcFilePath, destDirPath);
         } catch (IOException e) {
             log.error(ErrorCode.FAILED_GENERATE_ZENML.getReportMessage(), e);
             throw new ToolkitException(ErrorCode.FAILED_GENERATE_ZENML, e);
