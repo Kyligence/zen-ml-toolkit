@@ -70,7 +70,7 @@ not only:
 
 Please go to [Release Page](https://github.com/Kyligence/zen-ml-toolkit/releases) to download.
 
-If your environment has been setup jdk17, you can download this package:
+If your environment has been set up jdk17, you can download this package:
 
 - `Kyligence-ZenML-Toolkit-{version}.tar.gz`: Supports Linux and MacOS
 
@@ -86,38 +86,7 @@ After downloaded package, extract the tar file
 $ tar -zxvf Kyligence-ZenML-Toolkit-{version}.tar.gz
 ```
 
-### Usage
 
-- For **Command Line Interface**: please refer to [Usage of Command Line Interface](docs/cli.md)
-- For **Server mode and REST API**: please refer to [Usage of Server Mode](docs/server.md)
-
-### CLI Example
-
-#### Convert tableau tds file to ZenML file
-
-```
-# please replace ${Kyligence-ZenML-Toolkit-{version}} with absolute path
-$ cd ${Kyligence-ZenML-Toolkit-{version}}
-$ sh ./bin/zen.sh -i ${Kyligence-ZenML-Toolkit-{version}}/samples/superstore.tds -o ${Kyligence-ZenML-Toolkit-{version}}/samples/
-```
-
-You will get a `superstore.zen.yml` file in folder `Kyligence-ZenML-Toolkit-{version}/samples`
-
-#### Import ZenML to Kyligence Zen
-
-1. Login into [Kyligence Zen](https://kyligence.io/zen)
-2. Go to **Data**, click **New**, Choose **Table**
-   ![New Table](docs/images/examples/import_table.png)
-3. Choose upload csv, upload `orders.csv` file in folder `Kyligence-ZenML-Toolkit-{version}/samples`
-   ![Upload Table](docs/images/examples/import_table2.png)
-4. You will create an `orders` table after you finished all steps in wizard
-   ![Table](docs/images/examples/import_table3.png)
-5. Go to **Metrics**, click **Import**
-   ![New Metrics](docs/images/examples/import_zen.png)
-6. Import `superstore.zen.yml` file
-   ![Import Zen Yaml](docs/images/examples/import_zen2.png)
-7. All metrics defined in tableau tds file will be imported to Kyligence Zen
-   ![Metrics in Zen](docs/images/examples/metrics_in_zen.png)
 
 ## Contribution
 Welcome to contribute, you can convert any files which contains metrics metadata to a ZenML file.

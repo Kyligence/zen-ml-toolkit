@@ -67,17 +67,18 @@ public class SqlConverter implements MetricsConverter {
     }
 
     private List<MetricSpec> getMetricsSpecsFromSqlFile(List<SqlMetricSpec> sqlMetricSpecs) {
-        var sqlModelMergeMgr = new SqlModelMergeManager();
-        Map<SqlModel, Set<SqlMetricSpec>> mergedSqlMetrics = sqlModelMergeMgr.init(sqlMetricSpecs).merge().getMergedSqlMetrics();
+        var sqlModelHelper = new SqlModelHelper();
+        // merge sql metrics with same data model
+        Map<SqlModel, Set<SqlMetricSpec>> mergedSqlMetrics = sqlModelHelper.init(sqlMetricSpecs).merge().getMergedSqlMetrics();
         List<MetricSpec> results = new ArrayList<>();
         for (Map.Entry<SqlModel, Set<SqlMetricSpec>> entry : mergedSqlMetrics.entrySet()) {
             var modelName = entry.getKey().generateModelName();
-            results.addAll(enrichSqlMetricsWithSameModel(modelName, entry.getValue().stream().toList()));
+            results.addAll(mergeSqlMetricsWithMeasureExpression(modelName, entry.getValue().stream().toList()));
         }
         return results;
     }
 
-    private List<MetricSpec> enrichSqlMetricsWithSameModel(String modelName, List<SqlMetricSpec> metricSpecs) {
+    private List<MetricSpec> mergeSqlMetricsWithMeasureExpression(String modelName, List<SqlMetricSpec> metricSpecs) {
         // key: measure expr
         Map<String, MetricSpec> mergedMetrics = new HashMap<>();
 
@@ -150,8 +151,12 @@ public class SqlConverter implements MetricsConverter {
 
     private static void mergeDescription(MetricSpec metricSpec, MetricSpec toMerge) {
         var desc = metricSpec.getDescription();
+        var sqlCount = Integer.valueOf(desc.split(":")[1].trim());
         var desc2Merge = toMerge.getDescription();
-        var newDesc = desc2Merge + "\n" + desc;
+        var sqlCount2Merge = Integer.valueOf(desc2Merge.split(":")[1].trim());
+
+        var totalSqlCount = sqlCount + sqlCount2Merge;
+        var newDesc = "Metrics from SQL count: " + totalSqlCount;
         toMerge.setDescription(newDesc);
     }
 
@@ -160,7 +165,6 @@ public class SqlConverter implements MetricsConverter {
         var datasource = sqlMetric.getDatasource();
         var measureAlias = sqlMetric.getMeasureAlias();
         var measure = sqlMetric.getMeasure();
-        var originSql = sqlMetric.getOriginalSql();
         List<String> dimensions = sqlMetric.getDimensions();
         List<TimeDimension> timeDimensions = sqlMetric.getTimeDimensions();
 
@@ -174,7 +178,7 @@ public class SqlConverter implements MetricsConverter {
         metricSpec.setStatus(MetricStatus.ONLINE);
         metricSpec.setType(MetricType.BASIC);
 
-        String description = "Metrics from sql: \n" + originSql;
+        var description = "Metrics from SQL count: 1";
         metricSpec.setDescription(description);
 
         var tags = createTags(datasource);

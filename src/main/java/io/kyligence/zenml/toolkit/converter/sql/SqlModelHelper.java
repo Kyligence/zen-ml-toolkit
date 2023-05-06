@@ -25,7 +25,7 @@ import java.util.*;
 
 
 // to merge the metrics by same data model to reduce the data model creation
-public class SqlModelMergeManager {
+public class SqlModelHelper {
     private Map<SqlModel, Set<SqlMetricSpec>> mergedMetrics = new HashMap<>();
 
     private Map<SqlModel, List<SqlMetricSpec>> model2SqlMetricsMap = new HashMap<>();
@@ -34,7 +34,7 @@ public class SqlModelMergeManager {
 
 
     // init --> merge -- getMergedSqlMetrics
-    public SqlModelMergeManager init(List<SqlMetricSpec> sqlMetricSpecs) {
+    public SqlModelHelper init(List<SqlMetricSpec> sqlMetricSpecs) {
 
 
         for (SqlMetricSpec sqlMetricSpec : sqlMetricSpecs) {
@@ -57,7 +57,7 @@ public class SqlModelMergeManager {
         return models.stream().sorted(Comparator.comparingInt(SqlModel::getJoinDepth).reversed()).toList();
     }
 
-    public SqlModelMergeManager merge() {
+    public SqlModelHelper merge() {
 
         Set<SqlModel> merged = new HashSet<>();
         // from the biggest model to the smallest model

@@ -210,7 +210,8 @@ public class SqlFileAnalyzer {
 
         var joinRelation = new JoinRelation();
 
-        joinRelation.setRightTable(SqlUtils.toDwDialectString(rightNode));
+        var rightTableName = SqlUtils.toDwDialectString(rightNode);
+        joinRelation.setRightTable(rightTableName);
         joinRelation.setJoinType(joinType.toString());
         sqlModel.addJoinRelations(joinRelation);
 
@@ -239,8 +240,28 @@ public class SqlFileAnalyzer {
 
                     var joinCondition = new JoinRelation.JoinCondition();
                     joinCondition.setOperator(operator);
-                    joinCondition.setPk(SqlUtils.toDwDialectString(conditionNode.getOperandList().get(0)));
-                    joinCondition.setFk(SqlUtils.toDwDialectString(conditionNode.getOperandList().get(1)));
+                    var leftKey = SqlUtils.toDwDialectString(conditionNode.getOperandList().get(0));
+                    var rightKey = SqlUtils.toDwDialectString(conditionNode.getOperandList().get(1));
+
+                    if (rightKey.contains(".") && leftKey.contains(".")) {
+                        // join condition : table_name.col_name = table2_name.col2_name
+                        var tableName = rightKey.split("\\.")[0];
+                        var colName = rightKey.split("\\.")[1];
+                        if(StringUtils.equalsIgnoreCase(tableName, rightTableName)){
+                            // rightKey is a fk
+                            joinCondition.setPk(leftKey.split("\\.")[1]);
+                            joinCondition.setFk(colName);
+                        }else {
+                            // rightKey is a pk
+                            joinCondition.setPk(colName);
+                            joinCondition.setFk(leftKey.split("\\.")[1]);
+                        }
+                    }else {
+                        // join condition : col_name = col2_name, use right key as fk
+                        joinCondition.setFk(rightKey);
+                        joinCondition.setPk(leftKey);
+                    }
+
                     joinRelation.addJoinConditions(joinCondition);
 
                     return true;
