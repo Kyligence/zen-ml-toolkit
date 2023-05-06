@@ -138,13 +138,11 @@ public class SqlConverter implements MetricsConverter {
         Set<TimeDimension> results = new HashSet<>();
         for (TimeDimension dim : mergedTimeDims) {
             var idtf = dim.getName();
-            String newIdtf;
             if (idtf.contains(".")) {
-                newIdtf = modelName + "." + dim.getName().split("\\.")[1];
-            } else {
-                newIdtf = modelName + "." + dim.getName();
+                // time dimension only contains column name, table name is no need
+                dim.setName(idtf.split("\\.")[1]);
             }
-            dim.setName(newIdtf);
+
             results.add(dim);
         }
 
