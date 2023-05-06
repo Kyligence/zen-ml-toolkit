@@ -247,16 +247,16 @@ public class SqlFileAnalyzer {
                         // join condition : table_name.col_name = table2_name.col2_name
                         var tableName = rightKey.split("\\.")[0];
                         var colName = rightKey.split("\\.")[1];
-                        if(StringUtils.equalsIgnoreCase(tableName, rightTableName)){
+                        if (StringUtils.equalsIgnoreCase(tableName, rightTableName)) {
                             // rightKey is a fk
                             joinCondition.setPk(leftKey.split("\\.")[1]);
                             joinCondition.setFk(colName);
-                        }else {
+                        } else {
                             // rightKey is a pk
                             joinCondition.setPk(colName);
                             joinCondition.setFk(leftKey.split("\\.")[1]);
                         }
-                    }else {
+                    } else {
                         // join condition : col_name = col2_name, use right key as fk
                         joinCondition.setFk(rightKey);
                         joinCondition.setPk(leftKey);
@@ -305,9 +305,11 @@ public class SqlFileAnalyzer {
                         if (SqlUtils.isASqlDateLiteral(opNode)) {
                             isDateColumn = true;
                         }
-                        if (SqlUtils.isASqlLiteral(opNode) &&
-                                DateValidatorUtils.isValid(opNode.toString())) {
-                            isDateColumn = true;
+                        if (SqlUtils.isASqlLiteral(opNode)) {
+                            var literalNode = (SqlLiteral) opNode;
+                            if (DateValidatorUtils.isValid(literalNode.toValue())) {
+                                isDateColumn = true;
+                            }
                         }
                     }
 

@@ -146,7 +146,7 @@ public class SqlConverter implements MetricsConverter {
             results.add(dim);
         }
 
-        toMerge.setTimeDimensions(results.stream().sorted().toList());
+        toMerge.setTimeDimensions(results.stream().sorted(Comparator.comparing(TimeDimension::getName)).toList());
     }
 
     private static void mergeDescription(MetricSpec metricSpec, MetricSpec toMerge) {
