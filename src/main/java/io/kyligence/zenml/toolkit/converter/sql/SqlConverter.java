@@ -23,6 +23,7 @@ import io.kyligence.zenml.toolkit.converter.MetricsConverter;
 import io.kyligence.zenml.toolkit.exception.ErrorCode;
 import io.kyligence.zenml.toolkit.exception.ToolkitException;
 import io.kyligence.zenml.toolkit.model.sql.SqlMetricSpec;
+import io.kyligence.zenml.toolkit.model.sql.SqlModel;
 import io.kyligence.zenml.toolkit.model.zenml.*;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -66,41 +67,94 @@ public class SqlConverter implements MetricsConverter {
     }
 
     private List<MetricSpec> getMetricsSpecsFromSqlFile(List<SqlMetricSpec> sqlMetricSpecs) {
-        // some sqls will extract the same measure, need merge them
-        // key:   [datasource:metricExpr]
+        var sqlModelMergeMgr = new SqlModelMergeManager();
+        Map<SqlModel, Set<SqlMetricSpec>> mergedSqlMetrics = sqlModelMergeMgr.init(sqlMetricSpecs).merge().getMergedSqlMetrics();
+        List<MetricSpec> results = new ArrayList<>();
+        for (Map.Entry<SqlModel, Set<SqlMetricSpec>> entry : mergedSqlMetrics.entrySet()) {
+            var modelName = entry.getKey().generateModelName();
+            results.addAll(enrichSqlMetricsWithSameModel(modelName, entry.getValue().stream().toList()));
+        }
+        return results;
+    }
+
+    private List<MetricSpec> enrichSqlMetricsWithSameModel(String modelName, List<SqlMetricSpec> metricSpecs) {
+        // key: measure expr
         Map<String, MetricSpec> mergedMetrics = new HashMap<>();
 
-        for (SqlMetricSpec sqlMetric : sqlMetricSpecs) {
-            var metricSpec = convert2MetricSpec(sqlMetric);
-            var key = metricSpec.getDataModel() + ":" + metricSpec.getExpression();
-            if (mergedMetrics.containsKey(key)) {
-                // the same key means the metric can be merged to 1 metric
-                var metric2Merge = mergedMetrics.get(key);
+        // merge metrics with same expression
+        for (SqlMetricSpec metric : metricSpecs) {
+            var metricSpec = convert2MetricSpec(metric);
+            var expr = metricSpec.getExpression();
+            // update model name
+            metricSpec.setDataModel(modelName);
+            if (mergedMetrics.containsKey(expr)) {
+                var toMerge = mergedMetrics.get(expr);
                 // merge dimensions
-                List<String> dims = metricSpec.getDimensions();
-                List<String> dims2Merge = metric2Merge.getDimensions();
-                dims2Merge.addAll(dims);
-                metric2Merge.setDimensions(new ArrayList<>(new HashSet<>(dims2Merge)));
+                mergeDimensions(metricSpec, toMerge, modelName);
 
                 // merge time dimensions
-                List<TimeDimension> timeDims = metricSpec.getTimeDimensions();
-                List<TimeDimension> timeDims2Merge = metric2Merge.getTimeDimensions();
-                timeDims2Merge.addAll(timeDims);
-                metric2Merge.setTimeDimensions(new ArrayList<>(new HashSet<>(timeDims2Merge)));
+                mergeTimeDimensions(metricSpec, toMerge, modelName);
 
                 // merge descriptions
-                var desc = metricSpec.getDescription();
-                var desc2Merge = metric2Merge.getDescription();
-                var newDesc = desc2Merge + "\n" + desc;
-                metric2Merge.setDescription(newDesc);
-
+                mergeDescription(metricSpec, toMerge);
             } else {
-                mergedMetrics.put(key, metricSpec);
+                mergedMetrics.put(expr, metricSpec);
             }
         }
 
         return mergedMetrics.values().stream().toList();
     }
+
+    private static void mergeDimensions(MetricSpec metricSpec, MetricSpec toMerge, String modelName) {
+        Set<String> mergedDims = new HashSet<>();
+        List<String> dims = metricSpec.getDimensions();
+        List<String> dims2Merge = toMerge.getDimensions();
+        mergedDims.addAll(dims);
+        mergedDims.addAll(dims2Merge);
+
+        Set<String> results = new HashSet<>();
+        for (String dim : mergedDims) {
+            String newDim;
+            if (dim.contains(".")) {
+                newDim = modelName + "." + dim.split("\\.")[1];
+            } else {
+                newDim = modelName + "." + dim;
+            }
+            results.add(newDim);
+        }
+        toMerge.setDimensions(results.stream().sorted().toList());
+    }
+
+    private static void mergeTimeDimensions(MetricSpec metricSpec, MetricSpec toMerge, String modelName) {
+        Set<TimeDimension> mergedTimeDims = new HashSet<>();
+        List<TimeDimension> timeDims = metricSpec.getTimeDimensions();
+        List<TimeDimension> timeDims2Merge = toMerge.getTimeDimensions();
+        mergedTimeDims.addAll(timeDims);
+        mergedTimeDims.addAll(timeDims2Merge);
+
+        Set<TimeDimension> results = new HashSet<>();
+        for (TimeDimension dim : mergedTimeDims) {
+            var idtf = dim.getName();
+            String newIdtf;
+            if (idtf.contains(".")) {
+                newIdtf = modelName + "." + dim.getName().split("\\.")[1];
+            } else {
+                newIdtf = modelName + "." + dim.getName();
+            }
+            dim.setName(newIdtf);
+            results.add(dim);
+        }
+
+        toMerge.setTimeDimensions(results.stream().sorted().toList());
+    }
+
+    private static void mergeDescription(MetricSpec metricSpec, MetricSpec toMerge) {
+        var desc = metricSpec.getDescription();
+        var desc2Merge = toMerge.getDescription();
+        var newDesc = desc2Merge + "\n" + desc;
+        toMerge.setDescription(newDesc);
+    }
+
 
     private MetricSpec convert2MetricSpec(SqlMetricSpec sqlMetric) {
         var datasource = sqlMetric.getDatasource();
@@ -127,5 +181,6 @@ public class SqlConverter implements MetricsConverter {
         metricSpec.setTags(tags);
         return metricSpec;
     }
+
 
 }

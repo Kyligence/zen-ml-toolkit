@@ -18,9 +18,9 @@
 
 package io.kyligence.zenml.toolkit.model.sql;
 
-import io.kyligence.zenml.toolkit.model.zenml.TimeDimension;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -29,29 +29,29 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class SqlMetricSpec {
-    private String datasource;
+public class JoinRelation {
+    private String rightTable;
 
-    private String measureAlias;
+    // left, inner, right, cross
+    private String joinType;
 
-    private String measure;
+    private List<JoinCondition> joinConditions = new ArrayList<>();
 
-    private List<String> dimensions;
+    public void addJoinConditions(JoinCondition condition) {
+        this.joinConditions.add(condition);
+    }
 
-    private List<String> timeDimensionStrs;
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @EqualsAndHashCode
+    @ToString
+    public static class JoinCondition {
+        private String operator;
 
-    private List<TimeDimension> timeDimensions;
+        private String pk;
 
-    private String originalSql;
-
-    private SqlModel sqlModel;
-
-    public boolean canMergeBySameModel(SqlMetricSpec metric2Check) {
-
-        if (sqlModel == null || metric2Check.getSqlModel() == null) {
-            return false;
-        }
-        var model2Check = metric2Check.getSqlModel();
-        return this.sqlModel.canMerge(model2Check);
+        private String fk;
     }
 }

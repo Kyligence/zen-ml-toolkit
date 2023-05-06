@@ -46,6 +46,6 @@ public class SqlConverterTest {
         var sqlFilePath = SQL_BASE_DIR + sqlFile;
         var converter = new SqlConverter();
         var metrics = converter.convert2Metrics(sqlFilePath);
-        Assertions.assertEquals(4, metrics);
+        Assertions.assertEquals(2, metrics);
     }
 }

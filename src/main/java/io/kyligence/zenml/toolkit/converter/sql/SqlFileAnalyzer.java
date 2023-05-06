@@ -20,12 +20,13 @@ package io.kyligence.zenml.toolkit.converter.sql;
 
 import io.kyligence.zenml.toolkit.exception.ErrorCode;
 import io.kyligence.zenml.toolkit.exception.ToolkitException;
+import io.kyligence.zenml.toolkit.model.sql.JoinRelation;
 import io.kyligence.zenml.toolkit.model.sql.SqlMetricSpec;
+import io.kyligence.zenml.toolkit.model.sql.SqlModel;
 import io.kyligence.zenml.toolkit.model.zenml.TimeDimension;
 import io.kyligence.zenml.toolkit.utils.DateValidatorUtils;
 import io.kyligence.zenml.toolkit.utils.sql.CalciteConfig;
 import io.kyligence.zenml.toolkit.utils.sql.CalciteParser;
-import io.kyligence.zenml.toolkit.utils.sql.DwSqlDialect;
 import io.kyligence.zenml.toolkit.utils.sql.SqlUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.calcite.sql.*;
@@ -62,7 +63,7 @@ public class SqlFileAnalyzer {
 
         // for each sql from the sql file
         for (SqlNode node : list) {
-            if(SqlUtils.isASqlOrderBy(node)){
+            if (SqlUtils.isASqlOrderBy(node)) {
                 var sqlOrderBy = (SqlOrderBy) node;
                 node = sqlOrderBy.query;
             }
@@ -142,11 +143,11 @@ public class SqlFileAnalyzer {
                     var measureNodes = measureNode.getOperandList();
                     var measureExpr = measureNodes.get(0);
                     var measureAlias = measureNodes.get(1);
-                    sqlMetric.setMeasureAlias(toDwDialectString(measureAlias).toUpperCase());
-                    sqlMetric.setMeasure(toDwDialectString(measureExpr));
+                    sqlMetric.setMeasureAlias(SqlUtils.toDwDialectString(measureAlias).toUpperCase());
+                    sqlMetric.setMeasure(SqlUtils.toDwDialectString(measureExpr));
                 } else {
                     // measure with no alias: sum(a)
-                    sqlMetric.setMeasure(toDwDialectString(measureNode));
+                    sqlMetric.setMeasure(SqlUtils.toDwDialectString(measureNode));
                     var measureAlias = mockMeasureAlias(measureNode);
                     sqlMetric.setMeasureAlias(measureAlias);
                 }
@@ -156,7 +157,7 @@ public class SqlFileAnalyzer {
             // get dimensions in sql select list
             // dimensions in group by clause generally will be existed in select list
             if (SqlUtils.isASqlIdentifier(selectNode)) {
-                dimensions.add(toDwDialectString(selectNode));
+                dimensions.add(SqlUtils.toDwDialectString(selectNode));
             }
         }
 
@@ -173,41 +174,94 @@ public class SqlFileAnalyzer {
         // get datasource name
         var fromNode = sqlSelect.getFrom();
         if (fromNode != null) {
-            var datasource = extractDataSourceName(fromNode);
-            sqlMetric.setDatasource(datasource);
+            var jointTable = extractJointTable(fromNode);
+            sqlMetric.setDatasource(jointTable.generateModelName());
+            sqlMetric.setSqlModel(jointTable);
         }
         sqlMetric.setDimensions(dimensions.stream().toList());
-        sqlMetric.setOriginalSql(toDwDialectString(node));
+        sqlMetric.setOriginalSql(SqlUtils.toDwDialectString(node));
         return sqlMetric;
     }
 
-    private String extractDataSourceName(SqlNode fromNode) {
-        String datasource;
+    private SqlModel extractJointTable(SqlNode fromNode) {
+
+        var jointTable = new SqlModel();
+        jointTable.setJoinRelations(new ArrayList<>());
+
         if (SqlUtils.isASqlJoin(fromNode)) {
             // for joint table, give a new name as data model name in zen
             // Need manually create a view with the same name created here
             var joinNode = (SqlJoin) fromNode;
-            var leftNode = joinNode.getLeft();
-            var joinType = joinNode.getJoinType();
-            var rightNode = joinNode.getRight();
-            if (SqlUtils.isASqlIdentifier(leftNode)) {
-                datasource = toDwDialectString(leftNode)
-                        + "_" + joinType.toString()
-                        + "_" + toDwDialectString(rightNode);
-            } else {
-                var left = extractDataSourceName(leftNode);
-                datasource = left
-                        + "_" + joinType.toString()
-                        + "_" + toDwDialectString(rightNode);
-            }
+            visitJoinNodes(joinNode, jointTable);
         } else {
             // it's a single table, use as table name
-            datasource = toDwDialectString(fromNode);
+            var factTable = SqlUtils.toDwDialectString(fromNode);
+            jointTable.setFactTable(factTable);
+
         }
-        return datasource.toLowerCase();
+        return jointTable;
     }
 
-    private static Set<String> parseTimeDimensions(SqlBasicCall whereNode) {
+    private void visitJoinNodes(SqlJoin joinNode, SqlModel sqlModel) {
+
+        var leftNode = joinNode.getLeft();
+        var joinType = joinNode.getJoinType();
+        var rightNode = joinNode.getRight();
+
+        var joinRelation = new JoinRelation();
+
+        joinRelation.setRightTable(SqlUtils.toDwDialectString(rightNode));
+        joinRelation.setJoinType(joinType.toString());
+        sqlModel.addJoinRelations(joinRelation);
+
+
+        var conditionNode = (SqlBasicCall) joinNode.getCondition();
+        if (conditionNode != null) {
+            // table join on multi conditions
+            conditionNode.accept(new SqlBasicVisitor<>() {
+                @Override
+                public Object visit(SqlCall conditionNode) {
+                    if (!SqlUtils.isASqlBasicCall(conditionNode)) {
+                        return false;
+                    }
+
+                    var operator = conditionNode.getOperator().getName();
+
+                    if (StringUtils.equalsIgnoreCase(operator, "AND") ||
+                            StringUtils.equalsIgnoreCase(operator, "OR")) {
+                        List<SqlNode> operandList = conditionNode.getOperandList();
+                        for (SqlNode operand : operandList) {
+                            var operandCall = (SqlBasicCall) operand;
+                            visit(operandCall);
+                        }
+                        return false;
+                    }
+
+                    var joinCondition = new JoinRelation.JoinCondition();
+                    joinCondition.setOperator(operator);
+                    joinCondition.setPk(SqlUtils.toDwDialectString(conditionNode.getOperandList().get(0)));
+                    joinCondition.setFk(SqlUtils.toDwDialectString(conditionNode.getOperandList().get(1)));
+                    joinRelation.addJoinConditions(joinCondition);
+
+                    return true;
+                }
+            });
+        }
+
+        if (SqlUtils.isASqlIdentifier(leftNode)) {
+            sqlModel.setFactTable(SqlUtils.toDwDialectString(leftNode));
+        } else if (SqlUtils.isASqlJoin(leftNode)) {
+            var leftJoinNode = (SqlJoin) leftNode;
+            visitJoinNodes(leftJoinNode, sqlModel);
+        } else if (SqlUtils.isASqlBasicCall(leftNode)
+                && SqlUtils.isAAsOperator(((SqlBasicCall) leftNode).getOperator())) {
+            // tableName as aliasName
+            sqlModel.setFactTable(SqlUtils.toDwDialectString(((SqlBasicCall) leftNode).getOperandList().get(0)));
+        }
+
+    }
+
+    private Set<String> parseTimeDimensions(SqlBasicCall whereNode) {
         // time dimension exists in where clause
         // eg: where date > '2022-02-02'
         // date is a time dimension
@@ -248,12 +302,6 @@ public class SqlFileAnalyzer {
     }
 
     private String mockMeasureAlias(SqlBasicCall measureNode) {
-        return toDwDialectString(measureNode).replaceAll(" ", "").toUpperCase();
+        return SqlUtils.toDwDialectString(measureNode).replaceAll(" ", "").toUpperCase();
     }
-
-    private String toDwDialectString(SqlNode node) {
-        return node.toSqlString(DwSqlDialect.DEFAULT).toString();
-    }
-
-
 }

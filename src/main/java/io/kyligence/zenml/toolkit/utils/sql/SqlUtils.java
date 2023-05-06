@@ -251,4 +251,8 @@ public class SqlUtils {
             return String.join(".", identifier.names);
         }
     }
+
+    public static String toDwDialectString(SqlNode node) {
+        return node.toSqlString(DwSqlDialect.DEFAULT).toString();
+    }
 }

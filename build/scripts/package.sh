@@ -89,7 +89,7 @@ mkdir conf
 cp ${root_dir}/build/conf/* conf
 
 mkdir logs
-mkidr samples
+mkdir samples
 cp -r ${root_dir}/samples/*  samples
 mkdir docs
 cp -r ${root_dir}/docs/*  docs

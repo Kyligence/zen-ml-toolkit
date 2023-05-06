@@ -156,4 +156,22 @@ public class SqlFileAnalyzerTest {
         System.out.println(sqlMetricSpecs);
     }
 
+    @Test
+    public void testParseSelect10() {
+        var sql = "select sum(lo_revenue) as lo_revenue, d_year, p_brand\n" +
+                "from lineorder\n" +
+                "left join dates on lo_orderdate = d_datekey\n" +
+                "left join part on lo_partkey = p_partkey\n" +
+                "left join supplier on lo_suppkey = s_suppkey\n" +
+                "and lo_suppid = s_suppid\n" +
+                "and lo_suppNo = s_suppNo\n" +
+                "where p_category = 'MFGR#12' and s_region = 'AMERICA'\n" +
+                "group by d_year, p_brand\n" +
+                "order by d_year, p_brand;";
+
+        var sqlAnalyzer = new SqlFileAnalyzer();
+        var sqlMetricSpecs = sqlAnalyzer.parseSqls(sql);
+        System.out.println(sqlMetricSpecs);
+    }
+
 }
