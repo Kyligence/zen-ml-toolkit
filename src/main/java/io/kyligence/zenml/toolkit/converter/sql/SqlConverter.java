@@ -88,6 +88,8 @@ public class SqlConverter implements MetricsConverter {
             var expr = metricSpec.getExpression();
             // update model name
             metricSpec.setDataModel(modelName);
+            // update tags
+            metricSpec.setTags(createTags(modelName));
             if (mergedMetrics.containsKey(expr)) {
                 var toMerge = mergedMetrics.get(expr);
                 // merge dimensions
@@ -181,8 +183,6 @@ public class SqlConverter implements MetricsConverter {
         var description = "Metrics from SQL count: 1";
         metricSpec.setDescription(description);
 
-        var tags = createTags(datasource);
-        metricSpec.setTags(tags);
         return metricSpec;
     }
 
