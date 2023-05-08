@@ -30,6 +30,8 @@ $ ./bin/zen.sh start
 $ ./bin/zen.sh stop
 ```
 
+Visit the [http://localhost:9000] to access GUI.
+
 ## API
 
 ### Health Check API

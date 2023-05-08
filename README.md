@@ -49,9 +49,9 @@ for free.
 Kyligence ZenML Toolkit is a toolkit which help users to extract metrics metadata from any type of file, includes but
 not only:
 
-- **SQL file (Implemented)**
+- **[SQL file (Implemented)](docs/sql_to_metrics.md)**
     - `.sql`
-- **Tableau (Implemented)**
+- **[Tableau (Implemented)](docs/tableau_to_metrics.md)**
     - workbook file (`.twb`)
     - datasource file(`.tds`)
 - **Excel file(coming soon)**
@@ -86,6 +86,15 @@ After downloaded package, extract the tar file
 $ tar -zxvf Kyligence-ZenML-Toolkit-{version}.tar.gz
 ```
 
+### Usage
+- [CLI Usage](docs/cli.md)
+- [GUI Usage](docs/server.md)
+- [Extract metrics from SQL](docs/sql_to_metrics.md)
+- [Extract metrics from tableau](docs/tableau_to_metrics.md)
+
+### Build Package & Docker Image
+
+Please refer to the [Dev Guide](docs/dev.md) for details
 
 
 ## Contribution

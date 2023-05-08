@@ -7,12 +7,16 @@
 
 ## Example
 
+### Sample Dataset
+
+Please visit `${Kyligence-ZenML-Toolkit-{version}}/samples/tableau/` to get the data csv file and a tableau tds file
+
 ### Convert tableau tds file to ZenML file
 
 ```
 # please replace ${Kyligence-ZenML-Toolkit-{version}} with absolute path
 $ cd ${Kyligence-ZenML-Toolkit-{version}}
-$ sh ./bin/zen.sh -i ${Kyligence-ZenML-Toolkit-{version}}/samples/tableau/superstore.tds -o ${Kyligence-ZenML-Toolkit-{version}}/samples/tableau
+$ sh ./bin/zen.sh -i ./samples/tableau/superstore.tds -o ./samples/tableau
 ```
 
 You will get a `superstore.zen.yml` file in folder `Kyligence-ZenML-Toolkit-{version}/samples/tableau`
@@ -21,19 +25,22 @@ You will get a `superstore.zen.yml` file in folder `Kyligence-ZenML-Toolkit-{ver
 
 1. Login into [Kyligence Zen](https://kyligence.io/zen)
 2. Go to **Data**, click **New**, Choose **Table**
-   ![New Table](images/examples/import_table.png)
+   ![New Table](images/tableau/import_table.png)
 3. Choose upload csv, upload `orders.csv` file in folder `Kyligence-ZenML-Toolkit-{version}/samples`
-   ![Upload Table](images/examples/import_table2.png)
+   ![Upload Table](images/tableau/import_table2.png)
 4. You will create an `orders` table after you finished all steps in wizard
-   ![Table](images/examples/import_table3.png)
+   ![Table](images/tableau/import_table3.png)
 5. Go to **Metrics**, click **Import**
-   ![New Metrics](images/examples/import_zen.png)
+   ![New Metrics](images/tableau/import_zen.png)
 6. Import `superstore.zen.yml` file
-   ![Import Zen Yaml](images/examples/import_zen2.png)
+   ![Import Zen Yaml](images/tableau/import_zen2.png)
 7. All metrics defined in tableau tds file will be imported to Kyligence Zen
-   ![Metrics in Zen](images/examples/metrics_in_zen.png)
+   ![Metrics in Zen](images/tableau/metrics_in_zen.png)
 
 ## Implementation
 
+1. Mapping the `TDS/TWB` file to data model objects 
+2. Extract the metrics from Tableau Calculate field  
 
 ## Notice
+1. **Not all expressions in tableau calculated fields can be supported in Kyligence Zen, only SQL compatible expressions supported**
