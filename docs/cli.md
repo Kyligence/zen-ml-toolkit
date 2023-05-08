@@ -49,7 +49,7 @@ You will get a `ssb.zen.yml` file in folder `Kyligence-ZenML-Toolkit-{version}/s
 
 ## Windows User
 
-For Windows users
+For Windows users, **Recommend to use the GUI with sever mode in docker**
 
 1. Download `Kyligence-ZenML-Toolkit-{version}.tar.gz` and extract the tar package
 2. Install JDK17 on your windows

@@ -106,7 +106,7 @@ public class TableauConverter implements MetricsConverter {
         var tableauDimensions = tdsSpec.getDimensions();
 
         // dimensions
-        Map<String, List<String>> table2Dims = parseDimensionsFromTdsSpec(tableauDimensions);
+        Map<String, List<String>> table2Dims = parseDimensionsFromTdsSpec(tableauDimensions, tdsName);
         List<String> dimensions = new ArrayList<>();
         for (List<String> dims : table2Dims.values()) {
             dimensions.addAll(dims);
@@ -150,15 +150,33 @@ public class TableauConverter implements MetricsConverter {
             metricSpec.setStatus(MetricStatus.ONLINE);
             metricSpec.setType(MetricType.BASIC);
             metricSpec.setTags(tags);
-            metricSpec.setDataModel(tdsName);
-            metricSpec.setDimensions(dimensions);
             metricSpec.setTimeDimensions(timeDimensions);
             metricSpecs.add(metricSpec);
+
+            if (table2Dims.keySet().size() == 1) {
+                // only 1 table found, use this table as data model name and table identifier in dimension
+                metricSpec.setDataModel(table2Dims.keySet().stream().toList().get(0));
+                metricSpec.setDimensions(dimensions);
+            } else {
+                // more than 1 tables found in this metrics, use tableau data source name as the model name and table identifier
+                metricSpec.setDataModel(tdsName);
+                List<String> enrichedDims = new ArrayList<>();
+                for (String dim : dimensions) {
+                    if (dim.contains("\\.")) {
+                        var newDim = tdsName + "." + dim.split("\\.")[1];
+                        enrichedDims.add(newDim);
+                    } else {
+                        enrichedDims.add(dim);
+                    }
+                }
+                metricSpec.setDimensions(enrichedDims);
+            }
+
         }
         return metricSpecs;
     }
 
-    private Map<String, List<String>> parseDimensionsFromTdsSpec(List<TableauColumn> dimensions) {
+    private Map<String, List<String>> parseDimensionsFromTdsSpec(List<TableauColumn> dimensions, String dsName) {
         Map<String, List<String>> table2Dims = new HashMap<>();
         for (TableauColumn dimension : dimensions) {
             if (!dimension.isCC()) {
@@ -167,7 +185,11 @@ public class TableauConverter implements MetricsConverter {
                 var dimName = tabName + "." + colName;
                 addDimensionName2TabDimsMap(table2Dims, tabName, dimName);
             } else {
-                //todo: process cc
+                if (dimension.getSourceColumn() != null) {
+                    var colName = dimension.getSourceColumn().getColName();
+                    var dimName = dsName + "." + colName;
+                    addDimensionName2TabDimsMap(table2Dims, dsName, dimName);
+                }
             }
         }
         return table2Dims;
@@ -180,9 +202,9 @@ public class TableauConverter implements MetricsConverter {
             if (dimension.isTimeDimension()) {
                 var tabName = dimension.getSourceColumn().getSourceTable().getTableWithSchema();
                 var colName = dimension.getSourceColumn().getColName();
-                var dimName = tabName + "." + colName;
                 var dim = new TimeDimension();
-                dim.setName(dimName);
+                // time dimension should not contain a table identifier
+                dim.setName(colName);
                 addTimeDimension2TabDimsMap(table2TimeDims, tabName, dim);
             }
         }
