@@ -51,4 +51,14 @@ public class TdsAnalyzerTest {
         var tdsSpec = analyzer.analyzeTdsSpec(tds);
         System.out.println(tdsSpec);
     }
+
+    @Test
+    public void testAnalyzeTdsFileCase2(){
+        var tdsName = "superstore.tds";
+        var tdsPath = TDS_BASE_DIR + tdsName;
+        var analyzer = new TdsAnalyzer();
+        var tds = TableauRWUtils.getTds(new File(tdsPath));
+        var tdsSpec = analyzer.analyzeTdsSpec(tds);
+        System.out.println(tdsSpec);
+    }
 }
