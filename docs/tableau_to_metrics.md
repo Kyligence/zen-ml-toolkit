@@ -48,3 +48,4 @@ You will get a `superstore.zen.yml` file in folder `Kyligence-ZenML-Toolkit-{ver
 
 ## Notice
 1. **Not all expressions in tableau calculated fields can be supported in Kyligence Zen, only SQL compatible expressions supported**
+2. Please make sure the **all identifiers(table_name, col_name) should be in lowercase**, and only contains letters, numbers and underscore 

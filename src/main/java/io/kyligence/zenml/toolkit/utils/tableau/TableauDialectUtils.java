@@ -49,7 +49,7 @@ public class TableauDialectUtils {
             return identifier;
         identifier = removeBracket(identifier);
         identifier = identifier.replaceAll("-", "_");
-        identifier = identifier.replaceAll(" ", "_");
+        identifier = identifier.replaceAll(" ", "");
         identifier = identifier.replaceAll("/", "_");
 
         return formatIdentifierCase(identifier);

@@ -106,7 +106,7 @@ public class TableauConverter implements MetricsConverter {
         var tableauDimensions = tdsSpec.getDimensions();
 
         // dimensions
-        Map<String, List<String>> table2Dims = parseDimensionsFromTdsSpec(tableauDimensions);
+        Map<String, List<String>> table2Dims = parseDimensionsFromTdsSpec(tableauDimensions, tdsName);
         List<String> dimensions = new ArrayList<>();
         for (List<String> dims : table2Dims.values()) {
             dimensions.addAll(dims);
@@ -176,7 +176,7 @@ public class TableauConverter implements MetricsConverter {
         return metricSpecs;
     }
 
-    private Map<String, List<String>> parseDimensionsFromTdsSpec(List<TableauColumn> dimensions) {
+    private Map<String, List<String>> parseDimensionsFromTdsSpec(List<TableauColumn> dimensions, String dsName) {
         Map<String, List<String>> table2Dims = new HashMap<>();
         for (TableauColumn dimension : dimensions) {
             if (!dimension.isCC()) {
@@ -185,7 +185,11 @@ public class TableauConverter implements MetricsConverter {
                 var dimName = tabName + "." + colName;
                 addDimensionName2TabDimsMap(table2Dims, tabName, dimName);
             } else {
-                //todo: process cc
+                if (dimension.getSourceColumn() != null) {
+                    var colName = dimension.getSourceColumn().getColName();
+                    var dimName = dsName + "." + colName;
+                    addDimensionName2TabDimsMap(table2Dims, dsName, dimName);
+                }
             }
         }
         return table2Dims;

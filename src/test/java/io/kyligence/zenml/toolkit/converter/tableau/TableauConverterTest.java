@@ -186,4 +186,13 @@ public class TableauConverterTest {
         var metrics = converter.convert2Metrics(twbPath);
         Assertions.assertEquals(2, metrics.getMetrics().size());
     }
+
+    @Test
+    public void testConvert2ZenMLCase15() throws DocumentException {
+        var tdsName = "Sample-Superstore.tds";
+        var tdsPath = TDS_BASE_DIR + tdsName;
+        var converter = new TableauConverter();
+        var metrics = converter.convert2Metrics(tdsPath);
+        Assertions.assertEquals(1, metrics.getMetrics().size());
+    }
 }

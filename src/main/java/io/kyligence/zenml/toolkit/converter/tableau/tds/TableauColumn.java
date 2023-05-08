@@ -66,8 +66,8 @@ public class TableauColumn {
     public boolean isTimeDimension() {
         if (!isDimension())
             return false;
-        if (isCC())
-            return false;
+//        if (isCC())
+//            return false;
         return StringUtils.equalsIgnoreCase(this.dataType, TableauDataTypeUtils.DATE) ||
                 StringUtils.equalsIgnoreCase(this.dataType, TableauDataTypeUtils.TIMESTAMP);
     }
