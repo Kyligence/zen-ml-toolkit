@@ -54,9 +54,16 @@ public enum ErrorCode {
     ILLEGAL_TABLEAU_FILE_TYPE("ZEN-40002", "Only support twb file or tds file for Tableau"),
     FAILED_GENERATE_ZENML("ZEN-40003", "Failed to write metrics to file"),
 
+    ILLEGAL_SQL_FILE_TYPE("ZEN-40004", "Only support .sql as suffix for sql file"),
+    FAILED_READ_SQL_FILE("ZEN-40005", "Failed to read sql file as string"),
+    SQL_SELECT_STATEMENT_SUPPORT_ONLY("ZEN-40006", "Only support extract metrics from sql select statement"),
+    MEASURE_NOT_FOUND_IN_SQL("ZEN-40007", "Measure not found in sql statement"),
+
     // Zen-9xxxx: cli error
     CLI_ILLEGAL_ARGUMENTS("ZEN-90001", "Illegal arguments, please check the help usage"),
+
     CLI_SOURCE_FILE_PATH_EMPTY("ZEN-90002", "Source file path is empty, please check the help usage"),
+
     CLI_OUTPUT_DIR_PATH_EMPTY("ZEN-90003", "Output directory path is empty, please check the help usage"),
 
     ;

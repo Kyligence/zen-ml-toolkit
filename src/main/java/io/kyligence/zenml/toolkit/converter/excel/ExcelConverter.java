@@ -21,10 +21,24 @@ package io.kyligence.zenml.toolkit.converter.excel;
 import io.kyligence.zenml.toolkit.converter.MetricsConverter;
 import io.kyligence.zenml.toolkit.model.zenml.Metrics;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ExcelConverter implements MetricsConverter {
+    private static final String EXCEL_TAG = "EXCEL";
+
+
     @Override
     public Metrics convert2Metrics(String filePath) {
         //TODO, convert excel to metrics
         return null;
+    }
+
+    @Override
+    public List<String> createTags(String dataSource) {
+        List<String> tags = new ArrayList<>();
+        tags.add(dataSource);
+        tags.add(EXCEL_TAG);
+        return tags;
     }
 }

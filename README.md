@@ -49,13 +49,13 @@ for free.
 Kyligence ZenML Toolkit is a toolkit which help users to extract metrics metadata from any type of file, includes but
 not only:
 
-- **Tableau (Implemented)**
+- **[SQL file (Implemented)](docs/sql_to_metrics.md)**
+    - `.sql`
+- **[Tableau (Implemented)](docs/tableau_to_metrics.md)**
     - workbook file (`.twb`)
     - datasource file(`.tds`)
 - **Excel file(coming soon)**
     - `.xlsx`
-- **SQL file(coming soon)**
-    - `.sql`
 - More...
 
 ![arch](docs/images/architecture.png)
@@ -70,7 +70,7 @@ not only:
 
 Please go to [Release Page](https://github.com/Kyligence/zen-ml-toolkit/releases) to download.
 
-If your environment has been setup jdk17, you can download this package:
+If your environment has been set up jdk17, you can download this package:
 
 - `Kyligence-ZenML-Toolkit-{version}.tar.gz`: Supports Linux and MacOS
 
@@ -87,37 +87,15 @@ $ tar -zxvf Kyligence-ZenML-Toolkit-{version}.tar.gz
 ```
 
 ### Usage
+- [CLI Usage](docs/cli.md)
+- [GUI Usage](docs/server.md)
+- [Extract metrics from SQL](docs/sql_to_metrics.md)
+- [Extract metrics from tableau](docs/tableau_to_metrics.md)
 
-- For **Command Line Interface**: please refer to [Usage of Command Line Interface](docs/cli.md)
-- For **Server mode and REST API**: please refer to [Usage of Server Mode](docs/server.md)
+### Build Package & Docker Image
 
-### CLI Example
+Please refer to the [Dev Guide](docs/dev.md) for details
 
-#### Convert tableau tds file to ZenML file
-
-```
-# please replace ${Kyligence-ZenML-Toolkit-{version}} with absolute path
-$ cd ${Kyligence-ZenML-Toolkit-{version}}
-$ sh ./bin/zen.sh -i ${Kyligence-ZenML-Toolkit-{version}}/samples/superstore.tds -o ${Kyligence-ZenML-Toolkit-{version}}/samples/
-```
-
-You will get a `superstore.zen.yml` file in folder `Kyligence-ZenML-Toolkit-{version}/samples`
-
-#### Import ZenML to Kyligence Zen
-
-1. Login into [Kyligence Zen](https://kyligence.io/zen)
-2. Go to **Data**, click **New**, Choose **Table**
-   ![New Table](docs/images/examples/import_table.png)
-3. Choose upload csv, upload `orders.csv` file in folder `Kyligence-ZenML-Toolkit-{version}/samples`
-   ![Upload Table](docs/images/examples/import_table2.png)
-4. You will create an `orders` table after you finished all steps in wizard
-   ![Table](docs/images/examples/import_table3.png)
-5. Go to **Metrics**, click **Import**
-   ![New Metrics](docs/images/examples/import_zen.png)
-6. Import `superstore.zen.yml` file
-   ![Import Zen Yaml](docs/images/examples/import_zen2.png)
-7. All metrics defined in tableau tds file will be imported to Kyligence Zen
-   ![Metrics in Zen](docs/images/examples/metrics_in_zen.png)
 
 ## Contribution
 Welcome to contribute, you can convert any files which contains metrics metadata to a ZenML file.

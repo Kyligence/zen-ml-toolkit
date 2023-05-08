@@ -4,7 +4,7 @@
 
 Server mode currently only support **Linux** && **MacOS**
 
-## Download an start/stop the server
+## Download and start/stop the server
 
 Please go to [Release Page](https://github.com/Kyligence/zen-ml-toolkit/releases) to download.
 
@@ -30,6 +30,8 @@ $ ./bin/zen.sh start
 $ ./bin/zen.sh stop
 ```
 
+Visit the [http://localhost:9000] to access GUI.
+
 ## API
 
 ### Health Check API
@@ -48,7 +50,7 @@ $ curl --output /local/path/to/download_file --request POST '127.0.0.1:9000/conv
 --form 'file=@"/local/path/to/file"'
 ```
 
-Upload a file (i.e. tableau tds file) and save the zip file to `/local/path/to/download_file.zip`
+Upload a file (i.e. .tds, .twd, .sql file) and save the zip file to `/local/path/to/download_file.zip`
 
 Example:
 

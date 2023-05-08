@@ -58,7 +58,7 @@ public class CalciteParser implements RelOptTable.ViewExpander {
      * @param parserCfg Parser config.
      * @return Parsed query.
      */
-    static SqlNodeList parse(String qry, SqlParser.Config parserCfg) {
+    public static SqlNodeList parse(String qry, SqlParser.Config parserCfg) {
         try {
             return parse(new SourceStringReader(qry), parserCfg);
         } catch (SqlParseException e) {
@@ -74,7 +74,7 @@ public class CalciteParser implements RelOptTable.ViewExpander {
      * @return Parsed query.
      * @throws SqlParseException on parse error.
      */
-    static SqlNodeList parse(Reader reader, SqlParser.Config parserCfg) throws SqlParseException {
+    public static SqlNodeList parse(Reader reader, SqlParser.Config parserCfg) throws SqlParseException {
         var parser = SqlParser.create(reader, parserCfg);
         return parser.parseStmtList();
     }

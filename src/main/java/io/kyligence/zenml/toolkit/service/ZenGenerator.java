@@ -22,10 +22,10 @@ import io.kyligence.zenml.toolkit.converter.ConverterFactory;
 import io.kyligence.zenml.toolkit.converter.FileType;
 import io.kyligence.zenml.toolkit.model.zenml.MetricSpec;
 import io.kyligence.zenml.toolkit.model.zenml.Metrics;
-import io.kyligence.zenml.toolkit.utils.excel.ExcelWriter;
 import io.kyligence.zenml.toolkit.utils.WorkDirUtils;
 import io.kyligence.zenml.toolkit.utils.YamlUtils;
 import io.kyligence.zenml.toolkit.utils.ZipUtils;
+import io.kyligence.zenml.toolkit.utils.excel.ExcelWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -60,17 +60,7 @@ public class ZenGenerator {
         return zipFilePath;
     }
 
-    /**
-     * For CLI entry
-     *
-     * @param srcPath
-     * @param destDir
-     * @throws IOException
-     */
-    public void convertMetrics2ZenMlFile(String srcPath, String destDir) throws IOException {
-        var metrics = extractMetrics(srcPath);
-        writeZenMlFile(srcPath, destDir, metrics);
-    }
+
 
     public void convertMetrics2ZenMLFileAndExcelFile(String srcPath, String destDir) throws IOException {
         var metrics = extractMetrics(srcPath);

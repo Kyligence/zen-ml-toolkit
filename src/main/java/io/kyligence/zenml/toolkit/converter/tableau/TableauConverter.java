@@ -59,6 +59,14 @@ public class TableauConverter implements MetricsConverter {
         }
     }
 
+    @Override
+    public List<String> createTags(String dataSource) {
+        List<String> tags = new ArrayList<>();
+        tags.add(dataSource);
+        tags.add(TABLEAU_TAG);
+        return tags;
+    }
+
 
     private Metrics convertTds2Metrics(TableauDatasource tds) {
         var metrics = new Metrics();
@@ -93,7 +101,7 @@ public class TableauConverter implements MetricsConverter {
     private List<MetricSpec> getMetricSpecsFromTds(TdsSpec tdsSpec, Set<String> measureNames) {
         List<MetricSpec> metricSpecs = new ArrayList<>();
         var tdsName = tdsSpec.getTableauDsName();
-        List<String> tags = generateTags(tdsSpec);
+        List<String> tags = createTags(tdsSpec.getTableauDsName());
         var tableauMeasures = tdsSpec.getMeasures();
         var tableauDimensions = tdsSpec.getDimensions();
 
@@ -148,14 +156,6 @@ public class TableauConverter implements MetricsConverter {
             metricSpecs.add(metricSpec);
         }
         return metricSpecs;
-    }
-
-    private List<String> generateTags(TdsSpec spec) {
-        var tableauDsName = spec.getTableauDsName();
-        List<String> tags = new ArrayList<>();
-        tags.add(tableauDsName);
-        tags.add(TABLEAU_TAG);
-        return tags;
     }
 
     private Map<String, List<String>> parseDimensionsFromTdsSpec(List<TableauColumn> dimensions) {

@@ -40,10 +40,10 @@ Example as below:
 ```shell
 # please replace ${Kyligence-ZenML-Toolkit-{version}} with absolute path
 $ cd ${Kyligence-ZenML-Toolkit-{version}}
-$ sh ./bin/zen.sh -i ./samples/superstore.tds -o ./samples/
+$ sh ./bin/zen.sh -i ./samples/sql/ssb.sql -o ./samples/sql
 ```
 
-You will get a `superstore.zen.yml` file in folder `Kyligence-ZenML-Toolkit-{version}/samples`
+You will get a `ssb.zen.yml` file in folder `Kyligence-ZenML-Toolkit-{version}/samples/sql`
 
 ## FAQ
 
@@ -60,7 +60,7 @@ For Windows users
 $ java -DZEN_HOME=${Kyligence-ZenML-Toolkit-{version}} -cp ${Kyligence-ZenML-Toolkit-{version}}/lib/zen-ml-toolkit.jar  -Dloader.main=io.kyligence.zenml.toolkit.ZenMlToolkitCLI org.springframework.boot.loader.PropertiesLauncher  -i <source_file_path> -o <output_folder>
 ```
 
-And welcome to contribute the windows scripts
+**And welcome to contribute the windows scripts**
 
 ### MacOS Security & Privacy Setting
 
