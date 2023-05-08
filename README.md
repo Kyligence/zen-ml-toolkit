@@ -60,6 +60,8 @@ not only:
 
 ![arch](docs/images/architecture.png)
 
+Please visit [http://zenml-toolkit.kyligence.io/](http://zenml-toolkit.kyligence.io/) online to have a try, upload a `.sql` file or `.tds` file and download the metrics.
+
 ### Prerequisite
 
 - Supported OS:
