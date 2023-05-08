@@ -19,6 +19,7 @@
 package io.kyligence.zenml.toolkit.converter.sql;
 
 import io.kyligence.zenml.toolkit.ZenMlToolkitServer;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -36,7 +37,12 @@ public class SqlFileAnalyzerTest {
 
         var sqlAnalyzer = new SqlFileAnalyzer();
         var sqlMetricSpecs = sqlAnalyzer.parseSqls(sql);
-        System.out.println(sqlMetricSpecs);
+        Assertions.assertEquals(1, sqlMetricSpecs.size());
+        Assertions.assertEquals("line_order", sqlMetricSpecs.get(0).getDatasource());
+        Assertions.assertEquals("REVENUE", sqlMetricSpecs.get(0).getMeasureAlias());
+        Assertions.assertEquals("SUM(amount)", sqlMetricSpecs.get(0).getMeasure());
+        Assertions.assertEquals(1, sqlMetricSpecs.get(0).getTimeDimensions().size());
+        Assertions.assertEquals(2, sqlMetricSpecs.get(0).getDimensions().size());
     }
 
     @Test
@@ -50,7 +56,12 @@ public class SqlFileAnalyzerTest {
 
         var sqlAnalyzer = new SqlFileAnalyzer();
         var sqlMetricSpecs = sqlAnalyzer.parseSqls(sql);
-        System.out.println(sqlMetricSpecs);
+        Assertions.assertEquals(1, sqlMetricSpecs.size());
+        Assertions.assertEquals("line_order", sqlMetricSpecs.get(0).getDatasource());
+        Assertions.assertEquals("REVENUE", sqlMetricSpecs.get(0).getMeasureAlias());
+        Assertions.assertEquals("SUM(amount)", sqlMetricSpecs.get(0).getMeasure());
+        Assertions.assertEquals(1, sqlMetricSpecs.get(0).getTimeDimensions().size());
+        Assertions.assertEquals(4, sqlMetricSpecs.get(0).getDimensions().size());
     }
 
     @Test
@@ -64,7 +75,12 @@ public class SqlFileAnalyzerTest {
 
         var sqlAnalyzer = new SqlFileAnalyzer();
         var sqlMetricSpecs = sqlAnalyzer.parseSqls(sql);
-        System.out.println(sqlMetricSpecs);
+        Assertions.assertEquals(1, sqlMetricSpecs.size());
+        Assertions.assertEquals("line_order", sqlMetricSpecs.get(0).getDatasource());
+        Assertions.assertEquals("SUM(amount)/SUM(quantity)", sqlMetricSpecs.get(0).getMeasureAlias());
+        Assertions.assertEquals("SUM(amount) / SUM(quantity)", sqlMetricSpecs.get(0).getMeasure());
+        Assertions.assertEquals(1, sqlMetricSpecs.get(0).getTimeDimensions().size());
+        Assertions.assertEquals(4, sqlMetricSpecs.get(0).getDimensions().size());
     }
 
     @Test
@@ -79,7 +95,12 @@ public class SqlFileAnalyzerTest {
 
         var sqlAnalyzer = new SqlFileAnalyzer();
         var sqlMetricSpecs = sqlAnalyzer.parseSqls(sql);
-        System.out.println(sqlMetricSpecs);
+        Assertions.assertEquals(1, sqlMetricSpecs.size());
+        Assertions.assertEquals("line_order_l_product", sqlMetricSpecs.get(0).getDatasource());
+        Assertions.assertEquals("SUM(amount)/SUM(quantity)", sqlMetricSpecs.get(0).getMeasureAlias());
+        Assertions.assertEquals("SUM(amount) / SUM(quantity)", sqlMetricSpecs.get(0).getMeasure());
+        Assertions.assertEquals(1, sqlMetricSpecs.get(0).getTimeDimensions().size());
+        Assertions.assertEquals(4, sqlMetricSpecs.get(0).getDimensions().size());
     }
 
     @Test
@@ -95,7 +116,12 @@ public class SqlFileAnalyzerTest {
 
         var sqlAnalyzer = new SqlFileAnalyzer();
         var sqlMetricSpecs = sqlAnalyzer.parseSqls(sql);
-        System.out.println(sqlMetricSpecs);
+        Assertions.assertEquals(1, sqlMetricSpecs.size());
+        Assertions.assertEquals("line_order_l_product_i_supplier", sqlMetricSpecs.get(0).getDatasource());
+        Assertions.assertEquals("SUM(amount)/SUM(quantity)", sqlMetricSpecs.get(0).getMeasureAlias());
+        Assertions.assertEquals("SUM(amount) / SUM(quantity)", sqlMetricSpecs.get(0).getMeasure());
+        Assertions.assertEquals(1, sqlMetricSpecs.get(0).getTimeDimensions().size());
+        Assertions.assertEquals(4, sqlMetricSpecs.get(0).getDimensions().size());
     }
 
     @Test
@@ -109,7 +135,12 @@ public class SqlFileAnalyzerTest {
 
         var sqlAnalyzer = new SqlFileAnalyzer();
         var sqlMetricSpecs = sqlAnalyzer.parseSqls(sql);
-        System.out.println(sqlMetricSpecs);
+        Assertions.assertEquals(1, sqlMetricSpecs.size());
+        Assertions.assertEquals("lineorder_l_dates", sqlMetricSpecs.get(0).getDatasource());
+        Assertions.assertEquals("REVENUE", sqlMetricSpecs.get(0).getMeasureAlias());
+        Assertions.assertEquals("SUM(lo_revenue)", sqlMetricSpecs.get(0).getMeasure());
+        Assertions.assertEquals(1, sqlMetricSpecs.get(0).getTimeDimensions().size());
+        Assertions.assertEquals(3, sqlMetricSpecs.get(0).getDimensions().size());
     }
 
     @Test
@@ -123,7 +154,12 @@ public class SqlFileAnalyzerTest {
 
         var sqlAnalyzer = new SqlFileAnalyzer();
         var sqlMetricSpecs = sqlAnalyzer.parseSqls(sql);
-        System.out.println(sqlMetricSpecs);
+        Assertions.assertEquals(1, sqlMetricSpecs.size());
+        Assertions.assertEquals("lineorder_l_dates", sqlMetricSpecs.get(0).getDatasource());
+        Assertions.assertEquals("REVENUE", sqlMetricSpecs.get(0).getMeasureAlias());
+        Assertions.assertEquals("SUM(lo_revenue)", sqlMetricSpecs.get(0).getMeasure());
+        Assertions.assertEquals(1, sqlMetricSpecs.get(0).getTimeDimensions().size());
+        Assertions.assertEquals(3, sqlMetricSpecs.get(0).getDimensions().size());
     }
 
     @Test
@@ -137,7 +173,12 @@ public class SqlFileAnalyzerTest {
 
         var sqlAnalyzer = new SqlFileAnalyzer();
         var sqlMetricSpecs = sqlAnalyzer.parseSqls(sql);
-        System.out.println(sqlMetricSpecs);
+        Assertions.assertEquals(1, sqlMetricSpecs.size());
+        Assertions.assertEquals("lineorder_l_dates", sqlMetricSpecs.get(0).getDatasource());
+        Assertions.assertEquals("REVENUE", sqlMetricSpecs.get(0).getMeasureAlias());
+        Assertions.assertEquals("SUM(lo_revenue)", sqlMetricSpecs.get(0).getMeasure());
+        Assertions.assertEquals(1, sqlMetricSpecs.get(0).getTimeDimensions().size());
+        Assertions.assertEquals(4, sqlMetricSpecs.get(0).getDimensions().size());
     }
 
     @Test
@@ -153,12 +194,16 @@ public class SqlFileAnalyzerTest {
 
         var sqlAnalyzer = new SqlFileAnalyzer();
         var sqlMetricSpecs = sqlAnalyzer.parseSqls(sql);
-        System.out.println(sqlMetricSpecs);
+        Assertions.assertEquals(1, sqlMetricSpecs.size());
+        Assertions.assertEquals("lineorder_l_supplier_l_part_l_dates", sqlMetricSpecs.get(0).getDatasource());
+        Assertions.assertEquals("LO_REVENUE", sqlMetricSpecs.get(0).getMeasureAlias());
+        Assertions.assertEquals("SUM(lo_revenue)", sqlMetricSpecs.get(0).getMeasure());
+        Assertions.assertEquals(4, sqlMetricSpecs.get(0).getDimensions().size());
     }
 
     @Test
     public void testParseSelect10() {
-        var sql = "select sum(lo_revenue) as lo_revenue, d_year, p_brand\n" +
+        var sql = "select sum(lo_revenue) as lo_revenue, sum(lo_cost) as cost, d_year, p_brand\n" +
                 "from lineorder\n" +
                 "left join dates on lo_orderdate = d_datekey\n" +
                 "left join part on lo_partkey = p_partkey\n" +
@@ -171,7 +216,14 @@ public class SqlFileAnalyzerTest {
 
         var sqlAnalyzer = new SqlFileAnalyzer();
         var sqlMetricSpecs = sqlAnalyzer.parseSqls(sql);
-        System.out.println(sqlMetricSpecs);
+        Assertions.assertEquals(2, sqlMetricSpecs.size());
+        Assertions.assertEquals("lineorder_l_supplier_l_part_l_dates", sqlMetricSpecs.get(0).getDatasource());
+        Assertions.assertEquals("LO_REVENUE", sqlMetricSpecs.get(0).getMeasureAlias());
+        Assertions.assertEquals("SUM(lo_revenue)", sqlMetricSpecs.get(0).getMeasure());
+        Assertions.assertEquals("lineorder_l_supplier_l_part_l_dates", sqlMetricSpecs.get(1).getDatasource());
+        Assertions.assertEquals("COST", sqlMetricSpecs.get(1).getMeasureAlias());
+        Assertions.assertEquals("SUM(lo_cost)", sqlMetricSpecs.get(1).getMeasure());
+        Assertions.assertEquals(4, sqlMetricSpecs.get(0).getDimensions().size());
     }
 
 }

@@ -26,7 +26,9 @@ public class DateValidatorUtils {
 
     public static final String YYYY = "yyyy";
     public static final String YYYY_MM = "yyyy-MM";
+    public static final String YYYYMM = "yyyyMM";
     public static final String YYYY_MM_DD = "yyyy-MM-dd";
+    public static final String YYYYMMDD = "yyyyMMdd";
     public static final String YYYY_MM_DD_HH_mm = "yyyy-MM-dd HH:mm";
     public static final String YYYY_MM_DD_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
     public static final String YYYY_SLASH_MM = "yyyy/MM";
@@ -36,7 +38,9 @@ public class DateValidatorUtils {
     public static boolean isValid(String dateStr) {
         return isValid(dateStr, YYYY) ||
                 isValid(dateStr, YYYY_MM) ||
+                isValid(dateStr, YYYYMM) ||
                 isValid(dateStr, YYYY_MM_DD) ||
+                isValid(dateStr, YYYYMMDD) ||
                 isValid(dateStr, YYYY_MM_DD_HH_mm) ||
                 isValid(dateStr, YYYY_MM_DD_HH_mm_ss) ||
                 isValid(dateStr, YYYY_SLASH_MM) ||

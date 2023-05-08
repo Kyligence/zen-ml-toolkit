@@ -57,7 +57,7 @@ public class SqlFileAnalyzer {
 
     public List<SqlMetricSpec> parseSqls(String sqls) {
 
-        List<SqlMetricSpec> sqlMetricSpecs = new ArrayList<>();
+        List<SqlMetricSpec> results = new ArrayList<>();
         var sqlNodeList = CalciteParser.parse(sqls, CalciteConfig.DEFAULT_PARSER_CONFIG);
         var list = sqlNodeList.getList();
 
@@ -74,21 +74,24 @@ public class SqlFileAnalyzer {
                 continue;
             }
 
-            var sqlMetric = analyzeSql2MetricSpec(node);
+            List<SqlMetricSpec> sqlMetrics = analyzeSql2MetricSpec(node);
 
-            if (StringUtils.isEmpty(sqlMetric.getMeasure())) {
-                // this sql is a detailed query, no measure found
-                log.error(ErrorCode.MEASURE_NOT_FOUND_IN_SQL.getReportMessage() + " : {}", node);
-            } else if (StringUtils.isEmpty(sqlMetric.getDatasource())) {
-                // this sql has no data source, ignore it
-                log.error(ErrorCode.MEASURE_NOT_FOUND_IN_SQL.getReportMessage() + " : {}", node);
-            } else {
-                sqlMetricSpecs.add(sqlMetric);
+            // validate the sql metrics
+            for (SqlMetricSpec sqlMetric : sqlMetrics) {
+                if (StringUtils.isEmpty(sqlMetric.getMeasure())) {
+                    // this sql is a detailed query, no measure found
+                    log.error(ErrorCode.MEASURE_NOT_FOUND_IN_SQL.getReportMessage() + " : {}", node);
+                } else if (StringUtils.isEmpty(sqlMetric.getDatasource())) {
+                    // this sql has no data source, ignore it
+                    log.error(ErrorCode.MEASURE_NOT_FOUND_IN_SQL.getReportMessage() + " : {}", node);
+                } else {
+                    results.add(sqlMetric);
+                }
             }
         }
 
 
-        return enrichSqlMetricSpecs(sqlMetricSpecs);
+        return enrichSqlMetricSpecs(results);
     }
 
     private List<SqlMetricSpec> enrichSqlMetricSpecs(List<SqlMetricSpec> metricSpecs) {
@@ -128,8 +131,8 @@ public class SqlFileAnalyzer {
         return newDims;
     }
 
-    private SqlMetricSpec analyzeSql2MetricSpec(SqlNode node) {
-        var sqlMetric = new SqlMetricSpec();
+    private List<SqlMetricSpec> analyzeSql2MetricSpec(SqlNode node) {
+        List<SqlMetricSpec> sqlMetricSpecs = new ArrayList<>();
         Set<String> dimensions = new HashSet<>();
         var sqlSelect = (SqlSelect) node;
         var selectList = sqlSelect.getSelectList();
@@ -138,6 +141,7 @@ public class SqlFileAnalyzer {
             if (SqlUtils.isASqlBasicCall(selectNode)) {
                 var measureNode = (SqlBasicCall) selectNode;
                 var op = measureNode.getOperator();
+                var sqlMetric = new SqlMetricSpec();
                 if (SqlUtils.isAAsOperator(op)) {
                     // measure with alias: sum(a) as A
                     var measureNodes = measureNode.getOperandList();
@@ -151,7 +155,7 @@ public class SqlFileAnalyzer {
                     var measureAlias = mockMeasureAlias(measureNode);
                     sqlMetric.setMeasureAlias(measureAlias);
                 }
-
+                sqlMetricSpecs.add(sqlMetric);
             }
 
             // get dimensions in sql select list
@@ -161,26 +165,29 @@ public class SqlFileAnalyzer {
             }
         }
 
-        // get dimensions & time dimension from where clause
-        var whereNode = (SqlBasicCall) sqlSelect.getWhere();
-        if (whereNode != null) {
-            List<String> dimsInWhere = SqlUtils.getFullNameIdentifiers(whereNode);
-            dimensions.addAll(dimsInWhere);
-            Set<String> timeDimensions = parseTimeDimensions(whereNode);
-            sqlMetric.setTimeDimensionStrs(timeDimensions.stream().toList());
-        }
+        for (SqlMetricSpec spec : sqlMetricSpecs) {
+            // get dimensions & time dimension from where clause
+            var whereNode = (SqlBasicCall) sqlSelect.getWhere();
+            if (whereNode != null) {
+                List<String> dimsInWhere = SqlUtils.getFullNameIdentifiers(whereNode);
+                dimensions.addAll(dimsInWhere);
+                Set<String> timeDimensions = parseTimeDimensions(whereNode);
+                spec.setTimeDimensionStrs(timeDimensions.stream().toList());
+            }
 
 
-        // get datasource name
-        var fromNode = sqlSelect.getFrom();
-        if (fromNode != null) {
-            var jointTable = extractJointTable(fromNode);
-            sqlMetric.setDatasource(jointTable.generateModelName());
-            sqlMetric.setSqlModel(jointTable);
+            // get datasource name
+            var fromNode = sqlSelect.getFrom();
+            if (fromNode != null) {
+                var jointTable = extractJointTable(fromNode);
+                spec.setDatasource(jointTable.generateModelName());
+                spec.setSqlModel(jointTable);
+            }
+            spec.setDimensions(dimensions.stream().toList());
+            spec.setOriginalSql(SqlUtils.toDwDialectString(node));
+
         }
-        sqlMetric.setDimensions(dimensions.stream().toList());
-        sqlMetric.setOriginalSql(SqlUtils.toDwDialectString(node));
-        return sqlMetric;
+        return sqlMetricSpecs;
     }
 
     private SqlModel extractJointTable(SqlNode fromNode) {
@@ -325,6 +332,6 @@ public class SqlFileAnalyzer {
     }
 
     private String mockMeasureAlias(SqlBasicCall measureNode) {
-        return SqlUtils.toDwDialectString(measureNode).replaceAll(" ", "").toUpperCase();
+        return SqlUtils.toDwDialectString(measureNode).replaceAll(" ", "");
     }
 }

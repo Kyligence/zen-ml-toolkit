@@ -86,7 +86,7 @@ where (c_city='UNITED KI1' or c_city='UNITED KI5') and (s_city='UNITED KI1' or s
 group by c_city, s_city, d_year
 order by d_year asc, lo_revenue desc;
 
-select d_year, c_nation, sum(lo_revenue) - sum(lo_supplycost) as profit
+select d_year, c_nation, sum(lo_supplycost) as cost
 from lineorder
          left join dates on lo_orderdate = d_datekey
          left join customer on lo_custkey = c_custkey
@@ -96,7 +96,7 @@ where c_region = 'AMERICA' and s_region = 'AMERICA' and (p_mfgr = 'MFGR#1' or p_
 group by d_year, c_nation
 order by d_year, c_nation;
 
-select d_year, s_nation, p_category, sum(lo_revenue) - sum(lo_supplycost) as profit
+select d_year, s_nation, p_category, sum(lo_supplycost) as cost
 from lineorder
          left join dates on lo_orderdate = d_datekey
          left join customer on lo_custkey = c_custkey
@@ -108,7 +108,7 @@ where c_region = 'AMERICA'and s_region = 'AMERICA'
 group by d_year, s_nation, p_category
 order by d_year, s_nation, p_category;
 
-select d_year, s_city, p_brand, sum(lo_revenue) - sum(lo_supplycost) as profit
+select d_year, s_city, p_brand, sum(lo_supplycost) as cost
 from lineorder
          left join dates on lo_orderdate = d_datekey
          left join customer on lo_custkey = c_custkey

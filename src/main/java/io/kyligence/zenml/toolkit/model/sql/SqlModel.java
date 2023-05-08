@@ -46,7 +46,8 @@ public class SqlModel {
         }
 
         var builder = new StringBuilder(factTable);
-        for (JoinRelation joinRelation : joinRelations) {
+        for (int i = joinRelations.size(); i > 0; i--) {
+            var joinRelation = joinRelations.get(i - 1);
             builder.append("_");
             // add first char of jointype： l/i/r/c
             builder.append(joinRelation.getJoinType().charAt(0));
@@ -54,7 +55,7 @@ public class SqlModel {
             builder.append(joinRelation.getRightTable());
         }
 
-        // The lenght of view name in zen has been restricted to 50
+        // The length of view name in zen has been restricted to 50
         if (builder.length() < 50) {
             return builder.toString().toLowerCase();
         } else {
@@ -63,16 +64,20 @@ public class SqlModel {
             shrinkBuilder.append(factTable, 0, 4);
             var length = 4;
 
-            for (JoinRelation joinRelation : joinRelations) {
-                if (length > 39) {
+            for (int i = joinRelations.size(); i > 0; i--) {
+                var joinRelation = joinRelations.get(i - 1);
+                if (length < 39) {
+                    builder.append("_");
+                    // add first char of jointype： l/i/r/c
+                    builder.append(joinRelation.getJoinType().charAt(0));
+                    builder.append("_");
+                    builder.append(joinRelation.getRightTable(), 0, 3);
+                    length += 6;
+                } else {
                     builder.append("_").append(Integer.toString(this.hashCode()), 0, 4);
+                    break;
                 }
-                builder.append("_");
-                // add first char of jointype： l/i/r/c
-                builder.append(joinRelation.getJoinType().charAt(0));
-                builder.append("_");
-                builder.append(joinRelation.getRightTable(), 0, 3);
-                length += 6;
+
             }
             return shrinkBuilder.toString().toLowerCase();
         }
@@ -92,9 +97,7 @@ public class SqlModel {
             return dep;
         }
 
-        for (JoinRelation relation : joinRelations) {
-            dep += 1;
-        }
+        dep += joinRelations.size();
         return dep;
     }
 }
