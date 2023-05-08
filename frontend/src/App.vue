@@ -31,7 +31,7 @@ limitations under the License.
         :before-upload="handleBeforeUpload">
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">Drag your files here, or <em>click to upload</em></div>
-        <div class="el-upload__tip" slot="tip"><a href="https://github.com/Kyligence/zen-ml-toolkit/releases">Release Version: 0.1.3</a>, only [.tds, .twb, .sql] file supported, we help you export calculated fields or measures into an Excel spreadsheet. 5MB maximum file size.</div>
+        <div class="el-upload__tip" slot="tip"><a href="https://github.com/Kyligence/zen-ml-toolkit/">Source Code on Github</a>, <a href="https://github.com/Kyligence/zen-ml-toolkit/releases">Release: 0.1.3</a>, only [.tds, .twb, .sql] file supported, we help you export calculated fields or measures into an Excel spreadsheet. 5MB maximum file size.</div>
       </el-upload>
       <p v-if="errorMsg" class="error-msg">{{errorMsg}}</p>
     </div>
