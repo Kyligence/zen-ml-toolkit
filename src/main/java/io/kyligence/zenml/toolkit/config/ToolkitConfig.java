@@ -148,7 +148,7 @@ public class ToolkitConfig {
     }
 
     public Double getFileSizeLimit() {
-        return Double.parseDouble(getOptional("zen.ml.toolkit.resource.file-size-limit-kb", "1024"));
+        return Double.parseDouble(getOptional("zen.ml.toolkit.resource.file-size-limit-kb", "5120"));
     }
 
     public String getSecretKey() {
