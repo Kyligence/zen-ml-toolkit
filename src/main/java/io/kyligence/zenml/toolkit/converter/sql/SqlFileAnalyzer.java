@@ -102,7 +102,7 @@ public class SqlFileAnalyzer {
             List<String> newDims = enrichDimensionIdentifiers(datasource, dimensions);
             metric.setDimensions(newDims);
             List<String> timeDimensionsStrs = metric.getTimeDimensionStrs();
-            List<String> newTimeDimStrs = enrichDimensionIdentifiers(datasource, timeDimensionsStrs);
+            List<String> newTimeDimStrs = enrichTimeDimensionIdentifiers(datasource, timeDimensionsStrs);
 
             List<TimeDimension> timeDimensions = new ArrayList<>();
             for (String timeDimStr : newTimeDimStrs) {
@@ -125,6 +125,20 @@ public class SqlFileAnalyzer {
                 newDim = datasource + "." + dim.split("\\.")[1];
             } else {
                 newDim = datasource + "." + dim;
+            }
+            newDims.add(newDim);
+        }
+        return newDims;
+    }
+    private List<String> enrichTimeDimensionIdentifiers(String datasource, List<String> dimensions) {
+        // enrich dimension name to full identifier
+        List<String> newDims = new ArrayList<>();
+        for (String dim : dimensions) {
+            String newDim;
+            if (dim.contains(".")) {
+                newDim =  dim.split("\\.")[1];
+            } else {
+                newDim =  dim;
             }
             newDims.add(newDim);
         }
